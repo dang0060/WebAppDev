@@ -18,9 +18,10 @@ USE `mydb` ;
 -- Table `mydb`.`user`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydb`.`user` ;
+DROP TABLE IF EXISTS `mydb`.`users` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`user` (
-  `user_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `mydb`.`users` (
+  `user_id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(50) NOT NULL,
   `password` VARCHAR(50) NOT NULL,
   `email` VARCHAR(100) NULL,
@@ -34,9 +35,10 @@ ENGINE = InnoDB;
 -- Table `mydb`.`group`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydb`.`group` ;
+DROP TABLE IF EXISTS `mydb`.`groups` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`group` (
-  `group_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `mydb`.`groups` (
+  `group_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `description` VARCHAR(45) NULL,
   PRIMARY KEY (`group_id`),
