@@ -8,9 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.amzi.dao.SignUpDao;
+import com.amzi.dao.UserDao;
 
 public class SignUpServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
@@ -36,15 +35,13 @@ public class SignUpServlet extends HttpServlet{
             return;
         }
         
-        HttpSession session = request.getSession(false);
-        if(session!=null)
-        session.setAttribute("name", n);
         
-        status=SignUpDao.addAccount(n, p, e);
+        status=UserDao.insertNewUser(n, p, e);
         
         switch(status){
         case 0:
-        	rd=request.getRequestDispatcher("accountcreated.jsp");  
+        	out.print("<p style=\"color:red\">Account created</p>"); 
+        	rd=request.getRequestDispatcher("login.jsp");  
             rd.forward(request,response);  
             break;
         case 1:

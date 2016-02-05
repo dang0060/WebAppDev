@@ -7,6 +7,10 @@
 <title>Sign Up</title>
 </head>
 <body>
+	<jsp:include page="testtemplate.jsp">
+	<jsp:param name="content" value="createaccount"/>
+	<jsp:param name="title" value="Sign Up"/>
+	</jsp:include>
 	<form action="signUpServlet" method="post">
 		<fieldset style="width: 300px">
 			<legend>Sign Up For LFGIRL</legend>
