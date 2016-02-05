@@ -1,0 +1,42 @@
+use mydb;
+truncate groups;
+truncate users; 
+truncate users_groups;
+INSERT INTO groups
+(group_id, name, description) VALUES
+('1', 'Powerball','card game'),
+('2', 'DragonRiders','table top RPG'),
+('3', 'The Dudes','FPS shooter'),
+('4', 'Happy Feet','DDR party'),
+('5', 'Dungeon Raiders','WOW raid party'),
+('6', 'The Sith Lords','Star Wars battlefront');
+
+INSERT INTO users
+(user_id,username,password,email) VALUES
+('1','Homer','password','springField1@nowhere.com'),
+('2','Bart','guessit','springField2@nowhere.com'),
+('3','Marge','homie','springField3@nowhere.com'),
+('4','Maggie', 'ohmnom','springField3@nowhere.com'),
+('5','Lisa','saxphone','springField4@nowhere.com'),
+('6','Soap', 'SSDD','lockandload@sas.com'),
+('7','Price','cigar','fireatwill@sas.com'),
+('8','Luke','theforce','skywalker2@jediplace.com'),
+('9','Yoda','usetheforceyoumust','themaster@jediplace.com'),
+('10','House','thedocisin','elementry@hospital.com'),
+('11','Bill','iluvwindows','therichest@ms.com'),
+('12','Android','appleistasty','everywhere@allplace.com');
+
+INSERT INTO users_groups
+(user_id,group_id,is_leader)VALUES
+('1','6','1'), /*Homer is the leader for group 6*/
+('2','3','1'), /*Bart is the leader for group 3*/
+('3','1','1'), /*Marge is the leader for group 1*/
+('4','4','1'), /*Maggie is the leader for group 4*/
+('5','5','1'), /*Lisa is the leader for group 5*/
+('6','3','0'), /*Soap is a member of group 3*/
+('7','2','1'), /*Price is the leader for group 2*/
+('8','6','0'), /*Luke is a member of group 6*/
+('9','4','0'), /*Yoda is a member of group 4*/
+('10','2','0'), /*House is a member of group2*/
+('11','1','0'), /*Bill is a member of group1*/
+('12','5','0'); /*Android is a member of group5*/
