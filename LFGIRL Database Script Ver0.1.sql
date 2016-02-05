@@ -60,12 +60,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`users_groups` (
   INDEX `group_id_idx` (`group_id` ASC),
   CONSTRAINT `user_id`
     FOREIGN KEY (`user_id`)
-    REFERENCES `mydb`.`user` (`user_id`)
+    REFERENCES `mydb`.`users` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `group_id`
     FOREIGN KEY (`group_id`)
-    REFERENCES `mydb`.`group` (`group_id`)
+    REFERENCES `mydb`.`groups` (`group_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
