@@ -2,6 +2,8 @@ package hibernate.dataobjects;
 // Generated Feb 7, 2016 9:57:52 PM by Hibernate Tools 4.3.1
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
@@ -33,6 +35,7 @@ public class Users  implements java.io.Serializable {
      private String username;
      private String password;
      private String email;
+     @JsonBackReference
      private Set usersGroupses = new HashSet(0);
 
     public Users() {

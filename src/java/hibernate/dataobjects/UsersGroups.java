@@ -2,6 +2,8 @@ package hibernate.dataobjects;
 // Generated Feb 7, 2016 9:57:52 PM by Hibernate Tools 4.3.1
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,6 +26,7 @@ public class UsersGroups  implements java.io.Serializable {
 
      private Integer usersGroupsId;
      private Groups groups;
+     @JsonManagedReference
      private Users users;
      private Boolean isLeader;
 
