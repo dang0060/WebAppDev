@@ -48,4 +48,9 @@ public class UsersRestController {
         return new ResponseEntity<Users>(user, HttpStatus.OK);
     }
     
+    @RequestMapping(value = "/users/add/", method = RequestMethod.POST)
+    public void addUser(Users u) {
+        usersDAO.addUser(u);
+    }
+    
 }

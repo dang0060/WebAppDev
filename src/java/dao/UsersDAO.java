@@ -18,4 +18,6 @@ public interface UsersDAO {
     
     public Users findUserById(int id);
     
+    public void addUser(Users u);
+    
 }

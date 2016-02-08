@@ -11,6 +11,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -39,6 +40,15 @@ public class UsersDAOImpl implements UsersDAO{
         query.setParameter("user_id", id);
         Users user = (Users)query.uniqueResult();
         return user;
+    }
+    
+    @Override
+    public void addUser(Users u) {
+        Session session = sFac.openSession();
+        Transaction tx = session.beginTransaction();
+        session.persist(u);
+        tx.commit();
+        session.close();
     }
     
 }
