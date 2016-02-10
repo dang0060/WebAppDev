@@ -11,6 +11,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `mydb`;
 CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
 USE `mydb` ;
 
@@ -18,12 +19,13 @@ USE `mydb` ;
 -- Table `mydb`.`user`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydb`.`user` ;
+DROP TABLE IF EXISTS `mydb`.`users` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`user` (
-  `user_id` INT NOT NULL,
-  `username` VARCHAR(50) NOT NULL,
-  `password` VARCHAR(50) NOT NULL,
-  `email` VARCHAR(100) NULL,
+CREATE TABLE IF NOT EXISTS `mydb`.`users` (
+  `user_id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(50) BINARY NOT NULL,
+  `password` VARCHAR(50) BINARY NOT NULL,
+  `email` VARCHAR(100) BINARY NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC))
@@ -34,9 +36,10 @@ ENGINE = InnoDB;
 -- Table `mydb`.`group`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `mydb`.`group` ;
+DROP TABLE IF EXISTS `mydb`.`groups` ;
 
-CREATE TABLE IF NOT EXISTS `mydb`.`group` (
-  `group_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `mydb`.`groups` (
+  `group_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `description` VARCHAR(45) NULL,
   PRIMARY KEY (`group_id`),
@@ -57,12 +60,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`users_groups` (
   INDEX `group_id_idx` (`group_id` ASC),
   CONSTRAINT `user_id`
     FOREIGN KEY (`user_id`)
-    REFERENCES `mydb`.`user` (`user_id`)
+    REFERENCES `mydb`.`users` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `group_id`
     FOREIGN KEY (`group_id`)
-    REFERENCES `mydb`.`group` (`group_id`)
+    REFERENCES `mydb`.`groups` (`group_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
