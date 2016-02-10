@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated Feb 7, 2016 9:57:52 PM by Hibernate Tools 4.3.1
+// Generated Feb 8, 2016 7:33:23 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;

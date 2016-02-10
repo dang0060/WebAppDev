@@ -16,5 +16,13 @@ public interface GroupsDAO {
     
     public List<Groups> listGroups();
     
-    public Groups findGroupById();
+    public Groups findGroupById(int id);
+    
+    public Groups findGroupByName(String groupName);
+    
+    public List<Groups> findGroupByDesc(String desc);
+    
+    public void addGroup(Groups g);
+    
+    public boolean groupCheck();
 }

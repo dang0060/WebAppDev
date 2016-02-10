@@ -1,15 +1,14 @@
 package hibernate.dataobjects;
-// Generated Feb 7, 2016 9:57:52 PM by Hibernate Tools 4.3.1
+// Generated Feb 8, 2016 7:33:23 PM by Hibernate Tools 4.3.1
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -24,35 +23,44 @@ import javax.persistence.Table;
 public class UsersGroups  implements java.io.Serializable {
 
 
-     private Integer usersGroupsId;
+     private UsersGroupsId id;
      private Groups groups;
-     @JsonManagedReference
+     //@JsonManagedReference
      private Users users;
      private Boolean isLeader;
 
     public UsersGroups() {
     }
 
-    public UsersGroups(Groups groups, Users users, Boolean isLeader) {
+	
+    public UsersGroups(UsersGroupsId id, Groups groups, Users users) {
+        this.id = id;
+        this.groups = groups;
+        this.users = users;
+    }
+    public UsersGroups(UsersGroupsId id, Groups groups, Users users, Boolean isLeader) {
+       this.id = id;
        this.groups = groups;
        this.users = users;
        this.isLeader = isLeader;
     }
    
-     @Id @GeneratedValue(strategy=IDENTITY)
+     @EmbeddedId
 
     
-    @Column(name="users_groups_id", unique=true, nullable=false)
-    public Integer getUsersGroupsId() {
-        return this.usersGroupsId;
+    @AttributeOverrides( {
+        @AttributeOverride(name="userId", column=@Column(name="user_id", nullable=false) ), 
+        @AttributeOverride(name="groupId", column=@Column(name="group_id", nullable=false) ) } )
+    public UsersGroupsId getId() {
+        return this.id;
     }
     
-    public void setUsersGroupsId(Integer usersGroupsId) {
-        this.usersGroupsId = usersGroupsId;
+    public void setId(UsersGroupsId id) {
+        this.id = id;
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="group_id")
+    @JoinColumn(name="group_id", nullable=false, insertable=false, updatable=false)
     public Groups getGroups() {
         return this.groups;
     }
@@ -62,7 +70,7 @@ public class UsersGroups  implements java.io.Serializable {
     }
 
 @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="user_id", nullable=false, insertable=false, updatable=false)
     public Users getUsers() {
         return this.users;
     }

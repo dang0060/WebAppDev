@@ -12,6 +12,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.transform.DistinctRootEntityResultTransformer;
 
 /**
  *
@@ -28,7 +29,7 @@ public class UsersDAOImpl implements UsersDAO{
     @Override
     public List<Users> listUsers() {
         Session session = sFac.openSession();
-        List<Users> userList = session.createQuery("from Users").list();
+        List<Users> userList = session.createQuery("from Users U left join fetch U.usersGroupses").setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE).list();
         session.close();
         return userList;
     }
@@ -36,9 +37,20 @@ public class UsersDAOImpl implements UsersDAO{
     @Override
     public Users findUserById(int id) {
         Session session = sFac.openSession();
-        Query query = session.createQuery("from Users U where U.id = :user_id");
+        Query query = session.createQuery("from Users U left join fetch U.usersGroupses where U.id = :user_id");
         query.setParameter("user_id", id);
         Users user = (Users)query.uniqueResult();
+        session.close();
+        return user;
+    }
+    
+    @Override
+    public Users findUserByUserName(String userName) {
+        Session session = sFac.openSession();
+        Query query = session.createQuery("from Users U left join fetch U.usersGroupses where U.username = :user_name");
+        query.setParameter("user_name", userName);
+        Users user = (Users)query.uniqueResult();
+        session.close();
         return user;
     }
     
@@ -49,6 +61,18 @@ public class UsersDAOImpl implements UsersDAO{
         session.persist(u);
         tx.commit();
         session.close();
+    }
+    
+    @Override
+    public boolean userCheck(String s) {
+        Session session = sFac.openSession();
+        Query query = session.createQuery("from Users U where U.username = :inputString");
+        query.setParameter("inputString", s);
+        Users user = (Users)query.uniqueResult();
+        if (user == null) {
+            return false;
+        } else
+            return true;
     }
     
 }

@@ -7,11 +7,11 @@
             <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL%20V0.2/src/java/dao/UsersDAO.java</file>
             <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL%20V0.2/src/java/dao/GroupsDAO.java</file>
             <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL%20V0.2/web/WEB-INF/dispatcher-servlet.xml</file>
-            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL%20V0.2/src/java/TestDB.java</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL%20V0.2/src/java/hibernate/dataobjects/UsersGroups.java</file>
             <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL%20V0.2/src/java/hibernate.cfg.xml</file>
-            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL%20V0.2/src/java/daoImpl/GroupsDAOImpl.java</file>
             <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL%20V0.2/src/java/restcontrollers/UsersRestController.java</file>
             <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL%20V0.2/src/java/daoImpl/UsersDAOImpl.java</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL%20V0.2/src/java/hibernate/dataobjects/Users.java</file>
         </group>
     </open-files>
 </project-private>

@@ -18,6 +18,10 @@ public interface UsersDAO {
     
     public Users findUserById(int id);
     
+    public Users findUserByUserName(String userName);
+    
     public void addUser(Users u);
+    
+    public boolean userCheck(String userName);
     
 }

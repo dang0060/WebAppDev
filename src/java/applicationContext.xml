@@ -32,5 +32,9 @@
     <bean id="UsersDAO" class="daoImpl.UsersDAOImpl">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+    
+    <bean id="GroupsDAO" class="daoImpl.GroupsDAOImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 
 </beans>

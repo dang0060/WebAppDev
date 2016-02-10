@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 7, 2016 9:57:52 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated Feb 8, 2016 7:33:24 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="hibernate.dataobjects.Users" table="users" catalog="mydb" optimistic-lock="version">
         <id name="userId" type="java.lang.Integer">
@@ -25,7 +25,7 @@
         </property>
         <set name="usersGroupses" table="users_groups" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="user_id" />
+                <column name="user_id" not-null="true" />
             </key>
             <one-to-many class="hibernate.dataobjects.UsersGroups" />
         </set>
