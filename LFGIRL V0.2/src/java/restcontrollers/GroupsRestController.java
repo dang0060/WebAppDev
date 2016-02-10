@@ -5,6 +5,12 @@
  */
 package restcontrollers;
 
+<<<<<<< HEAD
+import hibernate.dataobjects.Groups;
+import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+=======
 import dao.GroupsDAO;
 import hibernate.dataobjects.Groups;
 import java.util.List;
@@ -13,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+>>>>>>> refs/remotes/origin/LFGIRL-0.2
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +36,13 @@ public class GroupsRestController {
     
     @RequestMapping(value = "/groups/", method = RequestMethod.GET)
     public ResponseEntity<List<Groups>> listAllUsers() {
+<<<<<<< HEAD
+        List<Groups> users = groupsDAO.listGroups();
+        if (users.isEmpty()) {
+            return new ResponseEntity<List<Groups>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Groups>>(users, HttpStatus.OK);
+=======
         List<Groups> groups = groupsDAO.listGroups();
         if (groups.isEmpty()) {
             return new ResponseEntity<List<Groups>>(HttpStatus.NO_CONTENT);
@@ -67,5 +81,6 @@ public class GroupsRestController {
             return new ResponseEntity<List<Groups>>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<List<Groups>>(group, HttpStatus.OK);
+>>>>>>> refs/remotes/origin/LFGIRL-0.2
     }
 }
