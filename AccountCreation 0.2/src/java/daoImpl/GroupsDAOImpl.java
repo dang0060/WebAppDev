@@ -11,6 +11,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.transform.*;
 
 /**
@@ -65,7 +66,11 @@ public class GroupsDAOImpl implements GroupsDAO {
 
     @Override
     public void addGroup(Groups g) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session = sFac.openSession();
+        Transaction tx = session.beginTransaction();
+        session.persist(g);
+        tx.commit();
+        session.close(); 
     }
 
     @Override

@@ -3,6 +3,7 @@
 					<td><a href="createaccount.htm">Create New User</a></td>
 					<td><a href="deleteaccount.htm">Delete This User</a></td>
 					<td><a href="login.htm">Login</a></td>
+                                        <td><a href="creategroup.htm">Create a Group</a></td>
 				</tr>
 		</table>
 

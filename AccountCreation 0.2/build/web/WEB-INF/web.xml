@@ -24,6 +24,11 @@
             <servlet-name>deleteaccount</servlet-name>
             <servlet-class>servlets.DeleteAccountServlet</servlet-class>
     </servlet>
+    <servlet>
+            <servlet-name>creategroup</servlet-name>
+            <servlet-class>servlets.CreateGroupServlet</servlet-class>
+    </servlet>
+    
     
     
     <servlet-mapping>
@@ -42,6 +47,10 @@
             <servlet-name>deleteaccount</servlet-name>
             <url-pattern>/deleteAccountServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+            <servlet-name>creategroup</servlet-name>
+            <url-pattern>/createGroupServlet</url-pattern>
+    </servlet-mapping>
 
     <session-config>
         <session-timeout>
@@ -49,6 +58,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>createaccount.jsp</welcome-file>
+        <welcome-file>createaccount.htm</welcome-file>
     </welcome-file-list>
 </web-app>

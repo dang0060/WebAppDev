@@ -25,7 +25,6 @@
     
 
     <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
-
     <!--
     Most controllers will use the ControllerClassNameHandlerMapping above, but
     for the index controller we are using ParameterizableViewController, so we must
@@ -39,32 +38,15 @@
                 <prop key="createaccount.htm">createAccController</prop>
                 <prop key="login.htm">loginController</prop>
                 <prop key="deleteaccount.htm">deleteAccController</prop>
+                <prop key="creategroup.htm">createGrpController</prop>
             </props>
         </property>
     </bean>
-
-
-   <!-- <bean id="viewResolver"
-	    class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
-            <property name="prefix">
-              <value>/WEB-INF/jsp/</value>
-            </property>
-            <property name="suffix">
-              <value>.jsp</value>
-            </property>
-    </bean>-->
    
    <bean id="viewResolver"
           class="org.springframework.web.servlet.view.InternalResourceViewResolver"
           p:prefix="/WEB-INF/jsp/"
           p:suffix=".jsp" />
-      <!--     
-    <bean id="viewResolver"
-        class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
-    <property name="prefix" value="/WEB-INF/jsp/"/>
-    <property name="suffix" value=".jsp"/>
-    </bean>-->
     <!--
     The index controller.
     -->
@@ -83,6 +65,7 @@
     <bean name="deleteAccController"
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="deleteaccount" />
-    
-
+    <bean name="createGrpController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="creategroup" />
 </beans>

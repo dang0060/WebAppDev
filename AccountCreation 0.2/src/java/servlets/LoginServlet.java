@@ -33,8 +33,7 @@ public class LoginServlet extends HttpServlet{
                     HttpSession session = request.getSession();
                     session.setAttribute("name", loginUser.getUsername());
                     session.setAttribute("userid", loginUser.getUserId());
-                    RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/deleteaccount.jsp");
-                    out.printf("Welcome %s", n);
+                    RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/loginwelcome.jsp");
                     rd.forward(request,response);
                 }
                 else{
@@ -46,5 +45,7 @@ public class LoginServlet extends HttpServlet{
             out.close();
             
         }  
-    }  
+    }
+    
+
 } 
