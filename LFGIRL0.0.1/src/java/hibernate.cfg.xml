@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mydb?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">lfgirl</property>
+    <property name="hibernate.connection.password">lfgirl</property>
+    <mapping resource="com/hibernate/dataobjects/UserInfo.hbm.xml"/>
+    <mapping resource="com/hibernate/dataobjects/Groups.hbm.xml"/>
+    <mapping resource="com/hibernate/dataobjects/Users.hbm.xml"/>
+    <mapping resource="com/hibernate/dataobjects/UsersGroups.hbm.xml"/>
+    <mapping resource="com/hibernate/dataobjects/UsersRoles.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>
