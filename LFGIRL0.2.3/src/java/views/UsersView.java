@@ -5,22 +5,24 @@
  */
 package views;
 
-import hibernate.dataobjects.Groups;
+
+import hibernate.dataobjects.UserInfo;
 import hibernate.dataobjects.Users;
-import hibernate.dataobjects.UsersGroups;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.*;
-import javax.faces.application.FacesMessage;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.servlet.http.HttpSession;
-import org.primefaces.context.RequestContext;
+import javax.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import services.interfaces.GroupsService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import serializer.Autowirer;
 import services.interfaces.UsersService;
 
 /**
@@ -28,14 +30,27 @@ import services.interfaces.UsersService;
  * @author Protostar
  */
 @ManagedBean(name="UsersView")
-@SessionScoped
+@ViewScoped
 public class UsersView implements Serializable {
     
-    @ManagedProperty("#{UsersService}")
-    private UsersService usersService;
+    @Autowired
+    transient UsersService usersService;
     
     private Users user = new Users();
+    private UserInfo userInfo = new UserInfo();
     private List<Users> users = new ArrayList<>();
+    
+    @PostConstruct
+    private void init() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ServletContext sC = (ServletContext) ec.getContext();
+        WebApplicationContextUtils.getRequiredWebApplicationContext(sC).getAutowireCapableBeanFactory().autowireBean(this);
+    }
+    
+    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+        ois.defaultReadObject();
+        Autowirer.wireObject(this);
+    }
     
     public void setUsersService(UsersService userService) {
         this.usersService = userService;
@@ -66,7 +81,34 @@ public class UsersView implements Serializable {
         //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Searching...", "Search in progress"));
     }
     
-    public void userLogin(String username, String password) {
+    public void displayUserInfo() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        LoginView lv = (LoginView) facesContext.getExternalContext().getSessionMap().get("LoginView");
+        if (lv != null && lv.getUserName() != null) {
+            setUserInfo(usersService.getUserById(lv.getUserId()).getUserInfo());
+            System.out.println("Show me the money");
+        }
+    }
+    
+    public void updateUserInfo(String firstname, String lastname, String address, String city, String postalcode) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        LoginView lv = (LoginView) facesContext.getExternalContext().getSessionMap().get("LoginView");
+        if (lv != null && lv.getUserName() != null) {
+            Users updatedUser = new Users();
+            UserInfo updatedUserInfo = new UserInfo();
+            updatedUser.setUserInfo(updatedUserInfo);
+            updatedUser.getUserInfo().setFirstName(firstname);
+            updatedUser.getUserInfo().setLastName(lastname);
+            updatedUser.getUserInfo().setAddress(address);
+            updatedUser.getUserInfo().setCity(city);
+            updatedUser.getUserInfo().setPostalCode(postalcode);
+            updatedUser.setUserId(lv.getUserId());
+            usersService.updateUserInfo(updatedUser);
+            userInfo = usersService.getUserById(lv.getUserId()).getUserInfo();
+        }
+    }
+    
+    /*public void userLogin(String username, String password) {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage message;
         boolean loggedIn;
@@ -92,5 +134,19 @@ public class UsersView implements Serializable {
         } 
         FacesContext.getCurrentInstance().addMessage(null, message);
         context.addCallbackParam("loggedIn", loggedIn);
+    }*/
+
+    /**
+     * @return the userInfo
+     */
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    /**
+     * @param userInfo the userInfo to set
+     */
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

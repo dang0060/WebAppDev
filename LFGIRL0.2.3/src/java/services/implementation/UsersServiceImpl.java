@@ -8,11 +8,8 @@ package services.implementation;
 import dao.UsersDAO;
 import hibernate.dataobjects.Users;
 import java.util.List;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
-import javax.inject.Inject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import services.interfaces.UsersService;
@@ -21,9 +18,8 @@ import services.interfaces.UsersService;
  *
  * @author Protostar
  */
+@Primary
 @Service
-@ManagedBean(name="UsersService")
-@SessionScoped
 public class UsersServiceImpl implements UsersService {
     
     @Autowired
@@ -57,5 +53,11 @@ public class UsersServiceImpl implements UsersService {
     public List<Users> getUsersByName(String username) {
         return usersDAO.findUsersByUserName(username);
     }   
+
+    @Override
+    @Transactional
+    public void updateUserInfo(Users u) {
+        usersDAO.updateUser(u);
+    }
     
 }

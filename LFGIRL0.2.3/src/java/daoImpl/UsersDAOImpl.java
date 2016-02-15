@@ -6,14 +6,15 @@
 package daoImpl;
 
 import dao.UsersDAO;
+import hibernate.dataobjects.UserInfo;
 import hibernate.dataobjects.Users;
 import java.util.List;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.transform.DistinctRootEntityResultTransformer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -23,7 +24,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UsersDAOImpl implements UsersDAO{
     
-    @Autowired
     private SessionFactory sFac;
     
     public void setSessionFactory(SessionFactory sessionFactory) {
@@ -87,6 +87,32 @@ public class UsersDAOImpl implements UsersDAO{
             return false;
         } else
             return true;
+    }
+
+    @Override
+    public void updateUser(Users u) {
+        Session session = sFac.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            //Users pulledUser = (Users) session.get(Users.class, u.getUserId());
+            UserInfo pulledInfo = (UserInfo) session.get(UserInfo.class, u.getUserId());
+            //pulledUser.setUserInfo(u.getUserInfo());
+            pulledInfo.setFirstName(u.getUserInfo().getFirstName());
+            pulledInfo.setLastName(u.getUserInfo().getLastName());
+            pulledInfo.setAddress(u.getUserInfo().getAddress());
+            pulledInfo.setCity(u.getUserInfo().getCity());
+            pulledInfo.setPostalCode(u.getUserInfo().getPostalCode());
+            session.update(pulledInfo);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
     }
 
     

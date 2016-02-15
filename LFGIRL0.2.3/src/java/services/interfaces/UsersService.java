@@ -21,5 +21,7 @@ public interface UsersService {
     public Users getUserByName(String username);
 
     public List<Users> getUsersByName(String username);
+    
+    public void updateUserInfo(Users u);
 
 }

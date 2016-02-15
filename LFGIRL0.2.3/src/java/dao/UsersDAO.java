@@ -26,4 +26,6 @@ public interface UsersDAO {
     
     public boolean userCheck(String userName);
     
+    public void updateUser(Users u);
+    
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <head>
+        <title>Update User</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <h:form>
+            #{UsersView.displayUserInfo()}
+            <h:panelGrid id="userInfoDisplayPanel" columns="2" cellpadding="5">
+                <h:outputLabel for="firstname" value="First Name:" class="nav-text"/>
+                <p:inputText id="firstname" value="#{firstName}" label="firstname" />
+                <h:outputLabel for="lastname" value="Last Name:" class="nav-text"/>
+                <p:inputText id="lastname" value="#{lastName}" label="lastname" />
+                <h:outputLabel for="address" value="Address:" class="nav-text"/>
+                <p:inputText id="address" value="#{address}" label="address" />
+                <h:outputLabel for="city" value="City:" class="nav-text"/>
+                <p:inputText id="city" value="#{city}" label="city" />
+                <h:outputLabel for="postalcode" value="Postal Code:" class="nav-text"/>
+                <p:inputText id="postalcode" value="#{postalcode}" label="postalcode" />
+                <p:commandButton id="updateInfo" value="Update" action="#{UsersView.updateUserInfo(firstName, lastName, address, city, postalcode)}" update="userInfoDisplayPanel"></p:commandButton>
+            </h:panelGrid>
+        </h:form>
+    </body>
+</html>

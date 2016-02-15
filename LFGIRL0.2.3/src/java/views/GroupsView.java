@@ -7,14 +7,22 @@ package views;
 
 import hibernate.dataobjects.Groups;
 import hibernate.dataobjects.UsersGroups;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import serializer.Autowirer;
 import services.interfaces.GroupsService;
 
 /**
@@ -25,10 +33,22 @@ import services.interfaces.GroupsService;
 @ViewScoped
 public class GroupsView {
     
-    @ManagedProperty("#{GroupsService}")
-    private GroupsService groupsService;
+    @Autowired
+    transient GroupsService groupsService;
     
     private List<Groups> groups = new ArrayList<>();
+    
+    @PostConstruct
+    private void init() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ServletContext sC = (ServletContext) ec.getContext();
+        WebApplicationContextUtils.getRequiredWebApplicationContext(sC).getAutowireCapableBeanFactory().autowireBean(this);
+    }
+    
+    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+        ois.defaultReadObject();
+        Autowirer.wireObject(this);
+    }
     
     public void setGroupsService(GroupsService groupsService) {
         this.groupsService = groupsService;
@@ -57,10 +77,14 @@ public class GroupsView {
     
     public void displayGroups() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
-        if (session.getAttribute("userId") != null) {
-            getGroupsAsList((int)session.getAttribute("userId"));
+        LoginView lv = (LoginView) facesContext.getExternalContext().getSessionMap().get("LoginView");
+        if (lv != null && lv.getUserName() != null) {
+            getGroupsAsList(lv.getUserId());
         }
-        System.out.println("Here is the session");
+        else
+        {
+            System.out.println("No groups to display");
+        }
+        
     }
 }

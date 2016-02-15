@@ -10,8 +10,10 @@ import hibernate.dataobjects.Groups;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import services.interfaces.GroupsService;
 
@@ -19,9 +21,8 @@ import services.interfaces.GroupsService;
  *
  * @author Protostar
  */
+@Primary
 @Service
-@ManagedBean(name="GroupsService")
-@SessionScoped
 public class GroupsServiceImpl implements GroupsService {
 
     @Autowired
