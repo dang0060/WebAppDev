@@ -5,6 +5,7 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
+    <meta  charset="utf-8"/>
     <!--h:outputScript library="primefaces" name="jquery/jquery.js" target="head" /-->
     <!--h:outputScript library="primefaces" name="jquery/jquery-plugin.js" target="head" /-->
     <!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js" /-->
@@ -25,9 +26,8 @@
                   }
                  );
                 });
-    </script>
-    
-    <script type="text/javascript">
+    </script>       
+   <script type="text/javascript">
         $(document).ready(function() {
             $('#groupsearch').click(function() {
                 $('#mainpage').load("groupSearch.xhtml");
@@ -79,49 +79,64 @@
                 <ui:debug />
 		<h:form>
                     <p:growl id="growl" sticky="false" showDetail="true" life="5000"/>
-                    <h:outputLink value="#" onclick="PF('loginDialog').show();" title="Login / Sign-up" class="loginLink">
-                        Login / Sign-up
+                    <h:outputLink value="#" onclick="PF('loginDialog').show();" title="login/sign-up" class="loginLink">
+                        #{msg['login_signUp']} <!--use the msg var defined in face-config to call upon the corresponding text in property file-->
                     </h:outputLink>
                     
-                    <p:dialog header="Login" widgetVar="loginDialog" resizable="false">
+                    <p:dialog header="#{msg['loginPanel']}" widgetVar="loginDialog" resizable="false"><!--use the msg var defined in face-config to call upon the corresponding text in property file-->
         		<h:panelGrid columns="2" cellpadding="5">
-                            <h:outputLabel for="username" value="Username:" class="nav-text"/>
+                            <h:outputLabel for="username" value="#{msg['usernameEntry']}" class="nav-text"/>
                             <p:inputText id="username" value="#{username}" required="true" label="username" />
  
-                            <h:outputLabel for="password" value="Password:" />
+                            <h:outputLabel for="password" value="#{msg['passwordEntry']}" />
                             <p:password id="password" value="#{password}" required="true" label="password" />
                             <f:facet name="footer">
-                                <p:commandButton value="Login" update="growl" actionListener="#{LoginView.userLogin(username, password)}"
+                                <p:commandButton value="#{msg['loginButton']}" update="growl" actionListener="#{LoginView.userLogin(username, password)}"
                                                  oncomplete="handleLoginRequest(xhr, status, args)"/>
                             </f:facet>  
        			</h:panelGrid>
                     </p:dialog>   		
-		</h:form>
+		</h:form>            
 	</nav>
+    <!--Trying to implement buttons for change language-->
+     <h:form>
+         <!--default locale, from I18nResource.properties -->
+        <h:commandButton action="#{language.changeLanguage('')}" 
+            value="#{msg['englishButton']}"/>
+        <!--Chinese simplified locale, from I18nResource_cn_si.properties -->
+        <h:commandButton action="#{language.changeLanguage('cn_si')}" 
+           value="#{msg['chineseButton']}"/>
+        <!--French locale, from I18nResource_fr.properties -->
+        <h:commandButton action="#{language.changeLanguage('fr')}" 
+           value="#{msg['frenchButton']}"/>
+    </h:form>
+     <!--end of language change button-->
 	<nav class="sidemenu">
             <ul>
              <li>
                    
                         <span class="nav-text">
-                          <H4 class="title fa fa-2x">Dashboard</H4>
+                          <H4 class="title fa fa-2x">#{msg['dashboard']}</H4>
                         </span>
                  
                 </li>
             <HR/>
+            
                 <li>
                     <a href="homepage.xhtml">
                         <img src="images/home.png" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
-                            Home
+                            #{msg['home']}
                         </span>
                     </a>
                   
-                </li>
+                </li> 
+                         
                 <li class="has-subnav">
                     <a id="groupsearch" href="#">
                         <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
-                            Group Search
+                            #{msg['groupSearch']}
                         </span>
                     </a>
                     
@@ -130,7 +145,7 @@
                     <a id="usersearch" href="#">
                        <img src="images/playersearch.jpg" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
-                            Player Search
+                           #{msg['playerSearch']}
                         </span>
                     </a>    
                 </li>
@@ -138,7 +153,7 @@
                     <a id="mygroups" href="#">
                        <img src="images/grpimg.png" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
-                            My Groups
+                            #{msg['myGroups']}
                         </span>
                     </a>
                 </li>
@@ -146,7 +161,7 @@
                     <a id="aboutme" href="#">
                        <img src="images/playersearch.png" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
-                            About me
+                             #{msg['AboutMe']}
                         </span>
                     </a>
                 </li>

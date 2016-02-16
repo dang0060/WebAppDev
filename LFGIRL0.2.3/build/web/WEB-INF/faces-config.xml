@@ -7,7 +7,23 @@
     <application>
         <el-resolver>
             org.springframework.web.jsf.el.SpringBeanFacesELResolver
-        </el-resolver>
-    </application>
-
+        </el-resolver> 
+        <!-- for locale configuration-->
+        <resource-bundle>
+            <base-name>com.enterprise.jsf.internationalization.I18nResource</base-name> <!--Resrouce bundle, which contains the propertie files-->
+              <var>msg</var> <!--The tag to call upon the text within the property files -->
+        </resource-bundle>
+         <locale-config> <!--Beside the deafult locale, other locale's name correspondes with the property file's postfix -->
+             <default-locale>en</default-locale>
+             <supported-locale>cn_si</supported-locale>
+             <supported-locale>fr</supported-locale>
+         </locale-config>>
+              
+     </application>
+    
+     <!--
+    <navigation-rule>  
+          <from-view-id>/login.xhtml</from-view-id>               
+    </navigation-rule>
+     -->
 </faces-config>
