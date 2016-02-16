@@ -1,0 +1,7 @@
+CREATE DEFINER = CURRENT_USER TRIGGER `mydb`.`users_AFTER_INSERT` AFTER INSERT ON `users` FOR EACH ROW
+BEGIN
+
+INSERT INTO user_info
+(user_info_id) VALUES (NEW.user_id);
+
+END
