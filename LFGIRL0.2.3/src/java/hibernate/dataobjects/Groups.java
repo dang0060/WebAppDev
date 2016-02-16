@@ -54,7 +54,7 @@ public class Groups  implements java.io.Serializable {
     }
 
     
-    @Column(name="groupname", nullable=false, length=100)
+    @Column(name="name", nullable=false, length=100) //changed from groupname to name
     public String getGroupname() {
         return this.groupname;
     }
