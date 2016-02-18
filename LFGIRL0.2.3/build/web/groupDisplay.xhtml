@@ -10,13 +10,14 @@ and open the template in the editor.
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
+        <meta charset="utf-8"/>
         <title>Group search</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body>
         <h:form>
-    <!--p:commandButton id="groupResults" value="Search" action="#{GroupsView.displayGroups()}" update="groupList"></p:commandButton-->
-            <p:dataTable id="groupList" var="groupResults" value="#{GroupsView.groups}">
+            #{UserBean.displayMyGroups()}
+            <p:dataTable id="groupList" var="groupResults" value="#{UserBean.groups}">
                 <p:column headerText="ID">
                     <h:outputText value="#{groupResults.groupId}" />
                 </p:column>

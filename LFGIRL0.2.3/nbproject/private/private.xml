@@ -4,16 +4,21 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/services/implementation/UsersServiceImpl.java</file>
-            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/serializer/Autowirer.java</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/backingbeans/LanguageBean.java</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/web/userSearch.xhtml</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/backingbeans/SearchBean.java</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/dao/UsersDAO.java</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/backingbeans/RegisterBean.java</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/services/interfaces/UsersService.java</file>
             <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/daoImpl/UsersDAOImpl.java</file>
-            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/views/LoginView.java</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/backingbeans/LoginBean.java</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/backingbeans/UserBean.java</file>
             <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/services/implementation/GroupsServiceImpl.java</file>
-            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/applicationContext.xml</file>
-            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/views/UsersView.java</file>
-            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/views/GroupsView.java</file>
-            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/src/java/hibernate/dataobjects/UserInfo.java</file>
             <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/web/homepage.xhtml</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/web/aboutme.xhtml</file>
             <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/web/groupDisplay.xhtml</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/web/WEB-INF/faces-config.xml</file>
+            <file>file:/C:/Users/Protostar/Documents/NetBeansProjects/LFGIRL0.2.3/web/groupSearch.xhtml</file>
         </group>
     </open-files>
 </project-private>

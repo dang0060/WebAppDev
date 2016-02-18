@@ -14,14 +14,18 @@ import java.util.*;
  */
 public interface UsersService {
 
-    public List<Users> listUsers();
+    List<Users> listUsers();
 
-    public Users getUserById(int id);
+    Users getUserById(int id);
     
-    public Users getUserByName(String username);
+    Users getUserByName(String username);
 
-    public List<Users> getUsersByName(String username);
+    List<Users> getUsersByName(String username);
     
-    public void updateUserInfo(Users u);
+    String registerNewUser(Users u);
+    
+    void updateUserInfo(Users u);
+    
+    void deleteUser(int id);
 
 }

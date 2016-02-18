@@ -71,22 +71,37 @@ public class UsersDAOImpl implements UsersDAO{
     @Override
     public void addUser(Users u) {
         Session session = sFac.openSession();
-        Transaction tx = session.beginTransaction();
-        session.persist(u);
-        tx.commit();
-        session.close();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(u);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
     }
     
     @Override
-    public boolean userCheck(String s) {
+    public boolean userNameCheck(String s) {
         Session session = sFac.openSession();
         Query query = session.createQuery("from Users U where U.username = :inputString");
         query.setParameter("inputString", s);
         Users user = (Users)query.uniqueResult();
-        if (user == null) {
-            return false;
-        } else
-            return true;
+        return user != null;
+    }
+    
+    @Override
+    public boolean userEmailCheck(String email) {
+        Session session = sFac.openSession();
+        Query query = session.createQuery("from Users U where U.email = :email");
+        query.setParameter("email", email);
+        Users user = (Users)query.uniqueResult();
+        return user != null;
     }
 
     @Override
@@ -115,6 +130,23 @@ public class UsersDAOImpl implements UsersDAO{
         }
     }
 
-    
+    @Override
+    public void deleteUser(int id) {
+        Session session = sFac.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Users user = (Users)session.get(Users.class, id);
+            session.delete(user);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }  
     
 }

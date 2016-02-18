@@ -56,8 +56,37 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     @Transactional
+    public String registerNewUser(Users u) {
+        if (userNameCheck(u)) {
+            return "User Name already exists.";
+        }
+        
+        if (userEmailCheck(u)) {
+            return "The email address already has an account associated to it";
+        }
+        usersDAO.addUser(u);
+        return null;
+    }
+    
+    @Override
+    @Transactional
     public void updateUserInfo(Users u) {
         usersDAO.updateUser(u);
     }
+
+    @Override
+    public void deleteUser(int id) {
+        usersDAO.deleteUser(id);
+    }
+
+    private boolean userNameCheck(Users u) {
+       return usersDAO.userNameCheck(u.getUsername());
+    }
+    
+    private boolean userEmailCheck(Users u) {
+        return usersDAO.userEmailCheck(u.getEmail());
+    }
+
+    
     
 }

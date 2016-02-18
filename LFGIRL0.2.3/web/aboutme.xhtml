@@ -5,12 +5,13 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <head>
+        <meta charset="utf-8"/>
         <title>Update User</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
         <h:form>
-            #{UsersView.displayUserInfo()}
+            #{UserBean.displayUserInfo()}
             <h:panelGrid id="userInfoDisplayPanel" columns="2" cellpadding="5">
                 <h:outputLabel for="firstname" value="First Name:" class="nav-text"/>
                 <p:inputText id="firstname" value="#{firstName}" label="firstname" />
@@ -22,7 +23,8 @@
                 <p:inputText id="city" value="#{city}" label="city" />
                 <h:outputLabel for="postalcode" value="Postal Code:" class="nav-text"/>
                 <p:inputText id="postalcode" value="#{postalcode}" label="postalcode" />
-                <p:commandButton id="updateInfo" value="Update" action="#{UsersView.updateUserInfo(firstName, lastName, address, city, postalcode)}" update="userInfoDisplayPanel"></p:commandButton>
+                <p:commandButton id="updateInfo" value="Update" action="#{UserBean.updateUserInfo(firstName, lastName, address, city, postalcode)}" update="userInfoDisplayPanel"></p:commandButton>
+                <p:commandButton id="deleteUser" value="Delete This User" action="#{UserBean.deleteUser()}" />
             </h:panelGrid>
         </h:form>
     </body>

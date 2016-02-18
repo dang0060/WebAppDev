@@ -24,8 +24,12 @@ public interface UsersDAO {
     
     public void addUser(Users u);
     
-    public boolean userCheck(String userName);
+    public boolean userNameCheck(String userName);
+    
+    public boolean userEmailCheck(String userName);
     
     public void updateUser(Users u);
+    
+    public void deleteUser(int id);
     
 }

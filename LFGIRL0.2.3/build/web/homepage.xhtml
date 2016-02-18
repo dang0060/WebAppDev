@@ -5,6 +5,7 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
+    <meta charset="utf-8"/>
     <!--h:outputScript library="primefaces" name="jquery/jquery.js" target="head" /-->
     <!--h:outputScript library="primefaces" name="jquery/jquery-plugin.js" target="head" /-->
     <!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js" /-->
@@ -65,9 +66,17 @@
                 PF('loginDialog').jq.effect("shake", {times:5}, 100);
             }
             else {
+                PF('registerDialog').hide();
                 PF('loginDialog').hide();
                 $('#loginLink').fadeOut();
             }
+        }
+    </script>
+    
+    <script type="text/javascript">
+        function register() {
+            PF('loginDialog').hide();
+            PF('registerDialog').show();
         }
     </script>
     
@@ -80,30 +89,69 @@
 		<h:form>
                     <p:growl id="growl" sticky="false" showDetail="true" life="5000"/>
                     <h:outputLink value="#" onclick="PF('loginDialog').show();" title="Login / Sign-up" class="loginLink">
-                        Login / Sign-up
+                        #{msg['login_signUp']} <!--use the msg var defined in face-config to call upon the corresponding text in property file-->
                     </h:outputLink>
                     
-                    <p:dialog header="Login" widgetVar="loginDialog" resizable="false">
+                    <p:dialog header="#{msg['loginPanel']}" widgetVar="loginDialog" resizable="false">
         		<h:panelGrid columns="2" cellpadding="5">
-                            <h:outputLabel for="username" value="Username:" class="nav-text"/>
-                            <p:inputText id="username" value="#{username}" required="true" label="username" />
+                            <h:outputLabel for="loginUsername" value="#{msg['usernameEntry']}" class="nav-text"/>
+                            <p:inputText id="loginUsername" value="#{loginUsername}" required="true" label="loginUsername" />
  
-                            <h:outputLabel for="password" value="Password:" />
-                            <p:password id="password" value="#{password}" required="true" label="password" />
+                            <h:outputLabel for="loginPassword" value="#{msg['passwordEntry']}" />
+                            <p:password id="loginPassword" value="#{loginPassword}" required="true" label="loginPassword" />
                             <f:facet name="footer">
-                                <p:commandButton value="Login" update="growl" actionListener="#{LoginView.userLogin(username, password)}"
+                                <p:commandButton value="#{msg['loginButton']}" update="growl" actionListener="#{LoginBean.userLogin(loginUsername, password)}"
+                                                 oncomplete="handleLoginRequest(xhr, status, args)"/>
+                                
+                                <p:commandButton value="Register" actionListener="#" onclick="register()" />
+                            </f:facet>  
+       			</h:panelGrid>
+                    </p:dialog>
+                </h:form>
+
+                <h:form>
+                    <p:growl id="growl" sticky="false" showDetail="true" life="5000"/>
+                    <p:dialog header="Register" widgetVar="registerDialog" resizable="false">
+        		<h:panelGrid columns="2" cellpadding="5">
+                            <h:outputLabel for="registerUsername" value="Username:" class="nav-text"/>
+                            <p:inputText id="registerUsername" value="#{registerUsername}" required="true" label="registerUsername" />
+ 
+                            <h:outputLabel for="registerPassword" value="Password:" />
+                            <p:password id="registerPassword" value="#{registerPassword}" required="true" label="registerPassword" feedback="true"/>
+                            
+                            <h:outputLabel for="registerConfirm" value="Confirm Password:" />
+                            <p:password id="registerConfirm" value="#{registerConfirmation}" required="true" label="registerConfirmation" />
+                            
+                            <h:outputLabel for="registerEmail" value="Email:" class="nav-text"/>
+                            <p:inputText id="registerEmail" value="#{registerEmail}" required="true" label="registeremail" />
+                            
+                            <f:facet name="footer">
+                                <p:commandButton value="Complete Registration" update="growl" actionListener="#{RegisterBean.registerUser(registerUsername, registerPassword, registerEmail)}"
                                                  oncomplete="handleLoginRequest(xhr, status, args)"/>
                             </f:facet>  
        			</h:panelGrid>
-                    </p:dialog>   		
+                    </p:dialog>  
 		</h:form>
+                
+                <h:form>
+                    <!--default locale, from I18nResource.properties -->
+                   <h:commandButton action="#{language.changeLanguage('')}" 
+                       value="#{msg['englishButton']}"/>
+                   <!--Chinese simplified locale, from I18nResource_cn_si.properties -->
+                   <h:commandButton action="#{language.changeLanguage('cn_si')}" 
+                      value="#{msg['chineseButton']}"/>
+                   <!--French locale, from I18nResource_fr.properties -->
+                   <h:commandButton action="#{language.changeLanguage('fr')}" 
+                      value="#{msg['frenchButton']}"/>
+                </h:form>
+                
 	</nav>
 	<nav class="sidemenu">
             <ul>
              <li>
                    
                         <span class="nav-text">
-                          <H4 class="title fa fa-2x">Dashboard</H4>
+                          <H4 class="title fa fa-2x">#{msg['dashboard']}</H4>
                         </span>
                  
                 </li>
@@ -112,7 +160,7 @@
                     <a href="homepage.xhtml">
                         <img src="images/home.png" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
-                            Home
+                            #{msg['home']}
                         </span>
                     </a>
                   
@@ -121,7 +169,7 @@
                     <a id="groupsearch" href="#">
                         <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
-                            Group Search
+                            #{msg['groupSearch']}
                         </span>
                     </a>
                     
@@ -130,7 +178,7 @@
                     <a id="usersearch" href="#">
                        <img src="images/playersearch.jpg" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
-                            Player Search
+                            #{msg['playerSearch']}
                         </span>
                     </a>    
                 </li>
@@ -138,15 +186,15 @@
                     <a id="mygroups" href="#">
                        <img src="images/grpimg.png" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
-                            My Groups
+                            #{msg['myGroups']}
                         </span>
                     </a>
                 </li>
                 <li class="has-subnav">
                     <a id="aboutme" href="#">
-                       <img src="images/playersearch.png" height="40px" width="40px" style="margin:10px"/>
+                       <img src="images/playersearch.jpg" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
-                            About me
+                            #{msg['AboutMe']}
                         </span>
                     </a>
                 </li>
