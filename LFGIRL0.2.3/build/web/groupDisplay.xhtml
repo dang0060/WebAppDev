@@ -22,7 +22,10 @@ and open the template in the editor.
                     <h:outputText value="#{groupResults.groupId}" />
                 </p:column>
                 <p:column headerText="Group Name">
-                    <h:outputText value="#{groupResults.groupname}" />
+                    <h:outputLink  value="groupProfile.xhtml">
+                        <h:outputText value="#{groupResults.groupname}"/>
+                        <f:param name="gid" value="#{groupResults.groupId}"/>
+                    </h:outputLink>
                 </p:column>
             </p:dataTable>
         </h:form>
