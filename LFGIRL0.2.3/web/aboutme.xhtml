@@ -4,11 +4,11 @@
 	xmlns:f="http://java.sun.com/jsf/core"
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <head>
+    <h:head>
         <title>Update User</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
+    </h:head>
+    <h:body>
         <h:form>
             #{UsersView.displayUserInfo()}
             <h:panelGrid id="userInfoDisplayPanel" columns="2" cellpadding="5">
@@ -26,5 +26,5 @@
                 <p:commandButton id="deleteUser" value="Delete This User" action="#{UsersView.deleteUser()}" />
             </h:panelGrid>
         </h:form>
-    </body>
+    </h:body>
 </html>

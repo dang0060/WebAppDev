@@ -65,4 +65,17 @@ public class UsersServiceImpl implements UsersService {
         usersDAO.deleteUser(id);
     }
     
+    /*for user creation @yawei*/
+    @Override
+    @Transactional
+    public void addUser(Users u){
+      usersDAO.addUser(u);
+    }
+    
+    /*for existing username check @yawei*/
+    @Override
+    @Transactional
+    public boolean userCheck(String userName){
+      return usersDAO.userCheck(userName);
+    }
 }

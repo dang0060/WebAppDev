@@ -25,5 +25,10 @@ public interface UsersService {
     public void updateUserInfo(Users u);
     
     public void deleteUser(int id);
-
+    
+    /*for user creation @yawei*/
+    public void addUser(Users u);
+    
+   /*check existing user, can be used with addUser to prevent duplicate username @yawei*/
+    public boolean userCheck(String userName);
 }

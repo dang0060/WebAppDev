@@ -29,11 +29,19 @@ public class TestDB {
             
             //userDAO.save(x);
             
-            List<Users> list = usersDAO.listUsers();
+           /* List<Users> list = usersDAO.listUsers();
             
             for(Users u : list) {
                 System.out.println("User Name: " + u.getUsername());
-            }
+            }*/
+            usersDAO.deleteUser(usersDAO.findUserByName("AddUser1").getUserId()); //delete AddUser1
+            Users newUser = new Users();
+            newUser.setUsername("AddUser1");
+            newUser.setPassword("password");
+            newUser.setEmail("nope@nope.com");
+            
+            usersDAO.addUser(newUser);
+            usersDAO.deleteUser(usersDAO.findUserByName("AddUser1").getUserId()); //delete AddUser1
         }
     }
     

@@ -19,6 +19,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -120,6 +121,21 @@ public class UsersView implements Serializable {
                 e.printStackTrace();
             }
         }
+    }
+    
+    /*to be used in the account creation page, checks for existing username first @yawei*/
+    public void addUser(String userName, String password, String email){
+        RequestContext context = RequestContext.getCurrentInstance();
+      /*if username exists, it will show a dialog on creation page*/
+      if(usersService.userCheck(userName)){
+         context.execute("PF('signUpFailDlg').show()");
+      } else {
+        user.setUsername(userName);
+        user.setPassword(password);
+        user.setEmail(email);
+        usersService.addUser(user);
+        context.execute("PF('signUpSuccessDlg').show()");
+      }
     }
     
     /*public void userLogin(String username, String password) {

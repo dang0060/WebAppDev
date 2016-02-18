@@ -9,7 +9,7 @@
             <generator class="identity" />
         </id>
         <property name="groupname" type="string">
-            <column name="groupname" length="100" not-null="true" />
+            <column name="groupname" length="100" not-null="true" /> <!--changed from groupname to name -->
         </property>
         <property name="description" type="string">
             <column name="description" length="45" />

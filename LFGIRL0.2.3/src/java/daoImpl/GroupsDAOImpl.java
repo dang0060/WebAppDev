@@ -48,8 +48,8 @@ public class GroupsDAOImpl implements GroupsDAO {
     @Override
     public Groups findGroupByName(String groupName) {
         Session session = sFac.openSession();
-        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses where G.groupname = :group_name");
-        query.setParameter("group_name", groupName);
+        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses where G.groupname = :groupname");
+        query.setParameter("groupname", groupName);  
         Groups group = (Groups)query.uniqueResult();
         session.close();
         return group;
@@ -58,8 +58,8 @@ public class GroupsDAOImpl implements GroupsDAO {
     @Override
     public List<Groups> findGroupsByName(String groupName) {
         Session session = sFac.openSession();
-        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses where G.groupname like concat('%', :group_name , '%')").setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
-        query.setParameter("group_name", groupName);
+        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses where G.groupname like concat('%', :groupname , '%')").setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
+        query.setParameter("groupname", groupName);
         List<Groups> groups = query.list();
         session.close();
         return groups;
@@ -95,6 +95,4 @@ public class GroupsDAOImpl implements GroupsDAO {
         return groups;
     }
 
-    
-    
 }

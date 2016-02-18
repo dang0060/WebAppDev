@@ -83,9 +83,10 @@ public class UsersDAOImpl implements UsersDAO{
         Query query = session.createQuery("from Users U where U.username = :inputString");
         query.setParameter("inputString", s);
         Users user = (Users)query.uniqueResult();
-        if (user == null) {
+        session.close();//should close the session after the query @yawei
+        if (user == null) {        
             return false;
-        } else
+        } else         
             return true;
     }
 
