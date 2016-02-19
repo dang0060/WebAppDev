@@ -61,6 +61,26 @@
         });    
     </script>
     
+    <!-- this is for the account creation page, remove if not accessing from menu @yawei-->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#accountCreation').click(function() {
+                $('#mainpage').load("userCreate.xhtml");
+            });
+        });    
+    </script>
+    <!--end of account creation access-->
+    
+    <!-- this is for the group creation page, remove if not accessing from menu @yawei-->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#groupCreation').click(function() {
+                $('#mainpage').load("groupCreate.xhtml");
+            });
+        });    
+    </script>
+    <!--end of group creation access-->
+    
     <script type="text/javascript">
         function handleLoginRequest(xhr, status, args) {
             if(args.validationFailed || !args.loggedIn) {
