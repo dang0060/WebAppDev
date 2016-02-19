@@ -7,10 +7,12 @@ package daoImpl;
 
 import dao.GroupsDAO;
 import hibernate.dataobjects.Groups;
+import java.util.HashMap;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.transform.*;
 import org.springframework.stereotype.Repository;
 
@@ -80,6 +82,28 @@ public class GroupsDAOImpl implements GroupsDAO {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public void updateGroup(Groups g){
+        Session session=sFac.openSession();
+        Transaction tx=null;
+        try {
+             tx = session.beginTransaction();
+             Groups oldGroup=(Groups)session.get(Groups.class, g.getGroupId());
+             oldGroup.setDescription(g.getDescription());
+             oldGroup.setGroupname(g.getGroupname());
+             session.update(oldGroup);
+             tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+        finally{
+            session.close();
+        }
+    }
+    
     @Override
     public boolean groupCheck() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

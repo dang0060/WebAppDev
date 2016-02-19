@@ -6,6 +6,7 @@
 package services.interfaces;
 
 import hibernate.dataobjects.Groups;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,5 +22,7 @@ public interface GroupsService {
     public List<Groups> findGroupsByName(String name);
     
     public List<Groups> findGroupByDescription(String description);
+    
+    void updateGroupInfo(Groups groups);
     
 }

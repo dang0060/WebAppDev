@@ -28,5 +28,7 @@ public interface GroupsDAO {
     
     public void addGroup(Groups g);
     
+    public void updateGroup(Groups g);
+    
     public boolean groupCheck();
 }

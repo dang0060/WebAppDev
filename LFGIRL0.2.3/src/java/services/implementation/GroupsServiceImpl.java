@@ -7,6 +7,7 @@ package services.implementation;
 
 import dao.GroupsDAO;
 import hibernate.dataobjects.Groups;
+import java.util.HashMap;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -15,6 +16,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import services.interfaces.GroupsService;
 
 /**
@@ -52,4 +54,9 @@ public class GroupsServiceImpl implements GroupsService {
         return groupsDAO.findGroupsByDesc(description);
     }
     
+    @Override
+    @Transactional
+    public void updateGroupInfo(Groups group){
+        groupsDAO.updateGroup(group);
+    }
 }
