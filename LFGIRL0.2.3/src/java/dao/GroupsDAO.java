@@ -28,5 +28,6 @@ public interface GroupsDAO {
     
     public void addGroup(Groups g);
     
-    public boolean groupCheck();
+    /*added String s as parameter @yawei*/
+    public boolean groupCheck(String s);
 }

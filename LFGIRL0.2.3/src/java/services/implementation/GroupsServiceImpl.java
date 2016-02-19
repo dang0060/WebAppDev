@@ -52,4 +52,14 @@ public class GroupsServiceImpl implements GroupsService {
         return groupsDAO.findGroupsByDesc(description);
     }
     
+    /*for group creation  @yawei*/
+    @Override
+     public void addGroup(Groups g){
+       groupsDAO.addGroup(g);
+     }  
+    /*for group name check @yawei*/
+     @Override
+    public boolean groupCheck(String groupName){
+      return groupsDAO.groupCheck(groupName);
+    }
 }

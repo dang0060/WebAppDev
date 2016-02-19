@@ -22,4 +22,10 @@ public interface GroupsService {
     
     public List<Groups> findGroupByDescription(String description);
     
+    /*for group creation  @yawei*/
+    public void addGroup(Groups g);
+    
+    /*for group name check @yawei*/
+    public boolean groupCheck(String s);
+    
 }

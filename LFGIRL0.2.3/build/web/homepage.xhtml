@@ -59,7 +59,7 @@
         });    
     </script>
     
-    <!-- this is for the account creation page, remove if not accessing from menu-->
+    <!-- this is for the account creation page, remove if not accessing from menu @yawei-->
     <script type="text/javascript">
         $(document).ready(function() {
             $('#accountCreation').click(function() {
@@ -67,6 +67,17 @@
             });
         });    
     </script>
+    <!--end of account creation access-->
+    
+    <!-- this is for the group creation page, remove if not accessing from menu @yawei-->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#groupCreation').click(function() {
+                $('#mainpage').load("groupCreate.xhtml");
+            });
+        });    
+    </script>
+    <!--end of group creation access-->
     
     <script type="text/javascript">
         function handleLoginRequest(xhr, status, args) {
@@ -159,15 +170,28 @@
                         </span>
                     </a>
                 </li>
-                <!--here is a link for user creation, later on could use signup/login link to access this page -->
+                <!--here is a link for user creation, later on could use signup/login link to access this page @yawei
+                -->
                 <li class="has-subnav">
                     <a id="accountCreation" href="#">
                        <img src="images/playersearch.jpg" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
                         <span class="nav-text">
-                            Account Creation 
+                            Account Creation  <!--add I18N tag if to be kept-->
                         </span>
                     </a>
                 </li>
+                <!--end of link to user creation  -->
+                
+                <!--here is a link for group creation page @yawei-->             
+                <li class="has-subnav">
+                    <a id="groupCreation" href="#">
+                       <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
+                        <span class="nav-text">
+                            Group Creation  <!--add I18N tag if to be kept-->
+                        </span>
+                    </a>
+                </li>
+                <!--end of link to group creation  -->
                 
             </ul>
         </nav>

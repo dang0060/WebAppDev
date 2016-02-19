@@ -4,12 +4,16 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/E:/Term%205/CST8218-Web%20App%20Programming/Project/LFGIRL0.2/WebAppDev/LFGIRL0.2.3/src/java/views/UsersView.java</file>
+            <file>file:/E:/Term%205/CST8218-Web%20App%20Programming/Project/LFGIRL0.2/WebAppDev/LFGIRL0.2.3/src/java/dao/UsersDAO.java</file>
             <file>file:/E:/Term%205/CST8218-Web%20App%20Programming/Project/LFGIRL0.2/WebAppDev/LFGIRL0.2.3/src/java/views/LoginView.java</file>
-            <file>file:/E:/Term%205/CST8218-Web%20App%20Programming/Project/LFGIRL0.2/WebAppDev/LFGIRL0.2.3/src/java/views/GroupsView.java</file>
+            <file>file:/E:/Term%205/CST8218-Web%20App%20Programming/Project/LFGIRL0.2/WebAppDev/LFGIRL0.2.3/src/java/TestDB.java</file>
             <file>file:/E:/Term%205/CST8218-Web%20App%20Programming/Project/LFGIRL0.2/WebAppDev/LFGIRL0.2.3/web/groupSearch.xhtml</file>
+            <file>file:/E:/Term%205/CST8218-Web%20App%20Programming/Project/LFGIRL0.2/WebAppDev/LFGIRL0.2.3/src/java/services/implementation/UsersServiceImpl.java</file>
             <file>file:/E:/Term%205/CST8218-Web%20App%20Programming/Project/LFGIRL0.2/WebAppDev/LFGIRL0.2.3/web/homepage.xhtml</file>
             <file>file:/E:/Term%205/CST8218-Web%20App%20Programming/Project/LFGIRL0.2/WebAppDev/LFGIRL0.2.3/web/userCreate.xhtml</file>
             <file>file:/E:/Term%205/CST8218-Web%20App%20Programming/Project/LFGIRL0.2/WebAppDev/LFGIRL0.2.3/web/aboutme.xhtml</file>
+            <file>file:/E:/Term%205/CST8218-Web%20App%20Programming/Project/LFGIRL0.2/WebAppDev/LFGIRL0.2.3/src/java/daoImpl/UsersDAOImpl.java</file>
+            <file>file:/E:/Term%205/CST8218-Web%20App%20Programming/Project/LFGIRL0.2/WebAppDev/LFGIRL0.2.3/src/java/services/interfaces/UsersService.java</file>
         </group>
     </open-files>
 </project-private>

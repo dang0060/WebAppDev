@@ -20,6 +20,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import serializer.Autowirer;
@@ -37,6 +38,7 @@ public class GroupsView {
     transient GroupsService groupsService;
     
     private List<Groups> groups = new ArrayList<>();
+    private Groups group = new Groups();
     
     @PostConstruct
     private void init() {
@@ -86,5 +88,19 @@ public class GroupsView {
             System.out.println("No groups to display");
         }
         
+    }
+    
+    /*to be used in the group creation page, checks for existing group first, remove if needed @yawei*/
+    public void addGroup(String groupName, String description){
+        RequestContext context = RequestContext.getCurrentInstance();
+      /*if username exists, it will show a dialog on creation page*/
+      if(groupsService.groupCheck(groupName)){
+         context.execute("PF('groupFailDlg').show()");
+      } else {
+        group.setGroupname(groupName);
+        group.setDescription(description);
+        groupsService.addGroup(group);
+        context.execute("PF('groupSuccessDlg').show()");
+      }
     }
 }
