@@ -27,5 +27,14 @@ public interface UsersService {
     void updateUserInfo(Users u);
     
     void deleteUser(int id);
+    
+    /*for user creation, to be used in UsersView or a bean @yawei*/
+    public void addUser(Users u);
+    
+   /*check existing user, to be used in UsersView or a bean @yawei*/
+    public boolean userNameDupCheck(String userName);
+    
+   /*check existing email, to be used in UsersView or a bean @yawei*/
+    public boolean userEmailDupCheck(String email);
 
 }

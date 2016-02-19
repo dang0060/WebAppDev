@@ -25,4 +25,9 @@ public interface GroupsService {
     
     void updateGroupInfo(Groups groups);
     
+     /*for group creation  @yawei*/
+    public void addGroup(Groups g);
+    
+    /*for group name check @yawei*/
+    public boolean groupCheck(String s);
 }

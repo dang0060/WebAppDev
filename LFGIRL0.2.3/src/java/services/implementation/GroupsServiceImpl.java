@@ -59,4 +59,15 @@ public class GroupsServiceImpl implements GroupsService {
     public void updateGroupInfo(Groups group){
         groupsDAO.updateGroup(group);
     }
+    
+    /*for group creation  @yawei*/
+    @Override
+     public void addGroup(Groups g){
+       groupsDAO.addGroup(g);
+     }  
+    /*for group name check @yawei*/
+     @Override
+    public boolean groupCheck(String groupName){
+      return groupsDAO.groupCheck(groupName);
+    }
 }

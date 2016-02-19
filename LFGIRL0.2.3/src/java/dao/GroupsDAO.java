@@ -30,5 +30,6 @@ public interface GroupsDAO {
     
     public void updateGroup(Groups g);
     
-    public boolean groupCheck();
+    /*added String s as parameter @yawei*/
+    public boolean groupCheck(String s);
 }

@@ -87,6 +87,33 @@ public class UsersServiceImpl implements UsersService {
         return usersDAO.userEmailCheck(u.getEmail());
     }
 
+    /*for user creation, to be used in UsersView or a bean
+    As the user userName and email will be checked inside the View or bean,
+    before addUser is called.  And a User object will not be given attributes before those
+    checks are done, this differs from the registerNewUser way of implementation, which
+    is having the User object been assigned all the attributes, then decide to add it or not.
+    @yawei*/
+    @Override
+    @Transactional
+    public void addUser(Users u){
+       usersDAO.addUser(u);
+    }
     
+   /*check existing user, to be used in UsersView or a bean rather than locally@yawei*/
+    @Override
+    @Transactional
+    public boolean userNameDupCheck(String userName){
+      return usersDAO.userNameCheck(userName);
+    }
+    
+     /*check existing email, to be used in UsersView or a bean rather than locally
+      This differs from the local version, as it takes email as argument,
+      which will be passed inside the UsersView or bean, as no User object will be
+      used unless all the checks are passed @yawei*/
+    @Override
+    @Transactional
+    public boolean userEmailDupCheck(String email) {
+        return usersDAO.userEmailCheck(email);
+    }
     
 }

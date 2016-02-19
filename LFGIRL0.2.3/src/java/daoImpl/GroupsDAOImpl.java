@@ -78,11 +78,6 @@ public class GroupsDAOImpl implements GroupsDAO {
     }
 
     @Override
-    public void addGroup(Groups g) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void updateGroup(Groups g){
         Session session=sFac.openSession();
         Transaction tx=null;
@@ -104,9 +99,28 @@ public class GroupsDAOImpl implements GroupsDAO {
         }
     }
     
+    /*try to define using the same format as addUser, can be removed if better definiation is available @yawei*/
     @Override
-    public boolean groupCheck() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addGroup(Groups g) {
+       Session session = sFac.openSession();
+       Transaction tx=session.beginTransaction();
+       session.persist(g);
+       tx.commit();
+       session.close();
+    }
+
+    /*try to define using the same format as userCheck, can be removed if better definiation is available @yawei*/
+    @Override
+    public boolean groupCheck(String s) {
+        Session session = sFac.openSession();
+        Query query = session.createQuery("from Groups G where G.groupname = :inputString");
+        query.setParameter("inputString", s);
+        Groups group = (Groups)query.uniqueResult();
+        session.close();//should close the session after the query @yawei
+        if (group == null) {        
+            return false;
+        } else         
+            return true;
     }
 
     @Override
