@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition   template="homepage.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <head>
-        <meta charset="utf-8"/>
-        <title>Update User</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
+        <ui:define name="title">Edit My Profile</ui:define>
+    <ui:define name="content">
         <h:form>
-            #{UserBean.displayUserInfo()}
             <h:panelGrid id="userInfoDisplayPanel" columns="2" cellpadding="5">
                 <h:outputLabel for="firstname" value="First Name:" class="nav-text"/>
                 <p:inputText id="firstname" value="#{firstName}" label="firstname" />
@@ -27,5 +23,5 @@
                 <p:commandButton id="deleteUser" value="Delete This User" action="#{UserBean.deleteUser()}" />
             </h:panelGrid>
         </h:form>
-    </body>
-</html>
+    </ui:define>
+</ui:composition>

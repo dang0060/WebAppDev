@@ -5,18 +5,18 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition
+      template="homepage.xhtml"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <meta charset="utf-8"/>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:define name="title">
         <title>Group search</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </h:head>
-    <h:body>
+    </ui:define>
+    <ui:define name="content">
         <h:form>
-            #{UserBean.displayMyGroups()}
             <p:dataTable id="groupList" var="groupResults" value="#{UserBean.groups}">
                 <p:column headerText="ID">
                     <h:outputText value="#{groupResults.groupId}" />
@@ -30,5 +30,5 @@ and open the template in the editor.
             </p:dataTable>
         </h:form>
 
-    </h:body>
-</html>
+    </ui:define>
+</ui:composition>>

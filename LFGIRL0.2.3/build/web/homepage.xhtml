@@ -28,7 +28,7 @@
                  );
                 });
     </script>
-    
+    <!--
     <script type="text/javascript">
         $(document).ready(function() {
             $('#groupsearch').click(function() {
@@ -52,33 +52,34 @@
             });
         });    
     </script>
-    
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function() {
             $('#aboutme').click(function() {
                 $('#mainpage').load("aboutme.xhtml");
             });
         });    
-    </script>
+    </script>-->
     
     <!-- this is for the account creation page, remove if not accessing from menu @yawei-->
-    <script type="text/javascript">
+    <!--<script type="text/javascript">
         $(document).ready(function() {
             $('#accountCreation').click(function() {
                 $('#mainpage').load("userCreate.xhtml");
             });
         });    
     </script>
+    -->
     <!--end of account creation access-->
     
     <!-- this is for the group creation page, remove if not accessing from menu @yawei-->
-    <script type="text/javascript">
+    <!--<script type="text/javascript">
         $(document).ready(function() {
             $('#groupCreation').click(function() {
                 $('#mainpage').load("groupCreate.xhtml");
             });
         });    
     </script>
+    -->
     <!--end of group creation access-->
     
     <script type="text/javascript">
@@ -187,7 +188,7 @@
                   
                 </li>
                 <li class="has-subnav">
-                    <a id="groupsearch" href="#">
+                    <a id="groupsearch" href="groupSearch.xhtml">
                         <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
                             #{msg['groupSearch']}
@@ -196,34 +197,38 @@
                     
                 </li>
                 <li class="has-subnav">
-                    <a id="usersearch" href="#">
+                    <a id="usersearch" href="userSearch.xhtml">
                        <img src="images/playersearch.jpg" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
                             #{msg['playerSearch']}
                         </span>
                     </a>    
                 </li>
+            <ui:fragment rendered="#{LoginBean.userName!=null}">
                 <li class="has-subnav">
-                    <a id="mygroups" href="#">
+                    <a id="mygroups" href="groupDisplay.xhtml">
                        <img src="images/grpimg.png" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
                             #{msg['myGroups']}
                         </span>
                     </a>
                 </li>
+            </ui:fragment>
+            <!-- enclosed in fragment to render only if logged in, also to load page @alayna-->
+            <ui:fragment rendered="#{LoginBean.userName!=null}">
                 <li class="has-subnav">
-                    <a id="aboutme" href="#">
+                    <a id="aboutme" href="userProfile.xhtml">
                        <img src="images/playersearch.jpg" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
                             #{msg['AboutMe']}
                         </span>
                     </a>
                 </li>
-            
+            </ui:fragment>
             <!--here is a link for user creation, later on could use signup/login link to access this page @yawei
                 -->
                 <li class="has-subnav">
-                    <a id="accountCreation" href="#">
+                    <a id="accountCreation" href="userCreate.xhtml">
                        <img src="images/playersearch.jpg" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
                         <span class="nav-text">
                             Account Creation  <!--add I18N tag if to be kept-->
@@ -234,7 +239,7 @@
                 
                 <!--here is a link for group creation page @yawei-->             
                 <li class="has-subnav">
-                    <a id="groupCreation" href="#">
+                    <a id="groupCreation" href="groupCreate.xhtml">
                        <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
                         <span class="nav-text">
                             Group Creation  <!--add I18N tag if to be kept-->
