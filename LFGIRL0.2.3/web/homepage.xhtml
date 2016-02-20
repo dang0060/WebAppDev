@@ -125,7 +125,7 @@
                                 <p:commandButton value="#{msg['loginButton']}" update="growl" actionListener="#{LoginBean.userLogin(loginUsername, password)}"
                                                  oncomplete="handleLoginRequest(xhr, status, args)"/>
                                 
-                                <p:commandButton value="Register" actionListener="#" onclick="register()" />
+                                <p:commandButton value="#{msg.Register}" actionListener="#" onclick="register()" />
                             </f:facet>  
        			</h:panelGrid>
                     </p:dialog>
@@ -133,22 +133,22 @@
 
                 <h:form>
                     <p:growl id="growl" sticky="false" showDetail="true" life="5000"/>
-                    <p:dialog header="Register" widgetVar="registerDialog" resizable="false">
+                    <p:dialog header="#{msg.Register}" widgetVar="registerDialog" resizable="false">
         		<h:panelGrid columns="2" cellpadding="5">
-                            <h:outputLabel for="registerUsername" value="Username:" class="nav-text"/>
+                            <h:outputLabel for="registerUsername" value="#{msg.userName}:" class="nav-text"/>
                             <p:inputText id="registerUsername" value="#{registerUsername}" required="true" label="registerUsername" />
  
-                            <h:outputLabel for="registerPassword" value="Password:" />
+                            <h:outputLabel for="registerPassword" value="#{msg.passwordEntry}:" />
                             <p:password id="registerPassword" value="#{registerPassword}" required="true" label="registerPassword" feedback="true"/>
                             
-                            <h:outputLabel for="registerConfirm" value="Confirm Password:" />
+                            <h:outputLabel for="registerConfirm" value="#{msg.confirmPassword}:" />
                             <p:password id="registerConfirm" value="#{registerConfirmation}" required="true" label="registerConfirmation" />
                             
-                            <h:outputLabel for="registerEmail" value="Email:" class="nav-text"/>
+                            <h:outputLabel for="registerEmail" value="#{msg.email}:" class="nav-text"/>
                             <p:inputText id="registerEmail" value="#{registerEmail}" required="true" label="registeremail" />
                             
                             <f:facet name="footer">
-                                <p:commandButton value="Complete Registration" update="growl" actionListener="#{RegisterBean.registerUser(registerUsername, registerPassword, registerEmail)}"
+                                <p:commandButton value="#{msg.completeReg}" update="growl" actionListener="#{RegisterBean.registerUser(registerUsername, registerPassword, registerEmail)}"
                                                  oncomplete="handleLoginRequest(xhr, status, args)"/>
                             </f:facet>  
        			</h:panelGrid>
@@ -231,7 +231,7 @@
                     <a id="accountCreation" href="userCreate.xhtml">
                        <img src="images/playersearch.jpg" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
                         <span class="nav-text">
-                            Account Creation  <!--add I18N tag if to be kept-->
+                           #{msg.AccountCreation} 
                         </span>
                     </a>
                 </li>
@@ -242,7 +242,7 @@
                     <a id="groupCreation" href="groupCreate.xhtml">
                        <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
                         <span class="nav-text">
-                            Group Creation  <!--add I18N tag if to be kept-->
+                            #{msg.GroupCreation}
                         </span>
                     </a>
                 </li>

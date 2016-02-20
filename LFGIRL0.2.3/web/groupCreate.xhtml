@@ -14,32 +14,32 @@
             <!--3 columns, the last column is for the message after the textbox-->
             <!--textarea auto limits number of input characters based on requirement, in this case is the database limit-->
             <p:spacer height="20"/>
-            <h2>Group Creation</h2> 
+            <h2>#{msg.GroupCreation}</h2> 
             <h:panelGrid id="groupCreationPanel" columns="3" cellpadding="8">                
-                  <h:outputLabel for="groupNameEntry" value="Enter Groupname" />
+                <h:outputLabel for="groupNameEntry" value="#{msg.groupNameEntry}" />
                   <p:inputText id="groupNameEntry" value="#{groupName}" label="groupNameEntry"  required="true"
-                  requiredMessage="Please enter groupname"/>
+                               requiredMessage="#{msg.groupNameErrorMessage}"/>
                   <h:message for="groupNameEntry" style="color: red;"/>                           
                                                  
-                  <h:outputLabel for="descriptionEntry" value="Enter Group Description(Max 45 characters):"/>
+                  <h:outputLabel for="descriptionEntry" value="#{msg.descriptionEntry}"/>
                   <p:inputTextarea id="descriptionEntry" rows="4" cols="23" counter="counterDisplay" 
-                                  value ="#{groupDescription}" required="true" requiredMessage="Description can't be empty"
-                    maxlength="45" counterTemplate="characters remaining:{0}." autoResize="false"/>
+                                   value ="#{groupDescription}" required="true" requiredMessage="#{msg.groupDesErrorMessage}"
+                                  maxlength="45" counterTemplate="#{msg.charactersRemaining}:{0}." autoResize="false"/>
                  <h:message for="descriptionEntry" style="color: red;"/>
                  <h:panelGroup />
                  <h:outputText id="counterDisplay" />        
                  <h:panelGroup />
                                              
-                  <p:commandButton id="updateInfo" value="Create Group" update="groupCreationPanel" 
+                 <p:commandButton id="updateInfo" value="#{msg.groupCreationButton}" update="groupCreationPanel" 
                                    action="#{GroupsView.addGroup(groupName, groupDescription)}"></p:commandButton>   
                              
                  <!--dialogs for success or failure -->
-                <p:dialog header="Can't Create Group" widgetVar="groupFailDlg" minHeight="60">
-                   <h:outputText value="Groupname already exists, please choose a different one."/>
+                 <p:dialog header="#{msg.cannotCreateGroupDlgHeader}" widgetVar="groupFailDlg" minHeight="60">
+                     <h:outputText value="#{msg.cannotCreateGroupDlgValue}."/>
                 </p:dialog>
         
-               <p:dialog header="Group Created" widgetVar="groupSuccessDlg" minHeight="60">
-                  <h:outputText value="Success, you have created your own group!"/>
+                 <p:dialog header="#{msg.groupCreatedDlgHeader}" widgetVar="groupSuccessDlg" minHeight="60">
+                     <h:outputText value="#{msg.groupCreatedDlgValue}"/>
                </p:dialog>               
             </h:panelGrid>           
         </h:form>

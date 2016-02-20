@@ -9,7 +9,7 @@
             org.springframework.web.jsf.el.SpringBeanFacesELResolver
         </el-resolver>
         
-        <!-- for locale configuration-->
+        <!-- for locale configuration @yawei-->
         <resource-bundle>
             <base-name>com.resources.localization.I18nResource</base-name> <!--Resrouce bundle, which contains the propertie files-->
               <var>msg</var> <!--The tag to call upon the text within the property files -->
