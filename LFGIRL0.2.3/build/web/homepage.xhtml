@@ -10,7 +10,7 @@
     <!--h:outputScript library="primefaces" name="jquery/jquery-plugin.js" target="head" /-->
     <!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js" /-->
     <link rel="stylesheet" type="text/css" href="homepage.css"></link>
-    <title><ui:insert name="title">Welcome to LFGIRL</ui:insert></title>
+    <title><ui:insert name="title">Welcome to LFG:IRL</ui:insert></title>
 </h:head>
     <script>
 
@@ -88,10 +88,17 @@
                 PF('loginDialog').jq.effect("shake", {times:5}, 100);
             }
             else {
+                reload();
                 PF('registerDialog').hide();
                 PF('loginDialog').hide();
                 $('#loginLink').fadeOut();
             }
+        }
+    </script>
+    
+    <script type="text/javascript">
+        function reload(){
+            location.reload();
         }
     </script>
     
@@ -110,9 +117,14 @@
                 <ui:debug />
 		<h:form>
                     <p:growl id="growl" sticky="false" showDetail="true" life="5000"/>
-                    <h:outputLink value="#" onclick="PF('loginDialog').show();" title="Login / Sign-up" class="loginLink">
+                    <h:outputLink rendered="#{LoginBean.userName==null}" value="#" onclick="PF('loginDialog').show();" title="Login / Sign-up" class="loginLink">
                         #{msg['login_signUp']} <!--use the msg var defined in face-config to call upon the corresponding text in property file-->
                     </h:outputLink>
+                    <h:panelGrid columns="2" cellpadding="5px" rendered="#{LoginBean.userName!=null}" styleClass="loggedin">
+                        <h:outputLink value="userProfile.xhtml" styleClass="menutext">#{LoginBean.userName}</h:outputLink>
+                        <p:commandLink value="#{msg.signOut}" actionListener="#{LoginBean.signOut()}" oncomplete="reload()" styleClass="menutext"/>
+                    </h:panelGrid>
+                    
                     
                     <p:dialog header="#{msg['loginPanel']}" widgetVar="loginDialog" resizable="false">
         		<h:panelGrid columns="2" cellpadding="5">
@@ -166,7 +178,7 @@
                    <h:commandButton action="#{language.changeLanguage('fr')}" 
                       value="#{msg['frenchButton']}"/>
                 </h:form>
-                
+
 	</nav>
 	<nav class="sidemenu">
             <ul>
@@ -237,7 +249,8 @@
                 </li>
                 <!--end of link to user creation  -->
                 
-                <!--here is a link for group creation page @yawei-->             
+                <!--here is a link for group creation page @yawei-->
+            <ui:fragment rendered="#{LoginBean.userName!=null}">
                 <li class="has-subnav">
                     <a id="groupCreation" href="groupCreate.xhtml">
                        <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
@@ -246,6 +259,7 @@
                         </span>
                     </a>
                 </li>
+            </ui:fragment>
                 <!--end of link to group creation  -->
             </ul>
         </nav>

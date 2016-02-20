@@ -33,6 +33,19 @@ HR{
 	text-decoration: none;
 }
 
+.loggedin{
+    position:absolute;
+	right:10px;
+	top:70px;
+        
+}
+
+.menutext{
+    color:lightgray;
+    font-size: 12px;
+    text-decoration: none;
+}
+
 .sidebar {
     width: 50px;
     height: 100%;

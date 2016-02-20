@@ -9,6 +9,8 @@ import hibernate.dataobjects.Users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -117,4 +119,7 @@ public class LoginBean implements Serializable {
         context.addCallbackParam("loggedIn", loggedIn);
     }
     
+    public void signOut(){
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+    }
 }
