@@ -2,8 +2,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
         xmlns:p="http://primefaces.org/ui"
-        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">   
 <h:head>
     <meta charset="utf-8"/>
     <!--h:outputScript library="primefaces" name="jquery/jquery.js" target="head" /-->
@@ -110,7 +109,7 @@
     </script>
     
 <h:body>
-
+<f:view locale="#{language.locale}"> <!--The view tag ensures the contained JSF components maintain correct I18n locale until user changes the locale @yawei-->
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<DIV class="navbar-border"></DIV>
 		<DIV class="navbar-brand"></DIV>
@@ -167,7 +166,8 @@
                     </p:dialog>  
 		</h:form>
                 
-                <h:form>
+                <!--The language change buttons @yawei-->
+                <h:form> 
                     <!--default locale, from I18nResource.properties -->
                    <h:commandButton action="#{language.changeLanguage('')}" 
                        value="#{msg['englishButton']}"/>
@@ -178,7 +178,7 @@
                    <h:commandButton action="#{language.changeLanguage('fr')}" 
                       value="#{msg['frenchButton']}"/>
                 </h:form>
-
+                <!--end of language change buttons -->
 	</nav>
 	<nav class="sidemenu">
             <ul>
@@ -266,5 +266,6 @@
 		<div class="content" id="mainpage">
 		 <ui:insert name="content">test</ui:insert>
 		</div>
+     </f:view>
 </h:body>
 </html>

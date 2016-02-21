@@ -20,6 +20,5 @@
              <supported-locale>fr</supported-locale>
          </locale-config>>
     </application>
-  
-
+ <!-- end of locale config-->
 </faces-config>

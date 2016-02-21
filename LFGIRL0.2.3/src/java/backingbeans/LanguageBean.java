@@ -1,16 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package backingbeans;
 import java.io.Serializable;
 import java.util.Locale;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-
+/*This is the bean to set the locale, depends on users' choice with language buttons @yawei*/
 @ManagedBean(name="language")
 @ApplicationScoped
 /**
@@ -20,7 +16,12 @@ import javax.faces.context.FacesContext;
 public class LanguageBean implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    private Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    private Locale locale;
+    
+    @PostConstruct
+    public void init() {
+        locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    }
     
     public Locale getLocale(){
       return locale;
@@ -32,6 +33,6 @@ public class LanguageBean implements Serializable {
     
     public void changeLanguage(String language){
       locale = new Locale(language);
-      FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale(language));
+      FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
     }
 }
