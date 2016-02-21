@@ -6,6 +6,8 @@
 package services.interfaces;
 
 import hibernate.dataobjects.Groups;
+import hibernate.dataobjects.UsersGroups;
+import hibernate.dataobjects.UsersGroupsId;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,6 +29,12 @@ public interface GroupsService {
     
      /*for group creation  @yawei*/
     public void addGroup(Groups g);
+    
+    public void deleteGroup(int gid);
+    
+    public void addMember(UsersGroups ug);
+   
+    public void deleteMember(UsersGroupsId ugid);
     
     /*for group name check @yawei*/
     public boolean groupCheck(String s);

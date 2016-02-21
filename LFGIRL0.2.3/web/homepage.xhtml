@@ -119,10 +119,7 @@
                     <h:outputLink rendered="#{LoginBean.userName==null}" value="#" onclick="PF('loginDialog').show();" title="Login / Sign-up" class="loginLink">
                         #{msg['login_signUp']} <!--use the msg var defined in face-config to call upon the corresponding text in property file-->
                     </h:outputLink>
-                    <h:panelGrid columns="2" cellpadding="5px" rendered="#{LoginBean.userName!=null}" styleClass="loggedin">
-                        <h:outputLink value="userProfile.xhtml" styleClass="menutext">#{LoginBean.userName}</h:outputLink>
-                        <p:commandLink value="#{msg.signOut}" actionListener="#{LoginBean.signOut()}" oncomplete="reload()" styleClass="menutext"/>
-                    </h:panelGrid>
+
                     
                     
                     <p:dialog header="#{msg['loginPanel']}" widgetVar="loginDialog" resizable="false">
@@ -177,6 +174,9 @@
                    <!--French locale, from I18nResource_fr.properties -->
                    <h:commandButton action="#{language.changeLanguage('fr')}" 
                       value="#{msg['frenchButton']}"/>
+                   <h:outputLink rendered="#{LoginBean.userName!=null}" value="userProfile.xhtml" styleClass="menutext">
+                       #{LoginBean.userName}</h:outputLink> 
+                   <p:commandLink rendered="#{LoginBean.userName!=null}" value="#{msg.signOut}" action="#{LoginBean.signOut()}" styleClass="menutext"/>
                 </h:form>
                 <!--end of language change buttons -->
 	</nav>

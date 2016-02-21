@@ -6,6 +6,8 @@
 package dao;
 
 import hibernate.dataobjects.Groups;
+import hibernate.dataobjects.UsersGroups;
+import hibernate.dataobjects.UsersGroupsId;
 import java.util.*;
 
 /**
@@ -32,4 +34,10 @@ public interface GroupsDAO {
     
     /*added String s as parameter @yawei*/
     public boolean groupCheck(String s);
+
+    public void addMember(UsersGroups ug);
+
+    public void deleteGroup(int gid);
+
+    public void deleteMember(UsersGroupsId ugid);
 }

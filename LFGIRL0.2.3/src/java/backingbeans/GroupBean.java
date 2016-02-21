@@ -6,9 +6,13 @@
 package backingbeans;
 
 import hibernate.dataobjects.Groups;
+import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
+import hibernate.dataobjects.UsersGroupsId;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,10 +22,13 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import serializer.Autowirer;
+import services.implementation.UsersServiceImpl;
 import services.interfaces.GroupsService;
+import services.interfaces.UsersService;
 
 /**
  *
@@ -33,22 +40,30 @@ public class GroupBean {
     @Autowired
     transient GroupsService groupsService;
     
+    @Autowired
+    transient UsersService usersService;
+    
     private int gid;
     private Groups group;
     private Boolean updateFlag;
     private Boolean isLeader;
     
-    @PostConstruct // this will execute init() after id is injected
-    public void init(){
+   @PostConstruct
+    private void init() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ServletContext sC = (ServletContext) ec.getContext();
         WebApplicationContextUtils.getRequiredWebApplicationContext(sC).getAutowireCapableBeanFactory().autowireBean(this);
-        
-        String tempId=ec.getRequestParameterMap().get("gid");
+                
+        if(!FacesContext.getCurrentInstance().getViewRoot().getViewId().contains("groupCreate"))
+            setGID();
+    }
+    
+    private void setGID(){
+        String tempId=FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("gid");
         gid=Integer.parseInt(tempId);
         group=groupsService.findGroupById(gid);
         updateFlag=false;
-            LoginBean user = (LoginBean)ec.getSessionMap().get("LoginBean");
+            LoginBean user = (LoginBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
         if(user!=null){
             Set<UsersGroups> members = group.getUsersGroupses();
             for(UsersGroups member:members){
@@ -79,16 +94,10 @@ public class GroupBean {
         Autowirer.wireObject(this);
     }
     
-    public void setGid(int gid){
-        this.gid=gid;
-    }
     public int getGid(){
         return gid;
     }
     
-    public void setGroup(Groups group){
-        this.group=group;
-    }
     
     public Groups getGroup(){
         return group;
@@ -100,6 +109,14 @@ public class GroupBean {
     
     public GroupsService getGroupService(){
         return groupsService;
+    }
+    
+    public void setUsersService(UsersService usersService){
+        this.usersService=usersService;
+    }
+    
+    public UsersService getUsersService(){
+        return usersService;
     }
     
     public String getGroupName(){
@@ -132,7 +149,59 @@ public class GroupBean {
         String groupPage=String.format("groupProfile.xhtml?gid=%d", gid);
         FacesContext.getCurrentInstance().getExternalContext().redirect(groupPage);
     }
-    /**
+    
+    /*to be used in the group creation page, checks for existing group first, remove if needed @yawei*/
+    public void addGroup(String groupName, String description){
+        RequestContext context = RequestContext.getCurrentInstance();
+      //if username exists, it will show a dialog on creation page
+      if(groupsService.groupCheck(groupName)){
+         context.execute("PF('groupFailDlg').show()");
+      } else {
+        group=new Groups();
+        group.setGroupname(groupName);
+        group.setDescription(description);
+        groupsService.addGroup(group);
+       
+        List<Groups> groups=groupsService.findGroupsByName(groupName);
+        
+        if (groups.size()>1){//if there is more than one group returned, sort by id
+           //DON'T convert to lambda experession, it will break the bean
+            groups.sort(new Comparator<Groups>() {
+                @Override
+                public int compare(Groups g1, Groups g2) {
+                    return g1.getGroupId().compareTo(g2.getGroupId());
+                }
+            });
+            
+        }
+      
+        //set group to the group with the highest id
+        group=groups.get(groups.size()-1);
+        
+        if(group!=null){
+            context.execute("PF('groupSuccessDlg').show()");
+            gid=group.getGroupId();
+            isLeader=true;
+            LoginBean lv=(LoginBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
+            addMember(lv.getUserId());
+        }    
+        else
+           context.execute("PF('groupFailDlg').show()"); 
+      }
+    }
+
+
+    public void addMember(int userID){
+        Users member=usersService.getUserById(userID);
+        UsersGroupsId ugid=new UsersGroupsId(userID, gid);
+        UsersGroups ug;
+       if(group.getUsersGroupses().isEmpty())
+            ug=new UsersGroups(ugid, group, member, true);
+        else
+            ug=new UsersGroups(ugid, group, member, false); 
+       groupsService.addMember(ug);
+    }
+        /**
      * Creates a new instance of GroupProfileView
      */
     public GroupBean() {

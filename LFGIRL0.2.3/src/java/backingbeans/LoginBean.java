@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.ServletContext;
 import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,5 +122,10 @@ public class LoginBean implements Serializable {
     
     public void signOut(){
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("homepage.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -17,9 +17,11 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import serializer.Autowirer;
@@ -31,7 +33,7 @@ import services.interfaces.UsersService;
  * @author Protostar
  */
 @ManagedBean(name = "UserBean")
-@RequestScoped
+@ViewScoped
 public class UserBean {
 
     @Autowired
@@ -52,7 +54,9 @@ public class UserBean {
         ServletContext sC = (ServletContext) ec.getContext();
         WebApplicationContextUtils.getRequiredWebApplicationContext(sC).getAutowireCapableBeanFactory().autowireBean(this);
         
-        setUID();
+        
+        if(!FacesContext.getCurrentInstance().getViewRoot().getViewId().contains("userCreate"))
+            setUID();
 
     }
 
@@ -117,6 +121,8 @@ public class UserBean {
         return groups;
     }
 
+    public Users getUser(){return user;}
+    
     public boolean getIsUser(){
         return isUser;
     }
@@ -177,5 +183,26 @@ public class UserBean {
             e.printStackTrace();
         }
     }
-
+    
+     /*to be used in the account creation page, checks for existing username first 
+      it wil check for existing username and email first, before assign those attributes
+      to the Users object @yawei*/
+    public void addUser(String userName, String password, String email){
+        RequestContext context = RequestContext.getCurrentInstance();
+      /*if username and email exists, it will show a dialog on creation page*/
+      if(usersService.userNameDupCheck(userName)){
+         context.execute("PF('signUpFailDlg').show()");
+      }
+      else if(usersService.userEmailDupCheck(email)){
+        context.execute("PF('emailFailDlg').show()");
+      }       
+      else {
+        user.setUsername(userName);
+        user.setPassword(password);
+        user.setEmail(email);
+        usersService.addUser(user);
+        context.execute("PF('signUpSuccessDlg').show()");
+      }
+    }
+    
 }

@@ -1,5 +1,4 @@
 To do for 0.2:
--user and group creation need to use beans, GroupsView.addGroup does not create user-group relationship 
--get login dialog to refresh page when complete to render logged in options (or remove dialog and have login page only)
+-register bean may be redundant
 -add member list to group profile
 -add list of groups to user profile

@@ -7,12 +7,9 @@ package services.implementation;
 
 import dao.GroupsDAO;
 import hibernate.dataobjects.Groups;
-import java.util.HashMap;
+import hibernate.dataobjects.UsersGroups;
+import hibernate.dataobjects.UsersGroupsId;
 import java.util.List;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -69,5 +66,20 @@ public class GroupsServiceImpl implements GroupsService {
      @Override
     public boolean groupCheck(String groupName){
       return groupsDAO.groupCheck(groupName);
+    }
+
+    @Override
+    public void deleteGroup(int gid) {
+        groupsDAO.deleteGroup(gid);
+    }
+
+    @Override
+    public void addMember(UsersGroups ug) {
+        groupsDAO.addMember(ug);
+    }
+
+    @Override
+    public void deleteMember(UsersGroupsId ugid) {
+        groupsDAO.deleteMember(ugid); 
     }
 }

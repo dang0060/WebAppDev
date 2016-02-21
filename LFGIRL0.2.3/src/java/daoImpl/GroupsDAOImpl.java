@@ -7,7 +7,8 @@ package daoImpl;
 
 import dao.GroupsDAO;
 import hibernate.dataobjects.Groups;
-import java.util.HashMap;
+import hibernate.dataobjects.UsersGroups;
+import hibernate.dataobjects.UsersGroupsId;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -131,6 +132,25 @@ public class GroupsDAOImpl implements GroupsDAO {
         List<Groups> groups = query.list();
         session.close();
         return groups;
+    }
+
+    @Override
+    public void addMember(UsersGroups ug) {
+        Session session = sFac.openSession();
+        Transaction tx = session.beginTransaction();
+        session.persist(ug);
+        tx.commit();
+        session.close();
+    }
+
+    @Override
+    public void deleteGroup(int gid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void deleteMember(UsersGroupsId ugid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     
