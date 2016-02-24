@@ -102,7 +102,7 @@ public class LoginBean implements Serializable {
         else{
             user = usersService.getUserByName(username);
 
-            if(user != null){
+            if(user != null && (password.equals(user.getPassword()))){
                 //HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                 //session.setAttribute("name", user.getUsername());
                 //session.setAttribute("userId", user.getUserId());

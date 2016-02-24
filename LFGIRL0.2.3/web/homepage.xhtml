@@ -88,9 +88,19 @@
             }
             else {
                 reload();
-                PF('registerDialog').hide();
                 PF('loginDialog').hide();
                 $('#loginLink').fadeOut();
+            }
+        }
+    </script>
+    
+    <script type="text/javascript">
+        function handleRegisterRequest(xhr, status, args) {
+            if(args.validationFailed || !args.loggedIn) {
+                PF('registerDialog').jq.effect("shake", {times:5}, 100);
+            }
+            else {
+                PF('registerDialog').hide();
             }
         }
     </script>
@@ -130,7 +140,7 @@
                             <h:outputLabel for="loginPassword" value="#{msg['passwordEntry']}" />
                             <p:password id="loginPassword" value="#{loginPassword}" required="true" label="loginPassword" />
                             <f:facet name="footer">
-                                <p:commandButton value="#{msg['loginButton']}" update="growl" actionListener="#{LoginBean.userLogin(loginUsername, password)}"
+                                <p:commandButton value="#{msg['loginButton']}" update="growl" actionListener="#{LoginBean.userLogin(loginUsername, loginPassword)}"
                                                  oncomplete="handleLoginRequest(xhr, status, args)"/>
                                 
                                 <p:commandButton value="#{msg.Register}" actionListener="#" onclick="register()" />
@@ -147,13 +157,20 @@
                             <p:inputText id="registerUsername" value="#{registerUsername}" required="true" label="registerUsername" />
  
                             <h:outputLabel for="registerPassword" value="#{msg.passwordEntry}:" />
-                            <p:password id="registerPassword" value="#{registerPassword}" required="true" label="registerPassword" feedback="true"/>
+                            <p:password id="registerPassword" value="#{registerPassword}" required="true" label="registerPassword" feedback="true"
+                                        requiredMessage="#{msg.passwordEntryErrorMessage}"  match="registerConfirm" />
                             
                             <h:outputLabel for="registerConfirm" value="#{msg.confirmPassword}:" />
-                            <p:password id="registerConfirm" value="#{registerConfirmation}" required="true" label="registerConfirmation" />
+                            <p:password id="registerConfirm" value="#{registerConfirmation}" required="true" label="registerConfirmation"
+                                        requiredMessage="#{msg.confirmPasswordErrorMessage}"/>
                             
                             <h:outputLabel for="registerEmail" value="#{msg.email}:" class="nav-text"/>
-                            <p:inputText id="registerEmail" value="#{registerEmail}" required="true" label="registeremail" />
+                            <p:inputText id="registerEmail" value="#{registerEmail}" required="true" label="registeremail"
+                                        requiredMessage="#{msg.emailEntryErrorMessage}" 
+                                        validatorMessage="#{msg.emailFormatErrorMessage}" > 
+                                <f:validateRegex pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"/>
+                            </p:inputText>
+                                        
                             
                             <f:facet name="footer">
                                 <p:commandButton value="#{msg.completeReg}" update="growl" actionListener="#{RegisterBean.registerUser(registerUsername, registerPassword, registerEmail)}"
@@ -239,14 +256,17 @@
             </ui:fragment>
             <!--here is a link for user creation, later on could use signup/login link to access this page @yawei
                 -->
+                <ui:fragment rendered="#{LoginBean.userName==null}">
                 <li class="has-subnav">
                     <a id="accountCreation" href="userCreate.xhtml">
-                       <img src="images/playersearch.jpg" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
-                        <span class="nav-text">
-                           #{msg.AccountCreation} 
-                        </span>
-                    </a>
-                </li>
+                        <img src="images/playersearch.jpg" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
+                            <span class="nav-text">
+                                #{msg.AccountCreation} 
+                            </span>
+                        </a>
+                    </li>
+                </ui:fragment>
+                
                 <!--end of link to user creation  -->
                 
                 <!--here is a link for group creation page @yawei-->

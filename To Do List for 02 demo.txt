@@ -1,4 +1,0 @@
-To do for 0.2:
--register bean may be redundant
--add member list to group profile
--add list of groups to user profile

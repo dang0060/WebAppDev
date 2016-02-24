@@ -46,7 +46,7 @@
                   <h:message for="emailEntry" style="color: red;"/>
                              
                   <p:commandButton id="updateInfo" value="#{msg.accountCreateButton}" update="userCreationPanel" 
-                             action="#{UsersView.addUser(userName, password, email)}"></p:commandButton>   
+                                   action="#{RegisterBean.registerUser(userName, password, email)}"></p:commandButton>   
                              
                  <!--dialogs for success or failure -->
                  <p:dialog header="#{msg.accountCreationErrorDlgHeader}" widgetVar="signUpFailDlg" minHeight="60">
