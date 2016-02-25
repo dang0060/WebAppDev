@@ -254,8 +254,8 @@
                     </a>
                 </li>
             </ui:fragment>
-            <!--here is a link for user creation, later on could use signup/login link to access this page @yawei
-                -->
+            <!--here is a link for user creation, later on could use signup/login link to access this page @yawei -->
+             <!--only display the creation page link when user is not logged in-->  
                 <ui:fragment rendered="#{LoginBean.userName==null}">
                 <li class="has-subnav">
                     <a id="accountCreation" href="userCreate.xhtml">
@@ -284,7 +284,9 @@
             </ul>
         </nav>
 		<div class="content" id="mainpage">
-		 <ui:insert name="content">test</ui:insert>
+                    <ui:insert name="content" >
+                        <h:outputText value = "#{LoginBean.homePageMessage()}" escape ="false"/>
+                    </ui:insert>
 		</div>
      </f:view>
 </h:body>

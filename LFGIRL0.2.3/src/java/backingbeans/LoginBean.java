@@ -9,6 +9,7 @@ import hibernate.dataobjects.Users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -127,5 +128,22 @@ public class LoginBean implements Serializable {
         } catch (IOException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    /*Default home page message, remove or change if needed @yawei*/
+    public String homePageMessage(){
+      /*get property file keys for I18n*/
+      FacesContext context = FacesContext.getCurrentInstance();
+      ResourceBundle msg = context.getApplication().evaluateExpressionGet(context,"#{msg}", ResourceBundle.class);
+      /*use msg.getString("keyname in property file") to add I18n string later*/
+      if(userName == null){
+        return "<html><h1>Welcome to LFGIRL, this is the place to meet up</h1></br>"  
+                + "<h3>If you are a memeber, you can sign in to edit your personal profile, create groups and manage group profile</h3></br>"
+                + "<h3>If you are new, feel free to search for groups and players. If you want to create your own group, just take a minute to signup and start having fun!"
+                +"</h3></html>";
+       }
+      else{
+        return "<html><h1>Welcome back " +userName + ", have fun</h1></html>";  
+              }
     }
 }

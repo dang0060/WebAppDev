@@ -185,8 +185,16 @@ background-color:#E71515;
 	opacity: 0.3;
 	
 }
-
+/*changed the global growl position @yawei*/
 .ui-growl{
-	position:
-	
+	position: absolute;
+        top: 20%;
+        right:10%;
+}
+
+/*changes the position of individual growls, this one is for userCreation page @yawei*/
+div[id="userCreateForm:growlUser_container"] {
+    position:absolute;
+    top:20%;
+    left:45%;
 }

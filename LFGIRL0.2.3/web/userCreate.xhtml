@@ -13,7 +13,9 @@
     </ui:define>
     <ui:define name="content">
        <f:view locale="#{language.locale}"> <!--The view tag ensures the contained JSF components maintain correct I18n locale until user changes the locale @yawei-->
-        <h:form>
+        <h:form id="userCreateForm">
+            <!--added growl to display creation success/failure message @yawei-->
+            <p:growl id="growlUser" sticky="false" showDetail="true" life="5000"/>
             <!--replace the plain text labels with I18n property tags later-->
             <!--3 columns, the last column is for the message after the textbox-->
             <!--Email regrex obtained from http://regexlib.com/Search.aspx?k=email&AspxAutoDetectCookieSupport=1 -->
@@ -45,21 +47,8 @@
                   </p:inputText>
                   <h:message for="emailEntry" style="color: red;"/>
                              
-                  <p:commandButton id="updateInfo" value="#{msg.accountCreateButton}" update="userCreationPanel" 
-                                   action="#{RegisterBean.registerUser(userName, password, email)}"></p:commandButton>   
-                             
-                 <!--dialogs for success or failure -->
-                 <p:dialog header="#{msg.accountCreationErrorDlgHeader}" widgetVar="signUpFailDlg" minHeight="60">
-                     <h:outputText value="#{msg.accountExistDlgValue}"/>
-                </p:dialog>
-                 
-                <p:dialog header="#{msg.accountCreationErrorDlgHeader}" widgetVar="emailFailDlg" minHeight="60">
-                    <h:outputText value="#{msg.emailExistDlgValue}"/>
-                </p:dialog>
-        
-                 <p:dialog header="#{msg.accountCreateSuccessDlgHeader}" widgetVar="signUpSuccessDlg" minHeight="60">
-                   <h:outputText value="#{msg.accountCreateWelcomeDlgValue}"/>
-               </p:dialog>               
+                  <p:commandButton id="updateInfo" value="#{msg.accountCreateButton}" update="growlUser,userCreationPanel " 
+                                   action="#{RegisterBean.registerUser(userName, password, email)}"></p:commandButton>                             
             </h:panelGrid>           
         </h:form> 
         </f:view>
