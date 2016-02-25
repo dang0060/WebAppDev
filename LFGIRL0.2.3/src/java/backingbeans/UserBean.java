@@ -42,11 +42,11 @@ public class UserBean {
     @Autowired
     transient UsersService usersService;
 
-    private UserInfo userInfo = new UserInfo();
     private List<Groups> groups = new ArrayList<>();
     private Users user;
     private int uid;
     private boolean isUser;
+    private boolean updateFlag;
 
     @PostConstruct
     private void init() {
@@ -60,10 +60,13 @@ public class UserBean {
 
     }
 
+    
+    
     private void setUID(){
         LoginBean lv = (LoginBean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
         String tempId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("uid");
         isUser=false;
+        updateFlag=false;
         
     
         //pages that can be accessed by everyone
@@ -140,18 +143,73 @@ public class UserBean {
      * @return the userInfo
      */
     public UserInfo getUserInfo() {
-        return userInfo;
+        return user.getUserInfo();
     }
 
     /**
      * @param userInfo the userInfo to set
      */
     public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+        user.setUserInfo(userInfo);
     }
 
-    public void updateUserInfo(String firstname, String lastname, String address, String city, String postalcode) {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
+    public String getFirstName(){
+        return user.getUserInfo().getFirstName();
+    }
+    
+    public void setFirstName(String firstName){
+        if(!firstName.equals(user.getUserInfo().getFirstName())){
+        user.getUserInfo().setFirstName(firstName);
+        updateFlag=true;
+        }
+    }
+    
+    public String getLastName(){
+        return user.getUserInfo().getLastName();
+    }
+    
+    public void setLastName(String lastName){
+        if(!lastName.equals(user.getUserInfo().getLastName())){
+            user.getUserInfo().setLastName(lastName);
+            updateFlag=true;
+        }
+    }
+    
+    public String getAddress(){
+        return user.getUserInfo().getAddress();
+    }
+    
+    public void setAddress(String address){
+        if(!address.equals(user.getUserInfo().getAddress())){
+            user.getUserInfo().setAddress(address);
+            updateFlag=true;
+        }
+    }
+    
+    public String getCity(){
+        return user.getUserInfo().getCity();
+    }
+    
+    public void setCity(String city){
+        if(!city.equals(user.getUserInfo().getCity())){
+            user.getUserInfo().setCity(city);
+            updateFlag=true;
+        }
+    }
+    
+    public String getPostalCode(){
+        return user.getUserInfo().getPostalCode();
+    }
+    
+    public void setPostalCode(String postalCode){
+        if(!postalCode.equals(user.getUserInfo().getPostalCode())){
+            user.getUserInfo().setPostalCode(postalCode);
+            updateFlag=true;
+        } 
+    }
+    
+    public void updateUserInfo() {
+        /*FacesContext facesContext = FacesContext.getCurrentInstance();
         LoginBean lv = (LoginBean) facesContext.getExternalContext().getSessionMap().get("LoginBean");
         if (lv != null && lv.getUserName() != null) {
             Users updatedUser = new Users();
@@ -165,6 +223,9 @@ public class UserBean {
             updatedUser.setUserId(lv.getUserId());
             usersService.updateUserInfo(updatedUser);
             setUserInfo(usersService.getUserById(uid).getUserInfo());
+        }*/
+        if(updateFlag=true){
+            usersService.updateUserInfo(user);
         }
         String profilePage=String.format("userProfile.xhtml?uid=%d", uid);
         try {

@@ -10,16 +10,16 @@
         <h:form>
             <h:panelGrid id="userInfoDisplayPanel" columns="2" cellpadding="5">
                 <h:outputLabel for="firstname" value="First Name:" class="nav-text"/>
-                <p:inputText id="firstname" value="#{firstName}" label="firstname" />
+                <p:inputText id="firstname" value="#{UserBean.firstName}" label="firstname" />
                 <h:outputLabel for="lastname" value="Last Name:" class="nav-text"/>
-                <p:inputText id="lastname" value="#{lastName}" label="lastname" />
+                <p:inputText id="lastname" value="#{UserBean.lastName}" label="lastname" />
                 <h:outputLabel for="address" value="Address:" class="nav-text"/>
-                <p:inputText id="address" value="#{address}" label="address" />
+                <p:inputText id="address" value="#{UserBean.address}" label="address" />
                 <h:outputLabel for="city" value="City:" class="nav-text"/>
-                <p:inputText id="city" value="#{city}" label="city" />
+                <p:inputText id="city" value="#{UserBean.city}" label="city" />
                 <h:outputLabel for="postalcode" value="Postal Code:" class="nav-text"/>
-                <p:inputText id="postalcode" value="#{postalcode}" label="postalcode" />
-                <p:commandButton id="updateInfo" value="Update" action="#{UserBean.updateUserInfo(firstName, lastName, address, city, postalcode)}" update="userInfoDisplayPanel"></p:commandButton>
+                <p:inputText id="postalcode" value="#{UserBean.postalCode}" label="postalcode" />
+                <p:commandButton id="updateInfo" value="Update" action="#{UserBean.updateUserInfo()}" update="userInfoDisplayPanel"></p:commandButton>
                 <p:commandButton id="deleteUser" value="Delete This User" action="#{UserBean.deleteUser()}" />
             </h:panelGrid>
         </h:form>
