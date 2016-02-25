@@ -126,12 +126,10 @@
                 <ui:debug />
 		<h:form>
                     <p:growl id="growl" sticky="false" showDetail="true" life="5000"/>
-                    <h:outputLink rendered="#{LoginBean.userName==null}" value="#" onclick="PF('loginDialog').show();" title="Login / Sign-up" class="loginLink">
-                        #{msg['login_signUp']} <!--use the msg var defined in face-config to call upon the corresponding text in property file-->
-                    </h:outputLink>
-
-                    
-                    
+                     <h:outputLink rendered="#{LoginBean.userName==null}" value="#" onclick="PF('loginDialog').show();" title="Login / Sign-up" class="loginLink">
+                       #{msg['login_signUp']} <!--use the msg var defined in face-config to call upon the corresponding text in property file-->
+                     </h:outputLink>
+                                      
                     <p:dialog header="#{msg['loginPanel']}" widgetVar="loginDialog" resizable="false">
         		<h:panelGrid columns="2" cellpadding="5">
                             <h:outputLabel for="loginUsername" value="#{msg['usernameEntry']}" class="nav-text"/>
@@ -191,9 +189,12 @@
                    <!--French locale, from I18nResource_fr.properties -->
                    <h:commandButton action="#{language.changeLanguage('fr')}" 
                       value="#{msg['frenchButton']}"/>
+                   <br/>
+                   <!--changed the position and size of the user name @yawei-->
+                  
                    <h:outputLink rendered="#{LoginBean.userName!=null}" value="userProfile.xhtml" styleClass="menutext">
-                       #{LoginBean.userName}</h:outputLink> 
-                   <p:commandLink rendered="#{LoginBean.userName!=null}" value="#{msg.signOut}" action="#{LoginBean.signOut()}" styleClass="menutext"/>
+                      <h3> #{LoginBean.userName}</h3></h:outputLink> 
+                   <p:commandLink rendered= "#{LoginBean.userName!=null}" value="#{msg.signOut}" action="#{LoginBean.signOut()}" styleClass="menutext"/>
                 </h:form>
                 <!--end of language change buttons -->
 	</nav>
