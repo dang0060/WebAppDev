@@ -29,9 +29,10 @@
                  <h:panelGroup />
                  <h:outputText id="counterDisplay" />        
                  <h:panelGroup />
-                                             
+                 
+                 <!--groupDescription needed to pass the input, unless the value in descriptionEntry and property files were changed to other name @yawei-->
                  <p:commandButton id="updateInfo" value="#{msg.groupCreationButton}" update="groupCreationPanel" 
-                                  action="#{GroupBean.addGroup(groupName, description)}"></p:commandButton>   
+                                  action="#{GroupBean.addGroup(groupName, groupDescription)}"></p:commandButton>   
                              
                  <!--dialogs for success or failure -->
                  <p:dialog header="#{msg.cannotCreateGroupDlgHeader}" widgetVar="groupFailDlg" minHeight="60">
