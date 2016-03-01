@@ -31,7 +31,7 @@
                  <h:panelGroup />
                                              
                  <p:commandButton id="updateInfo" value="#{msg.groupCreationButton}" update="groupCreationPanel" 
-                                   action="#{GroupBean.addGroup(groupName, groupDescription)}"></p:commandButton>   
+                                   action="#{GroupsView.addGroup(groupName, groupDescription)}"></p:commandButton>   
                              
                  <!--dialogs for success or failure -->
                  <p:dialog header="#{msg.cannotCreateGroupDlgHeader}" widgetVar="groupFailDlg" minHeight="60">
