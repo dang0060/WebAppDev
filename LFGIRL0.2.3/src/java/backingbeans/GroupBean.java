@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
@@ -26,7 +27,6 @@ import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import serializer.Autowirer;
-import services.implementation.UsersServiceImpl;
 import services.interfaces.GroupsService;
 import services.interfaces.UsersService;
 
@@ -188,6 +188,13 @@ public class GroupBean {
         else
            context.execute("PF('groupFailDlg').show()"); 
       }
+    }
+    
+    public void deleteGroup() throws IOException {
+        int gid = group.getGroupId();
+        System.out.println(gid);
+        groupsService.deleteGroup(gid);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("homepage.xhtml");
     }
 
 

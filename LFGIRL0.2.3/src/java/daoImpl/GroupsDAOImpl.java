@@ -145,7 +145,22 @@ public class GroupsDAOImpl implements GroupsDAO {
 
     @Override
     public void deleteGroup(int gid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Session session=sFac.openSession();
+        Transaction tx=null;
+        try {
+             tx = session.beginTransaction();
+             Groups group = (Groups)session.get(Groups.class, gid);
+             session.delete(group);
+             tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+        finally{
+            session.close();
+        }
     }
 
     @Override

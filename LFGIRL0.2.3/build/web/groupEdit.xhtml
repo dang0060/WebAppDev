@@ -22,6 +22,13 @@
                 </p:inputTextarea>
                 
                 <p:commandButton value="#{msg.SaveChanges}" actionListener="#{GroupBean.editGroup()}"/>
+                <p:commandButton value="Delete Group" onclick="PF('confirmation').show()" />
+                <p:commandButton value="Delete Group No Dialog" actionListener="#{GroupBean.deleteGroup()}" />
+                
+                <p:dialog header="Delete Group" hideEffect="fade" widgetVar="confirmation">
+                    <p:commandButton value="Yes" type="button" onclick="PF('confirmation').hide()" action="#{GroupBean.deleteGroup()}" />
+                    <p:commandButton value="No" type="button" onclick="PF('confirmation').hide()"/>
+                </p:dialog>
             </h:panelGrid>
         </h:form>
     </ui:define>
