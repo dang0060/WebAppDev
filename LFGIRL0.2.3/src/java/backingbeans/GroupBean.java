@@ -47,6 +47,7 @@ public class GroupBean {
     private Groups group;
     private Boolean updateFlag;
     private Boolean isLeader;
+    //private Boolean isMember = false; //try to implement join group funtion @yawei
     
    @PostConstruct
     private void init() {
@@ -69,6 +70,7 @@ public class GroupBean {
             for(UsersGroups member:members){
                 if(member.getUsers().getUserId()==user.getUserId()){
                     isLeader=member.getIsLeader();
+                   // isMember = true; //try to implement join group funtion @yawei
                 }
             }
         }
@@ -182,6 +184,7 @@ public class GroupBean {
             context.execute("PF('groupSuccessDlg').show()");
             gid=group.getGroupId();
             isLeader=true;
+            //isMember = true; //try to implement join group funtion @yawei
             LoginBean lv=(LoginBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
             addMember(lv.getUserId());
         }    

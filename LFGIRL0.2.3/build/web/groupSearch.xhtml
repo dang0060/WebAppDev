@@ -18,7 +18,8 @@ and open the template in the editor.
     <ui:define name="content">
         <h:form>
             <p:inputText id="groupname" value="#{input}" />
-            <p:commandButton id="submitGroupname" value="Search" action="#{SearchBean.searchForGroup(input)}" update="groupSearchResults"></p:commandButton>
+            <p:commandButton id="submitGroupname" value="Search" action="#{SearchBean.searchForGroup(input)}" 
+                   update="groupSearchResults" icon="ui-icon-search"></p:commandButton>
             <p:dataTable id="groupSearchResults" var="groupResults" value="#{SearchBean.groups}">
                 <p:column headerText="ID">
                     <h:outputText value="#{groupResults.groupId}" />

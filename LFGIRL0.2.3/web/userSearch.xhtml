@@ -16,7 +16,8 @@ and open the template in the editor.
     <ui:define name="content">
         <h:form>
             <p:inputText id="username" value="#{input}" />
-            <p:commandButton id="submitUsername" value="Search" action="#{SearchBean.userNameSearch(input)}" update="userSearchResults"></p:commandButton>
+            <p:commandButton id="submitUsername" value="Search" action="#{SearchBean.userNameSearch(input)}" 
+                   update="userSearchResults" icon="ui-icon-search"></p:commandButton>
             <p:dataTable id="userSearchResults" var="userResults" value="#{SearchBean.users}">
                 <p:column headerText="ID">
                     <h:outputText value="#{userResults.userId}" />

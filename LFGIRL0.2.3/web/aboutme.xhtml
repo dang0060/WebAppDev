@@ -20,7 +20,16 @@
                 <h:outputLabel for="postalcode" value="Postal Code:" class="nav-text"/>
                 <p:inputText id="postalcode" value="#{UserBean.postalCode}" label="postalcode" />
                 <p:commandButton id="updateInfo" value="Update" action="#{UserBean.updateUserInfo()}" update="userInfoDisplayPanel"></p:commandButton>
-                <p:commandButton id="deleteUser" value="Delete This User" action="#{UserBean.deleteUser()}" />
+                
+                <!--Cofirmation for user deletion @yawei -->
+                <p:commandButton value="Delete User" actionListener="#{UserBean.deleteUser()}" update="userInfoDisplayPanel">
+                    <p:confirm header="Wait a second" message="You really want to do this? You will be missed" icon="ui-icon-alert" />
+                </p:commandButton>
+ 
+              <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+               <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+             </p:confirmDialog>
             </h:panelGrid>
         </h:form>
     </ui:define>
