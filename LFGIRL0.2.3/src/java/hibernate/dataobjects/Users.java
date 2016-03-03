@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated Feb 14, 2016 6:00:22 AM by Hibernate Tools 4.3.1
+// Generated Mar 2, 2016 1:14:51 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -32,6 +32,9 @@ public class Users  implements java.io.Serializable {
      private String email;
      private Set usersRoleses = new HashSet(0);
      private Set usersGroupses = new HashSet(0);
+     private Set conversationsForUserStartId = new HashSet(0);
+     private Set conversationsForUserRecieveId = new HashSet(0);
+     private Set conversationMessages = new HashSet(0);
      private UserInfo userInfo;
 
     public Users() {
@@ -42,12 +45,21 @@ public class Users  implements java.io.Serializable {
         this.username = username;
         this.password = password;
     }
-    public Users(String username, String password, String email, Set usersRoleses, Set usersGroupses, UserInfo userInfo) {
+    public Users(String username, String password, String email) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+    
+    public Users(String username, String password, String email, Set usersRoleses, Set usersGroupses, Set conversationsForUserStartId, Set conversationsForUserRecieveId, Set conversationMessages, UserInfo userInfo) {
        this.username = username;
        this.password = password;
        this.email = email;
        this.usersRoleses = usersRoleses;
        this.usersGroupses = usersGroupses;
+       this.conversationsForUserStartId = conversationsForUserStartId;
+       this.conversationsForUserRecieveId = conversationsForUserRecieveId;
+       this.conversationMessages = conversationMessages;
        this.userInfo = userInfo;
     }
    
@@ -109,6 +121,33 @@ public class Users  implements java.io.Serializable {
     
     public void setUsersGroupses(Set usersGroupses) {
         this.usersGroupses = usersGroupses;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="usersByUserStartId")
+    public Set getConversationsForUserStartId() {
+        return this.conversationsForUserStartId;
+    }
+    
+    public void setConversationsForUserStartId(Set conversationsForUserStartId) {
+        this.conversationsForUserStartId = conversationsForUserStartId;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="usersByUserRecieveId")
+    public Set getConversationsForUserRecieveId() {
+        return this.conversationsForUserRecieveId;
+    }
+    
+    public void setConversationsForUserRecieveId(Set conversationsForUserRecieveId) {
+        this.conversationsForUserRecieveId = conversationsForUserRecieveId;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="users")
+    public Set getConversationMessages() {
+        return this.conversationMessages;
+    }
+    
+    public void setConversationMessages(Set conversationMessages) {
+        this.conversationMessages = conversationMessages;
     }
 
 @OneToOne(fetch=FetchType.LAZY, mappedBy="users")

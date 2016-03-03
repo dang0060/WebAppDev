@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 2, 2016 1:14:51 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="hibernate.dataobjects.Conversation" table="conversation" catalog="mydb" optimistic-lock="version">
+        <id name="conversationId" type="java.lang.Integer">
+            <column name="conversation_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="usersByUserStartId" class="hibernate.dataobjects.Users" fetch="select">
+            <column name="user_start_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usersByUserRecieveId" class="hibernate.dataobjects.Users" fetch="select">
+            <column name="user_recieve_id" not-null="true" />
+        </many-to-one>
+        <property name="status" type="string">
+            <column name="status" length="45" />
+        </property>
+        <set name="conversationMessages" table="conversation_message" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="conversation_id_fk" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.dataobjects.ConversationMessage" />
+        </set>
+    </class>
+</hibernate-mapping>

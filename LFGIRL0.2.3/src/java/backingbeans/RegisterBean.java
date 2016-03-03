@@ -49,7 +49,7 @@ public class RegisterBean {
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage message;
         boolean success;
-        Users newUser = new Users(userName, password, email, null, null, null);
+        Users newUser = new Users(userName, password, email);
         String result = usersService.registerNewUser(newUser);
         if (result != null) {
             message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Registration Error", result);

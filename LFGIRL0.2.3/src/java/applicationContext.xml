@@ -28,7 +28,7 @@
     p:password="${jdbc.password}" /-->
 
     <mvc:annotation-driven />
-    <context:component-scan base-package="services.implementation" />
+    <context:component-scan base-package="services" />
     
     <!--resources mapping="/resources/**" location="/resources/" /-->
     
@@ -56,6 +56,14 @@
     
     <bean id="GroupsService" class="services.implementation.GroupsServiceImpl">
         <property name="GroupsDAO" ref="GroupsDAO" />
+    </bean>
+    
+    <bean id="ChatDAO" class="daoImpl.ChatDAOImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <bean id="MessagingService" class="services.implementation.MessagingServiceImpl">
+        <property name="ChatDAO" ref="ChatDAO" />
     </bean>
     
     <tx:annotation-driven transaction-manager="transactionManager" />

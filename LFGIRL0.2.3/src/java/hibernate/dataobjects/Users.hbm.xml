@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 14, 2016 6:00:22 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated Mar 2, 2016 1:14:51 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="hibernate.dataobjects.Users" table="users" catalog="mydb" optimistic-lock="version">
         <id name="userId" type="java.lang.Integer">
@@ -28,6 +28,24 @@
                 <column name="user_id" not-null="true" />
             </key>
             <one-to-many class="hibernate.dataobjects.UsersGroups" />
+        </set>
+        <set name="conversationsForUserStartId" table="conversation" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_start_id" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.dataobjects.Conversation" />
+        </set>
+        <set name="conversationsForUserRecieveId" table="conversation" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_recieve_id" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.dataobjects.Conversation" />
+        </set>
+        <set name="conversationMessages" table="conversation_message" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="user_id_fk" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.dataobjects.ConversationMessage" />
         </set>
         <one-to-one name="userInfo" class="hibernate.dataobjects.UserInfo"></one-to-one>
     </class>

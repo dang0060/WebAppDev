@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated Feb 14, 2016 6:00:22 AM by Hibernate Tools 4.3.1
+// Generated Mar 2, 2016 1:14:51 PM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.AttributeOverride;

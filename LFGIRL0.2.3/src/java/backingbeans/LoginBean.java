@@ -35,11 +35,11 @@ import services.interfaces.UsersService;
 public class LoginBean implements Serializable {
     
     @Autowired
-    private UsersService usersService;
+    transient UsersService usersService;
     
-    private Users user;
-    private int userId;
-    private String userName;
+    private transient Users user;
+    private transient int userId;
+    private transient String userName;
     
     
     @PostConstruct

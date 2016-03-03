@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated Feb 14, 2016 6:00:22 AM by Hibernate Tools 4.3.1
+// Generated Mar 2, 2016 1:14:51 PM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
@@ -23,7 +23,7 @@ import org.hibernate.annotations.Parameter;
 public class UserInfo  implements java.io.Serializable {
 
 
-     private Integer userInfoId;
+     private int userInfoId;
      private Users users;
      private String firstName;
      private String lastName;
@@ -51,11 +51,11 @@ public class UserInfo  implements java.io.Serializable {
 
     
     @Column(name="user_info_id", unique=true, nullable=false)
-    public Integer getUserInfoId() {
+    public int getUserInfoId() {
         return this.userInfoId;
     }
     
-    public void setUserInfoId(Integer userInfoId) {
+    public void setUserInfoId(int userInfoId) {
         this.userInfoId = userInfoId;
     }
 

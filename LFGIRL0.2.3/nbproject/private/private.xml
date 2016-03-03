@@ -5,15 +5,24 @@
         <group>
             <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/daoImpl/GroupsDAOImpl.java</file>
             <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/web/groupCreate.xhtml</file>
+            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/hibernate/dataobjects/Conversation.java</file>
             <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/backingbeans/LoginBean.java</file>
-            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/hibernate.cfg.xml</file>
             <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/backingbeans/UserBean.java</file>
+            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/backingbeans/MessagingBean.java</file>
             <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/services/implementation/UsersServiceImpl.java</file>
-            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/daoImpl/UsersDAOImpl.java</file>
+            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/services/implementation/MessagingServiceImpl.java</file>
             <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/backingbeans/GroupBean.java</file>
             <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/services/implementation/GroupsServiceImpl.java</file>
             <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/web/homepage.xhtml</file>
+            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/hibernate/dataobjects/ConversationMessage.java</file>
             <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/web/groupEdit.xhtml</file>
+            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/daoImpl/ChatDAOImpl.java</file>
+            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/web/groupSearch.xhtml</file>
+            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/backingbeans/SearchBean.java</file>
+            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/backingbeans/RegisterBean.java</file>
+            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/web/resources/js/chatjs.js</file>
+            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/src/java/daoImpl/UsersDAOImpl.java</file>
+            <file>file:/C:/Users/Protostar/Documents/GitHub/LFGIRL0.2.3/web/chat.xhtml</file>
         </group>
     </open-files>
 </project-private>
