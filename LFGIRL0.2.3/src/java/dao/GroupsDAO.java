@@ -6,8 +6,8 @@
 package dao;
 
 import hibernate.dataobjects.Groups;
+import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
-import hibernate.dataobjects.UsersGroupsId;
 import java.util.*;
 
 /**
@@ -39,5 +39,8 @@ public interface GroupsDAO {
 
     public void deleteGroup(int gid);
 
-    public void deleteMember(UsersGroupsId ugid);
+   //public void deleteMember(UsersGroupsId ugid);
+    
+    //try to remove member from group @yawei
+    public void deleteMember(Users user, Groups group); 
 }

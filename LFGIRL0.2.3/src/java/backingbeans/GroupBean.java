@@ -44,10 +44,12 @@ public class GroupBean {
     transient UsersService usersService;
     
     private int gid;
+    private int uid;
     private Groups group;
     private Boolean updateFlag;
     private Boolean isLeader;
-    //private Boolean isMember = false; //try to implement join group funtion @yawei
+    private Boolean isMember = false; //try to implement join group funtion @yawei
+    private Boolean isUser = false; //try to implement join group funtion @yawei
     
    @PostConstruct
     private void init() {
@@ -69,13 +71,15 @@ public class GroupBean {
             Set<UsersGroups> members = group.getUsersGroupses();
             for(UsersGroups member:members){
                 if(member.getUsers().getUserId()==user.getUserId()){
-                    isLeader=member.getIsLeader();
-                   // isMember = true; //try to implement join group funtion @yawei
+                   // isLeader=member.getIsLeader();
+                    setIsLeader(member.getIsLeader());
+                    setIsMember(true); //try to implement join group funtion @yawei
                 }
             }
         }
         if(isLeader==null)
-            isLeader=false;
+            //isLeader=false;
+         setIsLeader(false);
         
         if(isLeader==false && FacesContext.getCurrentInstance().getViewRoot().getViewId().contains("groupEdit")){
             String groupPage=String.format("groupProfile.xhtml?gid=%d", gid);
@@ -90,6 +94,14 @@ public class GroupBean {
     public boolean getIsLeader(){
         return isLeader;
     }
+    
+    
+    
+    //trying to implement join group function @yawei
+     public boolean getIsMember(){
+        return isMember;
+    }
+      
     
     private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
         ois.defaultReadObject();
@@ -111,6 +123,26 @@ public class GroupBean {
     
     public GroupsService getGroupService(){
         return groupsService;
+    }
+    
+    //for group join @yawei
+    public void setIsUser(boolean isUser){
+      this.isUser = isUser; 
+    }
+    
+    //for group join @yawei
+    public void setIsLeader(boolean isLeader){
+        this.isLeader=isLeader;
+    }
+    
+    //for group join @yawei
+     public void setUid(int uid){
+         this.uid = uid;
+    }
+     
+     //trying to implement join group function @yawei
+     public void setIsMember(boolean isMember){
+        this.isMember = isMember;
     }
     
     public void setUsersService(UsersService usersService){
@@ -142,6 +174,67 @@ public class GroupBean {
             group.setDescription(description);
             updateFlag=true;
         }
+    }
+    
+     //determine if a user can join a group @yawei
+    public boolean canJoinGroup(){ 
+        isUserLoggedIn();
+      //can't join if not logged in   
+        if(!isUser){
+        return false;
+        } 
+      //can't join if is already leader or member
+      if(getIsMember() || getIsLeader()){
+        return false;    
+      }
+      //if user is neither leader nor member, they can join   
+      return true;     
+    }
+    
+     public boolean canLeaveGroup(){ 
+        isUserLoggedIn();
+      //can't leave if not logged in   
+        if(!isUser){
+        return false;
+        } 
+      //can leave if is member, but not leader
+      if(getIsMember() && !getIsLeader()){
+        return true;    
+      }
+      //if user never joined, they can't leave
+      return false;     
+    }
+    
+    //try to check for user session @yawei
+    private void isUserLoggedIn(){
+        LoginBean lb = (LoginBean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
+        if(lb!=null && lb.getUserName()!=null){
+            setUid(lb.getUserId());
+            setIsUser(true); //use is logged in and has uid 
+        }else
+         setIsUser(false); //use is not logged in      
+    }
+    
+    //join a group by using userID and call addMember @yawei
+    public void joinGroup(){
+       boolean joinSuccess = false;       
+       RequestContext context = RequestContext.getCurrentInstance();  
+           
+           addMember(uid); //add user to group
+            group=groupsService.findGroupById(gid);
+      //make sure the user is really in the group
+      Set<UsersGroups> members = group.getUsersGroupses();
+            for(UsersGroups member:members){
+                if(member.getUsers().getUserId()==uid){                     
+                       joinSuccess = true;
+                }
+            }
+            //join failed
+            if(!joinSuccess){
+              context.execute("PF('groupJoinFailDlg').show()");
+            }else{
+              context.execute("PF('groupJoinOkDlg').show()");            
+            }  
     }
     
     public void editGroup() throws IOException{
@@ -183,8 +276,9 @@ public class GroupBean {
         if(group!=null){
             context.execute("PF('groupSuccessDlg').show()");
             gid=group.getGroupId();
-            isLeader=true;
-            //isMember = true; //try to implement join group funtion @yawei
+            //isLeader=true;
+            setIsLeader(true);
+            setIsMember(true);//try to implement join group funtion @yawei
             LoginBean lv=(LoginBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
             addMember(lv.getUserId());
         }    
@@ -211,13 +305,35 @@ public class GroupBean {
             ug=new UsersGroups(ugid, group, member, false); 
        groupsService.addMember(ug);
     }
+    
+    //removes a user from a group, based on group and user id@yawei
+    public void removeMember(){
+        boolean leaveSuccess = true;       
+        RequestContext context = RequestContext.getCurrentInstance();  
+        
+       //get user and groups entites for the current user
+       Users member=usersService.getUserById(uid);
+       Groups group = groupsService.findGroupById(gid);
+       groupsService.deleteMember(member, group);                   
+       group=groupsService.findGroupById(gid);
+      //make sure the user is really left the group
+      Set<UsersGroups> members = group.getUsersGroupses();
+            for(UsersGroups user:members){
+                if(user.getUsers().getUserId()==uid){                     
+                       leaveSuccess = false;
+                }
+            }
+            //join failed
+            if(leaveSuccess){
+              context.execute("PF('groupLeaveOkDlg').show()");
+            }else{
+              context.execute("PF('groupFailDlg').show()");            
+            }  
+    }
         /**
      * Creates a new instance of GroupProfileView
      */
     public GroupBean() {
         
-    }
-
-    
-    
+    }    
 }

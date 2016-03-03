@@ -87,9 +87,6 @@ public class UsersGroups  implements java.io.Serializable {
         this.isLeader = isLeader;
     }
 
-
-
-
 }
 
 

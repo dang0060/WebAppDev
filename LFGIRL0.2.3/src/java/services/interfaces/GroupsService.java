@@ -6,8 +6,8 @@
 package services.interfaces;
 
 import hibernate.dataobjects.Groups;
+import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
-import hibernate.dataobjects.UsersGroupsId;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,7 +34,8 @@ public interface GroupsService {
     
     public void addMember(UsersGroups ug);
    
-    public void deleteMember(UsersGroupsId ugid);
+    //try to remove member
+    public void deleteMember(Users user, Groups group);
     
     /*for group name check @yawei*/
     public boolean groupCheck(String s);
