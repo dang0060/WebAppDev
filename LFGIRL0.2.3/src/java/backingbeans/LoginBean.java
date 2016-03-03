@@ -138,8 +138,8 @@ public class LoginBean implements Serializable {
       /*use msg.getString("keyname in property file") to add I18n string later*/
       if(userName == null){
         return "<html><h1>Welcome to LFGIRL, this is the place to meet up</h1></br>"  
-                + "<h3>If you are a memeber, you can sign in to edit your personal profile, create groups and manage group profile</h3></br>"
-                + "<h3>If you are new, feel free to search for groups and players. If you want to create your own group, just take a minute to signup and start having fun!"
+                + "<h3>If you are a member, you can sign in to edit your personal profile, create a group and manage your groups' profiles</h3></br>"
+                + "<h3>If you are new, feel free to search for groups and players. If you want to create your own group, just take a minute to sign up and start having fun!"
                 +"</h3></html>";
        }
       else{
