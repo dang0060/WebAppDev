@@ -124,6 +124,11 @@ public class UserBean {
         return groups;
     }
 
+    //get uid @yawei
+     public int getUid(){
+        return uid;
+    }
+     
     public Users getUser(){return user;}
     
     public boolean getIsUser(){

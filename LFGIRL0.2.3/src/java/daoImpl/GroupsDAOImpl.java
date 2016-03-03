@@ -7,6 +7,7 @@ package daoImpl;
 
 import dao.GroupsDAO;
 import hibernate.dataobjects.Groups;
+import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
 import hibernate.dataobjects.UsersGroupsId;
 import java.util.List;
@@ -163,11 +164,32 @@ public class GroupsDAOImpl implements GroupsDAO {
         }
     }
 
+    //trying to implment leaving group function @yawei
     @Override
-    public void deleteMember(UsersGroupsId ugid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void deleteMember(Users user, Groups group) 
+    {   Session session = sFac.openSession();
+        Transaction tx=null;
+        //create a new UsersGroupId entity
+        UsersGroupsId uGId = new UsersGroupsId(user.getUserId(),group.getGroupId());
+        
+        try {
+            tx = session.beginTransaction();
+            UsersGroups oldGroup= (UsersGroups)session.get(UsersGroups.class, uGId);
+            //set entity's fields to match the row in database
+             oldGroup.setUsers(user);
+             oldGroup.setGroups(group);
+             session.delete(oldGroup);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+        finally{
+            session.close();
+        }
     }
-
+              
+    }
     
-    
-}

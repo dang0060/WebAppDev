@@ -7,6 +7,7 @@ package services.implementation;
 
 import dao.GroupsDAO;
 import hibernate.dataobjects.Groups;
+import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
 import hibernate.dataobjects.UsersGroupsId;
 import java.util.List;
@@ -78,8 +79,9 @@ public class GroupsServiceImpl implements GroupsService {
         groupsDAO.addMember(ug);
     }
 
+    //try to remove member from group @yawei
     @Override
-    public void deleteMember(UsersGroupsId ugid) {
-        groupsDAO.deleteMember(ugid); 
+    public void deleteMember(Users user, Groups group) {
+        groupsDAO.deleteMember(user, group); 
     }
 }
