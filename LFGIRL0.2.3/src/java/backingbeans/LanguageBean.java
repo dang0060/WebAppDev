@@ -2,13 +2,12 @@ package backingbeans;
 import java.io.Serializable;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ApplicationScoped;
-
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 /*This is the bean to set the locale, depends on users' choice with language buttons @yawei*/
-@ManagedBean(name="language")
-@ApplicationScoped
+@ManagedBean(name="language" ,eager=true)
+@SessionScoped //should be sessionScoped, otherwise all users' language will be changed 
 /**
  *
  * @author Ya

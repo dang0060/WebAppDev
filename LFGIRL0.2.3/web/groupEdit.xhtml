@@ -1,5 +1,6 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--I18N completed as of Mar 7 @yawei @mimi -->
+<!--now the form has validation for empty input @yawei-->
 <ui:composition 
     template="homepage.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
@@ -7,30 +8,35 @@
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:define name="title">#{msg.Edit} #{groupProfile.groupName}</ui:define>>
+    <ui:define name="title">#{msg.Edit} #{GroupBean.groupName}</ui:define>
     <ui:define name="content">
         <h:form>
-            <h:panelGrid columns="2" cellpadding="5" id="editGroupPanel" >
+            <h:panelGrid columns="3" cellpadding="8" id="editGroupPanel" >
                 <h:outputLabel for="editname" value="#{msg.GroupName}: "/>
-                <p:inputText id="editname" value="#{GroupBean.groupName}" label="editname" >
-                    <f:validateLength maximum="100"/>
-                </p:inputText>
+                <p:inputText id="editname" value="#{GroupBean.groupName}" label="editname" required="true"
+                             requiredMessage="#{msg.groupNameErrorMessage}" maxlength="100" />
+                    <h:message for="editname" style="color: red;"/>             
 
                 <h:outputLabel for="editdesc" value="#{msg.GroupDescription}: "/>
-                <p:inputTextarea id="editdesc" value="#{GroupBean.description}" maxlength="45">
-                    <f:validateLength maximum="45"/>
-                </p:inputTextarea>
-                
-                <p:commandButton value="#{msg.SaveChanges}" actionListener="#{GroupBean.editGroup()}"/>
-                
+                <p:inputTextarea id="editdesc" value="#{GroupBean.description}" maxlength="45"
+                    rows="4" cols="23" counter="counterDisplay" required="true"
+                    requiredMessage="#{msg.groupDesErrorMessage}" counterTemplate="#{msg.charactersRemaining}:{0}."
+                    autoResize="false"/>
+                  <h:message for="editdesc" style="color: red;"/>
+                 <h:panelGroup /> 
+                   <h:outputText id="counterDisplay" />        
+                 <h:panelGroup />
+                           
+                <p:commandButton value="#{msg.SaveChanges}" actionListener="#{GroupBean.editGroup()}" update="editGroupPanel"></p:commandButton>  
+                 <h:panelGroup />
                 <!--had to remove those old codes, was going to comment them out, but it will give injection error if I did, the new code will make confirmation box work @yawei -->
-                <p:commandButton value="Delete Group" actionListener="#{GroupBean.deleteGroup()}" update="editGroupPanel">
-                    <p:confirm header="Wait a minute" message="Do you want to disband this great group?" icon="ui-icon-alert" />
+                <p:commandButton value="#{msg.groupDeleteButton}" actionListener="#{GroupBean.deleteGroup()}" update="editGroupPanel">
+                    <p:confirm header="#{msg.delelteGroupDialogHeader}" message="#{msg.deleteGroupDialogMessage}" icon="ui-icon-alert" />
                 </p:commandButton>
  
               <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-               <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                  <p:commandButton value="#{msg.yesButton}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                  <p:commandButton value="#{msg.noButton}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
              </p:confirmDialog>
                 
             </h:panelGrid>

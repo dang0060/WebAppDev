@@ -34,7 +34,7 @@ import services.interfaces.UsersService;
  *
  * @author Alayna
  */
-@ManagedBean(name = "GroupBean")
+@ManagedBean(name = "GroupBean", eager=true)
 @ViewScoped
 public class GroupBean {
     @Autowired
@@ -216,12 +216,12 @@ public class GroupBean {
     }
     
     //join a group by using userID and call addMember @yawei
-    public void joinGroup(){
+    public void joinGroup() throws IOException{
        boolean joinSuccess = false;       
        RequestContext context = RequestContext.getCurrentInstance();  
            
-           addMember(uid); //add user to group
-            group=groupsService.findGroupById(gid);
+           addMember(uid); //add user to group           
+           group=groupsService.findGroupById(gid);         
       //make sure the user is really in the group
       Set<UsersGroups> members = group.getUsersGroupses();
             for(UsersGroups member:members){
@@ -231,10 +231,10 @@ public class GroupBean {
             }
             //join failed
             if(!joinSuccess){
-              context.execute("PF('groupJoinFailDlg').show()");
-            }else{
-              context.execute("PF('groupJoinOkDlg').show()");            
-            }  
+              context.execute("PF('groupFailDlg').show()");
+            }else{ //join success, redirect to group display page
+              FacesContext.getCurrentInstance().getExternalContext().redirect("groupDisplay.xhtml");
+            } 
     }
     
     public void editGroup() throws IOException{
@@ -307,7 +307,7 @@ public class GroupBean {
     }
     
     //removes a user from a group, based on group and user id@yawei
-    public void removeMember(){
+    public void removeMember() throws IOException{
         boolean leaveSuccess = true;       
         RequestContext context = RequestContext.getCurrentInstance();  
         
@@ -323,9 +323,9 @@ public class GroupBean {
                        leaveSuccess = false;
                 }
             }
-            //join failed
+            //join Success, redirect to group display page
             if(leaveSuccess){
-              context.execute("PF('groupLeaveOkDlg').show()");
+              FacesContext.getCurrentInstance().getExternalContext().redirect("groupDisplay.xhtml");
             }else{
               context.execute("PF('groupFailDlg').show()");            
             }  

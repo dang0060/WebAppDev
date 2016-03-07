@@ -32,7 +32,7 @@ import services.interfaces.UsersService;
  *
  * @author Protostar
  */
-@ManagedBean(name = "UserBean")
+@ManagedBean(name = "UserBean" ,eager=true)
 @ViewScoped
 public class UserBean {
 

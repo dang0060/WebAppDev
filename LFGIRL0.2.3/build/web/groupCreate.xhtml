@@ -6,10 +6,10 @@
 	xmlns:f="http://java.sun.com/jsf/core"
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <!--I18N complete @yawei @mimi -->
     <!--The Group creation page, check for empty fields, existing groupname, and description length @ yawei-->
     <ui:define name="title">#{msg.GroupCreation}</ui:define>
-    <ui:define name="content">
-        <f:view locale="#{language.locale}"> <!--The view tag ensures the contained JSF components maintain correct I18n locale until user changes the locale @yawei-->
+    <ui:define name="content">     
         <h:form>
             <!--3 columns, the last column is for the message after the textbox-->
             <!--textarea auto limits number of input characters based on requirement, in this case is the database limit-->
@@ -18,7 +18,7 @@
             <h:panelGrid id="groupCreationPanel" columns="3" cellpadding="8">                
                 <h:outputLabel for="groupNameEntry" value="#{msg.groupNameEntry}" />
                   <p:inputText id="groupNameEntry" value="#{groupName}" label="groupNameEntry"  required="true"
-                               requiredMessage="#{msg.groupNameErrorMessage}"/>
+                               requiredMessage="#{msg.groupNameErrorMessage}" maxlength="100"/>
                   <h:message for="groupNameEntry" style="color: red;"/>                           
                                                  
                   <h:outputLabel for="descriptionEntry" value="#{msg.descriptionEntry}"/>
@@ -43,7 +43,6 @@
                      <h:outputText value="#{msg.groupCreatedDlgValue}"/>
                </p:dialog>               
             </h:panelGrid>         
-        </h:form>
-       </f:view>
+        </h:form>  
     </ui:define>
 </ui:composition>

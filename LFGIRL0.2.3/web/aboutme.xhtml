@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--As of Mar 6, it is fully under I18N @yawei @Mimi-->
 <ui:composition   template="homepage.xhtml"
         xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-        <ui:define name="title">Edit My Profile</ui:define>
-    <ui:define name="content">
+    <ui:define name="title">#{msg.editMyProfile}</ui:define>
+    <ui:define name="content">       
         <h:form>
+            <h2>#{msg.editUserProfile}</h2>
             <h:panelGrid id="userInfoDisplayPanel" columns="2" cellpadding="5">
-                <h:outputLabel for="firstname" value="First Name:" class="nav-text"/>
+                <h:outputLabel for="firstname" value="#{msg.Profile_firstName}" class="nav-text"/>
                 <p:inputText id="firstname" value="#{UserBean.firstName}" label="firstname" />
-                <h:outputLabel for="lastname" value="Last Name:" class="nav-text"/>
+                <h:outputLabel for="lastname" value="#{msg.Profile_lastName}" class="nav-text"/>
                 <p:inputText id="lastname" value="#{UserBean.lastName}" label="lastname" />
-                <h:outputLabel for="address" value="Address:" class="nav-text"/>
+                <h:outputLabel for="address" value="#{msg.Profile_address}" class="nav-text"/>
                 <p:inputText id="address" value="#{UserBean.address}" label="address" />
-                <h:outputLabel for="city" value="City:" class="nav-text"/>
+                <h:outputLabel for="city" value="#{msg.Profile_city}" class="nav-text"/>
                 <p:inputText id="city" value="#{UserBean.city}" label="city" />
-                <h:outputLabel for="postalcode" value="Postal Code:" class="nav-text"/>
+                <h:outputLabel for="postalcode" value="#{msg.Profile_postalCode}" class="nav-text"/>
                 <p:inputText id="postalcode" value="#{UserBean.postalCode}" label="postalcode" />
-                <p:commandButton id="updateInfo" value="Update" action="#{UserBean.updateUserInfo()}" update="userInfoDisplayPanel"></p:commandButton>
+                <p:commandButton id="updateInfo" value="#{msg.updateButton}" action="#{UserBean.updateUserInfo()}" update="userInfoDisplayPanel"></p:commandButton>
                 
                 <!--Cofirmation for user deletion @yawei -->
-                <p:commandButton value="Delete User" actionListener="#{UserBean.deleteUser()}" update="userInfoDisplayPanel">
-                    <p:confirm header="Wait a second" message="You really want to do this? You will be missed" icon="ui-icon-alert" />
+                <p:commandButton value="#{msg.deleteUser}" actionListener="#{UserBean.deleteUser()}" update="userInfoDisplayPanel">
+                    <p:confirm header="#{msg.delelteUserDialogHeader}" message="#{msg.deleteUserDialogMessage}" icon="ui-icon-alert" />
                 </p:commandButton>
  
               <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-               <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                  <p:commandButton value="#{msg.yesButton}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                  <p:commandButton value="#{msg.noButton}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
              </p:confirmDialog>
             </h:panelGrid>
         </h:form>

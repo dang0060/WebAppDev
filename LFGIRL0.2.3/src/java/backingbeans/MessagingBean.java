@@ -26,7 +26,7 @@ import services.interfaces.MessagingService;
  *
  * @author Protostar
  */
-@ManagedBean(name = "MessagingBean")
+@ManagedBean(name = "MessagingBean" ,eager=true)
 @RequestScoped
 public class MessagingBean implements Serializable {
     

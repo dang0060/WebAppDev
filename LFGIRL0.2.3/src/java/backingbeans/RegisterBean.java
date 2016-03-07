@@ -25,7 +25,7 @@ import services.interfaces.UsersService;
  *
  * @author Protostar
  */
-@ManagedBean(name = "RegisterBean")
+@ManagedBean(name = "RegisterBean" ,eager=true)
 @RequestScoped
 public class RegisterBean {
     

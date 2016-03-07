@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
 <!--uses ui:define to add menu template-->
+<!--I18N completed as of Mar 7 @yawei @mimi-->
 <ui:composition 
     template="homepage.xhtml"
     xmlns="http://www.w3.org/1999/xhtml"
@@ -9,7 +9,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     
-    <ui:define name="title">#{GroupBean.groupName} Profile</ui:define>
+    <ui:define name="title">#{GroupBean.groupName} #{msg.profile}</ui:define>
     <!--<h:head>
         <title>{groupProfile.groupName} Profile</title>
         <link rel="stylesheet" type="text/css" href="homepage.css"></link>
@@ -28,34 +28,24 @@
              <br/> 
              <!--join a group @yawei-->
             <p:commandButton id="joinCommandButton"              
-               value="Join Group" rendered= "#{GroupBean.canJoinGroup()}" actionListener="#{GroupBean.joinGroup()}">             
+                value="#{msg.joinGroupButton}" rendered= "#{GroupBean.canJoinGroup()}" actionListener="#{GroupBean.joinGroup()}" update="groupProfileForm">             
             </p:commandButton> 
              
              <!--leave a group @yawei-->
             <p:commandButton id="leaveCommandButton"              
-               value="Leave Group" rendered= "#{GroupBean.canLeaveGroup()}" actionListener="#{GroupBean.removeMember()}">
-                <p:confirm header="Leaving So Soon?" message="You really want to leave this great group?" icon="ui-icon-alert" />
+                value="#{msg.leaveGroupButton}" rendered= "#{GroupBean.canLeaveGroup()}" actionListener="#{GroupBean.removeMember()}" update="groupProfileForm">
+                <p:confirm header="#{msg.leaveGroupDlgHeader}" message="#{msg.leaveGroupDlgMessage}" icon="ui-icon-alert" />
             </p:commandButton>  
              
              <!--confirmation for leaving the group @yawei-->
              <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-               <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-             </p:confirmDialog>
-         
-             <!--dialogs for join success or failure @yawei-->
-            <p:dialog header="Success" widgetVar="groupJoinOkDlg" minHeight="60">
-                <h:outputText value="You are part of the group now! Have Fun"/>
-            </p:dialog>
-             
-            <p:dialog header="Alright" widgetVar="groupLeaveOkDlg" minHeight="60">
-                <h:outputText value="We hate to see you go, but you can always come back"/>
-            </p:dialog>
-            
-              <p:dialog header="Error" widgetVar="groupFailDlg" minHeight="60">
-                <h:outputText value="Oops, something went wrong, please try again"/>
-            </p:dialog>
-             
+                 <p:commandButton value="#{msg.yesButton}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                 <p:commandButton value="#{msg.noButton}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+             </p:confirmDialog>         
+             <!--dialogs for join failure @yawei-->        
+             <p:dialog header="#{msg.groupErrorDlgHeader}" widgetVar="groupFailDlg" minHeight="60">
+                 <h:outputText value="#{msg.groupErrorDlgMessage}"/>
+            </p:dialog>                     
         </h:form>
     </ui:define>
 </ui:composition>

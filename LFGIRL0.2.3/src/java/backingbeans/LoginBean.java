@@ -30,7 +30,7 @@ import services.interfaces.UsersService;
  *
  * @author Protostar
  */
-@ManagedBean(name = "LoginBean")
+@ManagedBean(name = "LoginBean" ,eager=true)
 @SessionScoped
 public class LoginBean implements Serializable {
     

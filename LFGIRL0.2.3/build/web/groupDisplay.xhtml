@@ -4,7 +4,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<!DOCTYPE html>
+<!--As of Mar 6, it is fully under I18N @yawei @Mimi-->
 <ui:composition
       template="homepage.xhtml"
       xmlns="http://www.w3.org/1999/xhtml"
@@ -13,15 +13,16 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:define name="title">
-        <title>Group search</title>
+        #{msg.GroupDisplayTitle}
     </ui:define>
     <ui:define name="content">
+        <h2> #{msg.myGroups}</h2>
         <h:form>
             <p:dataTable id="groupList" var="groupResults" value="#{UserBean.groups}">
-                <p:column headerText="ID">
+                <p:column headerText="#{msg.searchID}">
                     <h:outputText value="#{groupResults.groupId}" />
                 </p:column>
-                <p:column headerText="Group Name">
+                <p:column headerText="#{msg.GroupName}">
                     <h:outputLink  value="groupProfile.xhtml">
                         <h:outputText value="#{groupResults.groupname}"/>
                         <f:param name="gid" value="#{groupResults.groupId}"/>
