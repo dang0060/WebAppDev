@@ -14,9 +14,11 @@
             <h2>#{msg.GroupSearchTitle}</h2>
             #{msg.GroupSearchGuide}
             <br/>
+             
             <p:inputText id="groupname" value="#{input}"  />
             <p:commandButton id="submitGroupname" value="#{msg.searchButton}" action="#{SearchBean.searchForGroup(input)}" 
                    update="groupSearchResults" icon="ui-icon-search"></p:commandButton>
+                     
             <p:dataTable id="groupSearchResults" var="groupResults" value="#{SearchBean.groups}">
                 <p:column headerText="#{msg.searchID}">
                     <h:outputText value="#{groupResults.groupId}" />
@@ -24,13 +26,21 @@
                 <p:column headerText="#{msg.GroupName}">
                     <h:outputLink  value="groupProfile.xhtml">
                         <h:outputText value="#{groupResults.groupname}"/>
-                        <f:param name="gid" value="#{groupResults.groupId}"/>
+                         <f:param name="gid" value="#{groupResults.groupId}"/>
                     </h:outputLink>
                 </p:column>
                 <p:column headerText="#{msg.GroupDescription}">
                     <h:outputText value="#{groupResults.description}" />
                 </p:column>
-            </p:dataTable>
+                <!--display name of the group leader @yawei-->
+                <p:column headerText="#{msg.leaderName}">
+                    <h:outputText value="#{SearchBean.searchGroupLeader(groupResults.groupId)}" />
+                </p:column>
+                <!--states if is already part of the group @yawei-->
+                <p:column headerText="#{msg.joined}" rendered="#{SearchBean.displayJoinedColumn()}">
+                    <h:outputText value="#{SearchBean.JoinedGroup(groupResults.groupId)}" />
+                </p:column>
+            </p:dataTable>                           
         </h:form>
    </ui:define>
 </ui:composition>

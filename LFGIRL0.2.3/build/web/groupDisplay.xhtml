@@ -28,6 +28,11 @@ and open the template in the editor.
                         <f:param name="gid" value="#{groupResults.groupId}"/>
                     </h:outputLink>
                 </p:column>
+                
+                <!--shows if the user is the leader to a group @yawei-->
+                <p:column headerText="#{msg.leaderStatus}" sortBy="#{SearchBean.returnLeaderStatus(groupResults.groupId)}">              
+                    <h:outputText value="#{SearchBean.returnLeaderStatus(groupResults.groupId)}"/>                    
+                </p:column>              
             </p:dataTable>
         </h:form>
 

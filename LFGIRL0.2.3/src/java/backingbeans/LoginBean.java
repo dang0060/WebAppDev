@@ -135,7 +135,7 @@ public class LoginBean implements Serializable {
       /*get property file keys for I18n*/
       FacesContext context = FacesContext.getCurrentInstance();
       ResourceBundle msg = context.getApplication().evaluateExpressionGet(context,"#{msg}", ResourceBundle.class);
-      /*use msg.getString("keyname in property file") to add I18n string later*/
+      /*use msg.getString("keyname in property file") to add I18n string later, no need to use double quotes*/
       if(userName == null){
         return "<html><h1>Welcome to LFGIRL, this is the place to meet up</h1></br>"  
                 + "<h3>If you are a member, you can sign in to edit your personal profile, create a group and manage your groups' profiles</h3></br>"

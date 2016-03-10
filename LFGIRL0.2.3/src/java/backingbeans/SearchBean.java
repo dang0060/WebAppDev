@@ -7,10 +7,13 @@ package backingbeans;
 
 import hibernate.dataobjects.Groups;
 import hibernate.dataobjects.Users;
+import hibernate.dataobjects.UsersGroups;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -39,6 +42,10 @@ public class SearchBean {
     
     private List<Groups> groups = new ArrayList<>();
     private List<Users> users = new ArrayList<>();
+    private LoginBean user = (LoginBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean"); //check login bean for user session info
+    private boolean loggedIn = false; //user login status
+    private FacesContext context = FacesContext.getCurrentInstance(); //for I18n of yes and no strings
+    private ResourceBundle msg = context.getApplication().evaluateExpressionGet(context,"#{msg}", ResourceBundle.class); //for I18n of yes and no strings
     
     @PostConstruct
     private void init() {
@@ -58,7 +65,7 @@ public class SearchBean {
     public List<Groups> getGroups() {
         return groups;
     }
-
+ 
     /**
      * @param groups the groups to set
      */
@@ -91,5 +98,58 @@ public class SearchBean {
             setGroups(groupsService.findGroupByDescription(searchTerm));
         }
     }
+      
+     //get the name of the group leader @yawei 
+     public String searchGroupLeader(int gid) {
+        return groupsService.findGroupLeaedr(gid);
+    }
     
+    //indicates if the current user is the leader for a group @yawei
+    public String returnLeaderStatus(int gid){
+      //put yes and no under I18n   
+      if(user.getUserName().equals(groupsService.findGroupLeaedr(gid))){
+        return msg.getString("yesButton");
+      }
+       return msg.getString("noButton");    
+    }
+    
+    //display the column if user is logged in @yawei
+    public boolean displayJoinedColumn(){
+      if(user!=null && user.getUserName()!= null){ 
+          loggedIn = true;
+          return true;      
+    }   
+      return false;
+    }
+   
+    //show if user has joined a group @yawei
+    public String JoinedGroup(int gid){    
+      Groups group=groupsService.findGroupById(gid);
+      Boolean isLeader = false;
+      Boolean isMember = false; 
+      //check to see if a user is a member or a leader in the group
+        if(user!=null){
+            Set<UsersGroups> members = group.getUsersGroupses();
+            for(UsersGroups member:members){
+                if(member.getUsers().getUserId()==user.getUserId()){
+                   // isLeader=member.getIsLeader();
+                    isLeader = member.getIsLeader();
+                    isMember = true; 
+                }
+            }
+        }
+        if(isLeader==null)
+         isLeader = false;
+        
+      //default is no if not logged in, even is not showing 
+      if(!loggedIn){
+        return msg.getString("noButton");  
+        } 
+      //in the group if is member or leader
+      if(isMember || isLeader){
+        return  msg.getString("yesButton");    
+      }
+      //if not a member or leader, than has not joined
+      return msg.getString("noButton");                
+    }
 }

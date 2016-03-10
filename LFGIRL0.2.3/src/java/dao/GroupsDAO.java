@@ -43,4 +43,7 @@ public interface GroupsDAO {
     
     //try to remove member from group @yawei
     public void deleteMember(Users user, Groups group); 
+    
+    //try to implment group leader search @yawei
+    public  String findGroupLeaedr(int gid);
 }

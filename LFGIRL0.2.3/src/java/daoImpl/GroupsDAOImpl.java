@@ -17,6 +17,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.transform.*;
 import org.springframework.stereotype.Repository;
+import services.interfaces.UsersService;
 
 /**
  *
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Repository;
 public class GroupsDAOImpl implements GroupsDAO {
     
     private SessionFactory sFac;
+    private UsersService usersService; 
     
     public void setSessionFactory(SessionFactory sessionFactory) {
         sFac = sessionFactory;
@@ -49,6 +51,18 @@ public class GroupsDAOImpl implements GroupsDAO {
         return group;
     }
 
+    //get the name of the leader for one group, based on group id  @yawei
+    @Override
+    public String findGroupLeaedr(int gid) {
+        Session session = sFac.openSession();
+        Query query = session.createQuery("SELECT UG.users from UsersGroups UG where UG.isLeader= '1' AND UG.groups.groupId = :group_id");
+        query.setParameter("group_id", gid);
+        Users user = (Users)query.uniqueResult();
+        session.close();
+        return (user.getUsername());
+    }  
+    //end of group leader search function 
+    
     @Override
     public Groups findGroupByName(String groupName) {
         Session session = sFac.openSession();

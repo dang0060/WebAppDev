@@ -39,4 +39,7 @@ public interface GroupsService {
     
     /*for group name check @yawei*/
     public boolean groupCheck(String s);
+    
+    //try to implment leader search @yawei
+    public String findGroupLeaedr(int gid);
 }

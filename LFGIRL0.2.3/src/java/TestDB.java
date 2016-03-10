@@ -17,10 +17,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class TestDB {
     
     public static void main(String[] args) {
-        
+                      
         try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContext.xml")) {
-            UsersDAO usersDAO = context.getBean(UsersDAO.class);
-            
+            UsersDAO usersDAO = context.getBean(UsersDAO.class);                         
             //User x = new User();
             //x.setUserId(150);
             //x.setUsername("Some Guy");
@@ -34,6 +33,7 @@ public class TestDB {
             for(Users u : list) {
                 System.out.println("User Name: " + u.getUsername());
             }
+                            
         }
     }
     

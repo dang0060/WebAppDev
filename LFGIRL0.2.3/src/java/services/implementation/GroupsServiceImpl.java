@@ -84,4 +84,10 @@ public class GroupsServiceImpl implements GroupsService {
     public void deleteMember(Users user, Groups group) {
         groupsDAO.deleteMember(user, group); 
     }
+    
+    //try to implement group leader search
+    @Override
+    public  String findGroupLeaedr(int gid){
+      return groupsDAO.findGroupLeaedr(gid);
+    }
 }
