@@ -48,3 +48,8 @@ INSERT INTO mydb.conversation_message (message, time_stamp, user_id_fk, conversa
 ('Of course you cant were on the internet', NOW(), 3, 1),
 ('This internet stuff is hard', NOW(), 1, 1),
 ('No, youre just dumb Homer', NOW(), 3, 1);
+
+insert into mydb.group_locations(group_id_fk, address, latitude, longitude) values
+(1, '1385 Woodroffe Ave, Ottawa, ON K2G 1V8', 45.349394, -75.758364),
+(3, '75 Laurier Ave E, Ottawa, ON K1N 6N5',45.423433, -75.685458),
+(6, '1125 Colonel By Dr, Ottawa, ON K1S 5B6',45.383750,-75.697496);

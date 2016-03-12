@@ -155,6 +155,26 @@ CREATE TABLE IF NOT EXISTS `mydb`.`conversation_message` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `mydb`.`group_locations`
+-- -----------------------------------------------------
+drop table if exists `mydb`.`group_locations`;
+
+create table if not exists `mydb`.`group_locations` (
+	`group_id_fk` INT NOT NULL,
+    `address` varchar(100) NULL,
+    `latitude` float(10,6) NOT NULL,
+	`longitude` float(10,6) NOT NULL,
+    constraint `group_id_fk`
+		foreign key (`group_id_fk`)
+        references `mydb`.`groups`(`group_id`)
+        on delete cascade) 
+engine=InnoDB;
+
+
+
+
+
 USE `mydb`;
 
 DELIMITER $$

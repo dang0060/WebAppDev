@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<ui:composition
+        template="homepage.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
+    <ui:define name="title">GeoSearchTest</ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:panelGrid columns="2">
+                <h:outputLabel for="latEntry" value="Latitude"/>
+                <p:inputText id="latEntry" type="number" value="#{GeoSearchBean.latitude}"/>
+                <h:outputLabel for="longEntry" value="Longitude"/>
+                <p:inputText id="longEntry" type="number" value="#{GeoSearchBean.longitude}"/>
+                <p:commandButton id="search" value="Search" action="#{GeoSearchBean.search()}" update="geoSearchResults"/>
+            </p:panelGrid>
+            <p:dataTable id="geoSearchResults" var="searchResults" value="#{GeoSearchBean.locations}">
+                <p:column headerText="Distance (km)">
+                    <h:outputText value="#{searchResults.distance}"/>
+                </p:column>  
+                <p:column headerText="Group Name">
+                    <h:outputText value="#{searchResults.getGroupLocation().groups.groupname}"/>
+                </p:column>  
+                <p:column headerText="Address">
+                    <h:outputText value="#{searchResults.getGroupLocation().address}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

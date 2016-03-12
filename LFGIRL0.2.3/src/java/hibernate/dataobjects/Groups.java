@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated Mar 2, 2016 1:14:51 PM by Hibernate Tools 4.3.1
+// Generated 11-Mar-2016 10:47:03 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -26,7 +27,8 @@ public class Groups  implements java.io.Serializable {
      private Integer groupId;
      private String groupname;
      private String description;
-     private Set usersGroupses = new HashSet(0);
+     private GroupLocations groupLocations;
+     private Set<UsersGroups> usersGroupses = new HashSet<UsersGroups>(0);
 
     public Groups() {
     }
@@ -35,9 +37,10 @@ public class Groups  implements java.io.Serializable {
     public Groups(String groupname) {
         this.groupname = groupname;
     }
-    public Groups(String groupname, String description, Set usersGroupses) {
+    public Groups(String groupname, String description, GroupLocations groupLocations, Set<UsersGroups> usersGroupses) {
        this.groupname = groupname;
        this.description = description;
+       this.groupLocations = groupLocations;
        this.usersGroupses = usersGroupses;
     }
    
@@ -73,12 +76,21 @@ public class Groups  implements java.io.Serializable {
         this.description = description;
     }
 
+@OneToOne(fetch=FetchType.LAZY, mappedBy="groups")
+    public GroupLocations getGroupLocations() {
+        return this.groupLocations;
+    }
+    
+    public void setGroupLocations(GroupLocations groupLocations) {
+        this.groupLocations = groupLocations;
+    }
+
 @OneToMany(fetch=FetchType.LAZY, mappedBy="groups")
-    public Set getUsersGroupses() {
+    public Set<UsersGroups> getUsersGroupses() {
         return this.usersGroupses;
     }
     
-    public void setUsersGroupses(Set usersGroupses) {
+    public void setUsersGroupses(Set<UsersGroups> usersGroupses) {
         this.usersGroupses = usersGroupses;
     }
 

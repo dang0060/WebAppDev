@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated Mar 2, 2016 1:14:51 PM by Hibernate Tools 4.3.1
+// Generated 11-Mar-2016 10:47:03 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -30,11 +30,11 @@ public class Users  implements java.io.Serializable {
      private String username;
      private String password;
      private String email;
-     private Set usersRoleses = new HashSet(0);
-     private Set usersGroupses = new HashSet(0);
-     private Set conversationsForUserStartId = new HashSet(0);
-     private Set conversationsForUserRecieveId = new HashSet(0);
-     private Set conversationMessages = new HashSet(0);
+     private Set<UsersRoles> usersRoleses = new HashSet<UsersRoles>(0);
+     private Set<UsersGroups> usersGroupses = new HashSet<UsersGroups>(0);
+     private Set<Conversation> conversationsForUserStartId = new HashSet<Conversation>(0);
+     private Set<Conversation> conversationsForUserRecieveId = new HashSet<Conversation>(0);
+     private Set<ConversationMessage> conversationMessages = new HashSet<ConversationMessage>(0);
      private UserInfo userInfo;
 
     public Users() {
@@ -45,13 +45,7 @@ public class Users  implements java.io.Serializable {
         this.username = username;
         this.password = password;
     }
-    public Users(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-    }
-    
-    public Users(String username, String password, String email, Set usersRoleses, Set usersGroupses, Set conversationsForUserStartId, Set conversationsForUserRecieveId, Set conversationMessages, UserInfo userInfo) {
+    public Users(String username, String password, String email, Set<UsersRoles> usersRoleses, Set<UsersGroups> usersGroupses, Set<Conversation> conversationsForUserStartId, Set<Conversation> conversationsForUserRecieveId, Set<ConversationMessage> conversationMessages, UserInfo userInfo) {
        this.username = username;
        this.password = password;
        this.email = email;
@@ -106,47 +100,47 @@ public class Users  implements java.io.Serializable {
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="users")
-    public Set getUsersRoleses() {
+    public Set<UsersRoles> getUsersRoleses() {
         return this.usersRoleses;
     }
     
-    public void setUsersRoleses(Set usersRoleses) {
+    public void setUsersRoleses(Set<UsersRoles> usersRoleses) {
         this.usersRoleses = usersRoleses;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="users")
-    public Set getUsersGroupses() {
+    public Set<UsersGroups> getUsersGroupses() {
         return this.usersGroupses;
     }
     
-    public void setUsersGroupses(Set usersGroupses) {
+    public void setUsersGroupses(Set<UsersGroups> usersGroupses) {
         this.usersGroupses = usersGroupses;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="usersByUserStartId")
-    public Set getConversationsForUserStartId() {
+    public Set<Conversation> getConversationsForUserStartId() {
         return this.conversationsForUserStartId;
     }
     
-    public void setConversationsForUserStartId(Set conversationsForUserStartId) {
+    public void setConversationsForUserStartId(Set<Conversation> conversationsForUserStartId) {
         this.conversationsForUserStartId = conversationsForUserStartId;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="usersByUserRecieveId")
-    public Set getConversationsForUserRecieveId() {
+    public Set<Conversation> getConversationsForUserRecieveId() {
         return this.conversationsForUserRecieveId;
     }
     
-    public void setConversationsForUserRecieveId(Set conversationsForUserRecieveId) {
+    public void setConversationsForUserRecieveId(Set<Conversation> conversationsForUserRecieveId) {
         this.conversationsForUserRecieveId = conversationsForUserRecieveId;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="users")
-    public Set getConversationMessages() {
+    public Set<ConversationMessage> getConversationMessages() {
         return this.conversationMessages;
     }
     
-    public void setConversationMessages(Set conversationMessages) {
+    public void setConversationMessages(Set<ConversationMessage> conversationMessages) {
         this.conversationMessages = conversationMessages;
     }
 
