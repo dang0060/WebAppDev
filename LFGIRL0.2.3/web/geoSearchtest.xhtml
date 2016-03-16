@@ -16,8 +16,6 @@
                 <p:inputText id="latEntry" type="number" value="#{GeoSearchBean.latitude}"/>
                 <h:outputLabel for="longEntry" value="Longitude"/>
                 <p:inputText id="longEntry" type="number" value="#{GeoSearchBean.longitude}"/>
-                <h:outputLabel for="longEntry" value="Address"/>
-                <p:inputText id="addressEntry" type="address" value="#{GeoSearchBean.address}"/>
                 <p:commandButton id="search" value="Search" action="#{GeoSearchBean.search()}" update="geoSearchResults"/>
             </p:panelGrid>
             <p:dataTable id="geoSearchResults" var="searchResults" value="#{GeoSearchBean.locations}">
