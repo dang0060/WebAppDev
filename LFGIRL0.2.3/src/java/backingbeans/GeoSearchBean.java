@@ -5,6 +5,9 @@
  */
 package backingbeans;
 
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.model.GeocodingResult;
 import hibernate.dataobjects.GroupLocations;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -36,6 +39,7 @@ public class GeoSearchBean {
     private ArrayList<GeoSearchGroup> locations=new ArrayList<>();
     private float latitude;
     private float longitude;
+    private String address;
     
     public ArrayList<GeoSearchGroup> getLocations(){
         return locations;
@@ -60,6 +64,14 @@ public class GeoSearchBean {
     public float getLongitude(){
         return longitude;
     }
+    
+    public void setAddress(String address){
+        this.address=address;
+    }
+    
+    public String getAddress(){
+        return address;
+    }
     /**
      * Creates a new instance of GeoSearchBean
      */
@@ -79,10 +91,24 @@ public class GeoSearchBean {
     }
     
     public void search(){
+        if(!address.isEmpty())
+            addressToCoordinate();
         List<Object[]> tempLocations=geoService.findNearestGroups(latitude, longitude, 50);
         for(Object[] gl: tempLocations){
             GeoSearchGroup temp=new GeoSearchGroup((GroupLocations)gl[0], (float)gl[1]);
             locations.add(temp);
         }
     }
+
+    private void addressToCoordinate() {
+        GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyDmSuTMCWCpiaMFzrgxykb-G7YtcOb3h4w");
+        GeocodingResult[] results =  GeocodingApi.geocode(context,address).awaitIgnoreError();
+        if(results!=null){
+            setLatitude((float)results[0].geometry.location.lat);
+            setLongitude((float)results[0].geometry.location.lng);
+        }
+
+    }
+    
+
 }
