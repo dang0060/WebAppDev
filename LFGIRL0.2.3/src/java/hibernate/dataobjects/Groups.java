@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated 11-Mar-2016 10:47:03 AM by Hibernate Tools 4.3.1
+// Generated Mar 17, 2016 2:29:47 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -28,7 +28,7 @@ public class Groups  implements java.io.Serializable {
      private String groupname;
      private String description;
      private GroupLocations groupLocations;
-     private Set<UsersGroups> usersGroupses = new HashSet<UsersGroups>(0);
+     private Set usersGroupses = new HashSet(0);
 
     public Groups() {
     }
@@ -37,7 +37,7 @@ public class Groups  implements java.io.Serializable {
     public Groups(String groupname) {
         this.groupname = groupname;
     }
-    public Groups(String groupname, String description, GroupLocations groupLocations, Set<UsersGroups> usersGroupses) {
+    public Groups(String groupname, String description, GroupLocations groupLocations, Set usersGroupses) {
        this.groupname = groupname;
        this.description = description;
        this.groupLocations = groupLocations;
@@ -86,11 +86,11 @@ public class Groups  implements java.io.Serializable {
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="groups")
-    public Set<UsersGroups> getUsersGroupses() {
+    public Set getUsersGroupses() {
         return this.usersGroupses;
     }
     
-    public void setUsersGroupses(Set<UsersGroups> usersGroupses) {
+    public void setUsersGroupses(Set usersGroupses) {
         this.usersGroupses = usersGroupses;
     }
 

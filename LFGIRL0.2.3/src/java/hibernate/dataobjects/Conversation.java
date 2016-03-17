@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated 11-Mar-2016 10:47:03 AM by Hibernate Tools 4.3.1
+// Generated Mar 17, 2016 2:29:47 AM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -29,7 +29,7 @@ public class Conversation  implements java.io.Serializable {
      private Users usersByUserStartId;
      private Users usersByUserRecieveId;
      private String status;
-     private Set<ConversationMessage> conversationMessages = new HashSet<ConversationMessage>(0);
+     private Set conversationMessages = new HashSet(0);
 
     public Conversation() {
     }
@@ -39,7 +39,7 @@ public class Conversation  implements java.io.Serializable {
         this.usersByUserStartId = usersByUserStartId;
         this.usersByUserRecieveId = usersByUserRecieveId;
     }
-    public Conversation(Users usersByUserStartId, Users usersByUserRecieveId, String status, Set<ConversationMessage> conversationMessages) {
+    public Conversation(Users usersByUserStartId, Users usersByUserRecieveId, String status, Set conversationMessages) {
        this.usersByUserStartId = usersByUserStartId;
        this.usersByUserRecieveId = usersByUserRecieveId;
        this.status = status;
@@ -89,11 +89,11 @@ public class Conversation  implements java.io.Serializable {
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="conversation")
-    public Set<ConversationMessage> getConversationMessages() {
+    public Set getConversationMessages() {
         return this.conversationMessages;
     }
     
-    public void setConversationMessages(Set<ConversationMessage> conversationMessages) {
+    public void setConversationMessages(Set conversationMessages) {
         this.conversationMessages = conversationMessages;
     }
 

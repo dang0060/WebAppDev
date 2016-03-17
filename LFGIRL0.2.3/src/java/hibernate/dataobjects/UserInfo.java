@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated 11-Mar-2016 10:47:03 AM by Hibernate Tools 4.3.1
+// Generated Mar 17, 2016 2:29:47 AM by Hibernate Tools 4.3.1
 
 
 import javax.persistence.Column;
