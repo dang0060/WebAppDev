@@ -9,6 +9,7 @@
     <!--h:outputScript library="primefaces" name="jquery/jquery-plugin.js" target="head" /-->
     <!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js" /-->
     <link rel="stylesheet" type="text/css" href="homepage.css"></link>
+    <ui:insert name="stylesheet"></ui:insert>
     <title><ui:insert name="title">Welcome to LFG:IRL</ui:insert></title>
 </h:head>
     <script>
@@ -179,7 +180,7 @@
 		</h:form>
                 
                 <!--The language change buttons @yawei-->
-                <h:form> 
+                <h:form class="langform"> 
                     <!--default locale, from I18nResource.properties -->
                    <h:commandButton action="#{language.changeLanguage('')}" 
                        value="#{msg['englishButton']}"/>

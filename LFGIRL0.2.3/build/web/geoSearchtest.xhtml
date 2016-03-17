@@ -7,9 +7,23 @@
 	xmlns:f="http://java.sun.com/jsf/core"
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    
+    <ui:define name="stylesheet"><link rel="stylesheet" type="text/css" href="map.css"></link></ui:define>
     <ui:define name="title">GeoSearchTest</ui:define>
     <ui:define name="content">
+    <script>
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: -34.397, lng: 150.644},
+          zoom: 8
+        });
+      }
+    </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=#{GeoSearchBean.key}&amp;callback=initMap"
+    async="async" defer="defer"></script>
+
+        
+
         <h:form>
             <p:panelGrid columns="2">
                 <h:outputLabel for="latEntry" value="Latitude"/>
@@ -20,6 +34,7 @@
                 <p:inputText id="addressEntry" type="address" value="#{GeoSearchBean.address}"/>
                 <p:commandButton id="search" value="Search" action="#{GeoSearchBean.search()}" update="geoSearchResults"/>
             </p:panelGrid>
+            <div id="map" class="map"></div>
             <p:dataTable id="geoSearchResults" var="searchResults" value="#{GeoSearchBean.locations}">
                 <p:column headerText="Distance (km)">
                     <h:outputText value="#{searchResults.distance}"/>
@@ -30,7 +45,7 @@
                 <p:column headerText="Address">
                     <h:outputText value="#{searchResults.getGroupLocation().address}"/>
                 </p:column>
-            </p:dataTable>
+            </p:dataTable>   
         </h:form>
     </ui:define>
 </ui:composition>

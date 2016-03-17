@@ -9,19 +9,24 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import hibernate.dataobjects.GroupLocations;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import other.dataobjects.GeoSearchGroup;
+import other.dataobjects.Keychain;
 import serializer.Autowirer;
 import services.interfaces.GeoService;
 
@@ -40,6 +45,15 @@ public class GeoSearchBean {
     private float latitude;
     private float longitude;
     private String address;
+    private String key;
+    
+    public String getKey(){
+        return key;
+    }
+    
+    public void setKey(String key){
+        this.key=key;
+    }
     
     public ArrayList<GeoSearchGroup> getLocations(){
         return locations;
@@ -80,6 +94,8 @@ public class GeoSearchBean {
          ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ServletContext sC = (ServletContext) ec.getContext();
         WebApplicationContextUtils.getRequiredWebApplicationContext(sC).getAutowireCapableBeanFactory().autowireBean(this);
+        Keychain keychain=Keychain.getInstance();
+        key=keychain.getKey("googlemapsapi");
     }
     
      private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
@@ -101,14 +117,20 @@ public class GeoSearchBean {
     }
 
     private void addressToCoordinate() {
-        GeoApiContext context = new GeoApiContext().setApiKey("");
-        GeocodingResult[] results =  GeocodingApi.geocode(context,address).awaitIgnoreError();
-        if(results!=null){
-            setLatitude((float)results[0].geometry.location.lat);
-            setLongitude((float)results[0].geometry.location.lng);
+        try {
+
+            GeoApiContext context = new GeoApiContext().setApiKey(key);
+            GeocodingResult[] results =  GeocodingApi.geocode(context,address).await();
+            if(results!=null){
+                setLatitude((float)results[0].geometry.location.lat);
+                setLongitude((float)results[0].geometry.location.lng);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(GeoSearchBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
+    
     
 
 }
