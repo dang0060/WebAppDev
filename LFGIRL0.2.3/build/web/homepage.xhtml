@@ -5,9 +5,6 @@
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets">   
 <h:head>
     <meta charset="utf-8"/>
-    <!--h:outputScript library="primefaces" name="jquery/jquery.js" target="head" /-->
-    <!--h:outputScript library="primefaces" name="jquery/jquery-plugin.js" target="head" /-->
-    <!--script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js" /-->
     <link rel="stylesheet" type="text/css" href="homepage.css"></link>
     <ui:insert name="stylesheet"></ui:insert>
     <title><ui:insert name="title">Welcome to LFG:IRL</ui:insert></title>
@@ -28,60 +25,7 @@
                  );
                 });
     </script>
-    <!--
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#groupsearch').click(function() {
-                $('#mainpage').load("groupSearch.xhtml");
-            });
-        });    
-    </script>
-    
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#usersearch').click(function() {
-                $('#mainpage').load("userSearch.xhtml");
-            });
-        });    
-    </script>
-    
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#mygroups').click(function() {
-                $('#mainpage').load("groupDisplay.xhtml");
-            });
-        });    
-    </script>
-<script type="text/javascript">
-        $(document).ready(function() {
-            $('#aboutme').click(function() {
-                $('#mainpage').load("aboutme.xhtml");
-            });
-        });    
-    </script>-->
-    
-    <!-- this is for the account creation page, remove if not accessing from menu @yawei-->
-    <!--<script type="text/javascript">
-        $(document).ready(function() {
-            $('#accountCreation').click(function() {
-                $('#mainpage').load("userCreate.xhtml");
-            });
-        });    
-    </script>
-    -->
-    <!--end of account creation access-->
-    
-    <!-- this is for the group creation page, remove if not accessing from menu @yawei-->
-    <!--<script type="text/javascript">
-        $(document).ready(function() {
-            $('#groupCreation').click(function() {
-                $('#mainpage').load("groupCreate.xhtml");
-            });
-        });    
-    </script>
-    -->
-    <!--end of group creation access-->
-    
+  
     <script type="text/javascript">
         function handleLoginRequest(xhr, status, args) {
             if(args.validationFailed || !args.loggedIn) {
@@ -283,7 +227,7 @@
                 </li>
             </ui:fragment>
                 
-                <ui:fragment rendered="#{LoginBean.userName!=null&amp;&amp;(LoginBean.userId==1||LoginBean.userId==3)}">
+                <ui:fragment rendered="#{LoginBean.userName!=null}">
                 <li class="has-subnav">
                     <a id="chat" href="chat.xhtml">
                        <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->

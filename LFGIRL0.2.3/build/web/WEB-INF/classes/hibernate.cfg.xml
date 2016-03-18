@@ -1,41 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
- 
-<session-factory>
-    
-<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-   
- <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    
-<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mydb?zeroDateTimeBehavior=convertToNull</property>
-    
-<property name="hibernate.connection.username">root</property>
-    
-<property name="hibernate.connection.password">root</property>
-
-<property name="hibernate.c3p0.min_size">5</property>
-<property name="hibernate.c3p0.max_size">20</property>
-<property name="hibernate.c3p0.timeout">300</property>
-<property name="hibernate.c3p0.max_statements">50</property>
-<property name="hibernate.c3p0.idle_test_period">3000</property>    
-<mapping resource="hibernate/dataobjects/Conversation.hbm.xml"/>
-    
-<mapping resource="hibernate/dataobjects/UsersGroups.hbm.xml"/>
-    
-<mapping resource="hibernate/dataobjects/Users.hbm.xml"/>
-    
-<mapping resource="hibernate/dataobjects/GroupLocations.hbm.xml"/>
-   
-<mapping resource="hibernate/dataobjects/ConversationMessage.hbm.xml"/>
-    
-<mapping resource="hibernate/dataobjects/Admin.hbm.xml"/>
-    
-<mapping resource="hibernate/dataobjects/Groups.hbm.xml"/>
-    
-<mapping resource="hibernate/dataobjects/UserInfo.hbm.xml"/>
-    
-<mapping resource="hibernate/dataobjects/UsersRoles.hbm.xml"/>
-  
-</session-factory>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mydb?zeroDateTimeBehavior=convertToNull</property>
+    <property name="hibernate.connection.username">lfgirl</property>
+    <property name="hibernate.connection.password">lfgirl</property>
+    <property name="hibernate.c3p0.min_size">5</property>
+    <property name="hibernate.c3p0.max_size">20</property>
+    <property name="hibernate.c3p0.timeout">300</property>
+    <property name="hibernate.c3p0.max_statements">50</property>
+    <property name="hibernate.c3p0.idle_test_period">3000</property>
+    <mapping resource="hibernate/dataobjects/Conversation.hbm.xml"/>
+    <mapping resource="hibernate/dataobjects/UsersGroups.hbm.xml"/>
+    <mapping resource="hibernate/dataobjects/Users.hbm.xml"/>
+    <mapping resource="hibernate/dataobjects/GroupLocations.hbm.xml"/>
+    <mapping resource="hibernate/dataobjects/ConversationMessage.hbm.xml"/>
+    <mapping resource="hibernate/dataobjects/Admin.hbm.xml"/>
+    <mapping resource="hibernate/dataobjects/Groups.hbm.xml"/>
+    <mapping resource="hibernate/dataobjects/UserInfo.hbm.xml"/>
+    <mapping resource="hibernate/dataobjects/UsersRoles.hbm.xml"/>
+  </session-factory>
 </hibernate-configuration>
