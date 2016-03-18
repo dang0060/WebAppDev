@@ -9,20 +9,23 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import hibernate.dataobjects.GroupLocations;
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
-import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import other.dataobjects.GeoSearchGroup;
@@ -35,8 +38,8 @@ import services.interfaces.GeoService;
  * @author Alayna
  */
 @ManagedBean(name = "GeoSearchBean")
-@RequestScoped
-public class GeoSearchBean {
+@ViewScoped
+public class GeoSearchBean implements Serializable{
     @Autowired
     transient GeoService geoService;
     
@@ -46,6 +49,16 @@ public class GeoSearchBean {
     private float longitude;
     private String address;
     private String key;
+    private String markersXML=null;
+    
+    public String getMarkersXML(){
+        return markersXML;
+    }
+    
+    public void setMarkersXML(String markersXML){
+        this.markersXML=markersXML;
+    }
+    
     
     public String getKey(){
         return key;
@@ -114,6 +127,7 @@ public class GeoSearchBean {
             GeoSearchGroup temp=new GeoSearchGroup((GroupLocations)gl[0], (float)gl[1]);
             locations.add(temp);
         }
+        makeMarkers();
     }
 
     private void addressToCoordinate() {
@@ -130,7 +144,48 @@ public class GeoSearchBean {
         }
 
     }
+    /*makes a string of xml that defines map markers*/
+    private void makeMarkers(){
+        try(StringWriter stringWriter = new StringWriter();) {
+            XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+            XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(stringWriter);
+            
+            streamWriter.writeStartDocument("utf-8", "1.0");
+            streamWriter.writeStartElement("markers");
+            
+            for(GeoSearchGroup loc:locations){
+                streamWriter.writeStartElement("marker");
+                streamWriter.writeAttribute("name", escapeXML(loc.getGroupLocation().getGroups().getGroupname()));
+                streamWriter.writeAttribute("address", escapeXML(loc.getGroupLocation().getAddress()));
+                streamWriter.writeAttribute("lat", Float.toString(loc.getGroupLocation().getLatitude()));
+                streamWriter.writeAttribute("lng", Float.toString(loc.getGroupLocation().getLongitude()));
+                streamWriter.writeAttribute("distance", Float.toString(loc.getDistance()));
+                streamWriter.writeEndElement();
+            }
+            streamWriter.writeEndElement();
+            streamWriter.writeEndDocument();
+            
+            streamWriter.flush();
+            streamWriter.close();
+            
+            markersXML = stringWriter.getBuffer().toString();
+            // string will be enclosed in ''
+            markersXML = markersXML.replace("'", "\"");
+            stringWriter.close();
+               
+        } catch (XMLStreamException | IOException ex) {
+            Logger.getLogger(GeoSearchBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    /*escape special characters*/
+    private String escapeXML(String s){
+        s = s.replace("'", "&apos;");
+        s = s.replace("\"", "&quot;");
+        s = s.replace("<", "&lt;");
+        s = s.replace(">", "&gt;");
+        s = s.replace("&", "&amp;");
+        return s;
+        
+    }
     
-    
-
 }
