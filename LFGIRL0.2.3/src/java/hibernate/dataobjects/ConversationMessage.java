@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated Mar 17, 2016 2:29:47 AM by Hibernate Tools 4.3.1
+// Generated Mar 18, 2016 10:25:22 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;

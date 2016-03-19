@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Mar 17, 2016 2:29:47 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated Mar 18, 2016 10:25:26 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="hibernate.dataobjects.Groups" table="groups" catalog="mydb" optimistic-lock="version">
         <id name="groupId" type="java.lang.Integer">
@@ -20,6 +20,12 @@
                 <column name="group_id" not-null="true" />
             </key>
             <one-to-many class="hibernate.dataobjects.UsersGroups" />
+        </set>
+        <set name="groupMessageses" table="group_messages" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="group_id_fk" not-null="true" />
+            </key>
+            <one-to-many class="hibernate.dataobjects.GroupMessages" />
         </set>
     </class>
 </hibernate-mapping>

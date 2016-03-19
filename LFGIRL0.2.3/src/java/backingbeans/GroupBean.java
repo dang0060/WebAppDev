@@ -203,6 +203,20 @@ public class GroupBean {
       //if user never joined, they can't leave
       return false;     
     }
+     
+      public boolean canGroupMessage(){ 
+        isUserLoggedIn();
+      //can't leave message if not logged in   
+        if(!isUser){
+        return false;
+        } 
+      //can leave if is member, but not leader
+      if(getIsMember() || getIsLeader()){
+        return true;    
+      }
+      //if user never joined, they can't leave message
+      return false;     
+    }
     
     //try to check for user session @yawei
     private void isUserLoggedIn(){

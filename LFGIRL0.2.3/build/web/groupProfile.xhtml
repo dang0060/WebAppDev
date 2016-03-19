@@ -7,7 +7,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     
     <ui:define name="title">#{GroupBean.groupName} #{msg.profile}</ui:define>
     <!--<h:head>
@@ -15,7 +16,10 @@
         <link rel="stylesheet" type="text/css" href="homepage.css"></link>
     </h:head>-->
     <ui:define name="content">
+        <!--update the form every 20 seconds-->     
+        <p:growl id="growlUser" sticky="false" showDetail="true" life="5000"/>
         <h:form id="groupProfileForm">
+             <p:poll interval="20" update="groupMembers, messageTable"  />
             <h2>#{GroupBean.groupName}</h2>
             <br/>
             #{GroupBean.description}
@@ -24,18 +28,114 @@
             <h:outputLink  rendered="#{GroupBean.isLeader}" value="groupEdit.xhtml">
                 <h:outputText value="#{msg.Edit}"/>
                 <f:param name="gid" value="#{GroupBean.gid}"/>
-            </h:outputLink>
-             <br/> 
+            </h:outputLink>                     
              <!--join a group @yawei-->
             <p:commandButton id="joinCommandButton"              
-                value="#{msg.joinGroupButton}" rendered= "#{GroupBean.canJoinGroup()}" actionListener="#{GroupBean.joinGroup()}" update="groupProfileForm">             
+                value="#{msg.joinGroupButton}" process="@this" rendered= "#{GroupBean.canJoinGroup()}" actionListener="#{GroupBean.joinGroup()}" update="groupProfileForm">             
             </p:commandButton> 
              
              <!--leave a group @yawei-->
             <p:commandButton id="leaveCommandButton"              
-                value="#{msg.leaveGroupButton}" rendered= "#{GroupBean.canLeaveGroup()}" actionListener="#{GroupBean.removeMember()}" update="groupProfileForm">
+                value="#{msg.leaveGroupButton}" process="@this" rendered= "#{GroupBean.canLeaveGroup()}" actionListener="#{GroupBean.removeMember()}" update="groupProfileForm">
                 <p:confirm header="#{msg.leaveGroupDlgHeader}" message="#{msg.leaveGroupDlgMessage}" icon="ui-icon-alert" />
             </p:commandButton>  
+             
+             <p:spacer width="120" height="50"/> 
+             
+             <!--show message table in a dynamic panel @yawei-->
+             <p:commandButton id="checkMessage" process="@this" value="Check Message" type="button" />           
+                 <p:overlayPanel id="messageDisPanel" for="checkMessage" hideEffect="fade" dynamic="false" >
+                     
+                     <p:dataTable var="messages" value="#{groupMessageBean.listMessages()}" rows="10" paginator="true" id="messageTable" style="width:1100px" >
+                         <p:column headerText="Sender" style="width:5px;text-align: left">                         
+                        <h:outputText value="#{messages.senderUserId}"/>                                                   
+                   </p:column>
+                         
+                    <p:column headerText="Title" style="width:5px;text-align: left">                         
+                      <h:outputText value="#{messages.messageTitle}"/>                                                   
+                   </p:column>
+                      
+                  <p:column headerText="Date" style="width:5px;text-align: left">                         
+                      <h:outputText value="#{messages.messageDate}"/>                                                   
+                  </p:column>
+                      
+                    <p:column headerText="Read Status" style="width:5px;text-align: left">                         
+                      <h:outputText value="#{messages.messageReadStatus}"/>                                                   
+                  </p:column>
+ 
+                 <!--the column that contains the button to view messages @yawei-->
+                  <p:column headerText="Option" style="width:5px;text-align: center" rendered="#{GroupBean.canGroupMessage()}">
+                      <p:commandButton update=":groupProfileForm:viewMessagePGrid"  process="@this" action="#{groupMessageBean.setUpSelectedMessage()}"  oncomplete="PF('viewMesDlg').show()" 
+                                   icon="ui-icon-search" title="View" value="Read">
+                          <f:param name="messageTitle" value="#{messages.messageTitle}"/>
+                          <f:param name="messageContent" value="#{messages.messageContent}"/>
+                          <f:param name="messagId" value="#{messages.messageId}"/>   
+                  </p:commandButton>
+                  
+                  <p:commandButton update=":groupProfileForm:viewMessagePGrid"  process="@this" action="#{groupMessageBean.setUpSelectedMessage()}"  oncomplete="PF('viewMesDlg').show()" 
+                                   icon="ui-icon-search" title="View" value="Delete">
+                       <f:param name="messageTitle" value="#{messages.messageTitle}"/>
+                       <f:param name="messageContent" value="#{messages.messageContent}"/>             
+                  </p:commandButton>
+                 </p:column>            
+             </p:dataTable>
+             </p:overlayPanel>
+                     
+             <br/> 
+             <br/> 
+             <b>#{msg.memberList}</b>
+             <br/>          
+              <!--shows members of a group @yawei-->         
+              <p:dataTable id="groupMembers" var="memberResults" value="#{groupMessageBean.findGroupMembers(GroupBean.gid)}" style="width:500px;">          
+                <p:column headerText="#{msg.memberName}" style="width:5px;text-align: center">
+                    <h:outputLink  value="userProfile.xhtml">                
+                        <h:outputText value="#{memberResults.username}"/>
+                        <f:param name="uid" value="#{memberResults.userId}"/>                     
+                    </h:outputLink>
+                </p:column>
+                 
+              <!--Button to send message to that user @yawei-->
+              <p:column headerText="Option" style="width:5px;text-align: center" rendered="#{GroupBean.canGroupMessage()}">
+                  <p:commandButton update=":groupProfileForm:messageDlg"  process="@this" action="#{groupMessageBean.setUpSelectedUser()}" oncomplete="PF('messageDialog').show()" 
+                                   icon="ui-icon-search" title="View" value="Message #{memberResults.username}">
+                     <f:param name="selectedUserName" value="#{memberResults.username}"/>
+                     <f:param name="selectedUserID" value="#{memberResults.userId}"/>
+                     <f:param name="gid" value="#{GroupBean.gid}"/>                    
+                 </p:commandButton>
+               </p:column>
+            </p:dataTable>
+        
+      <!--dialog that takes the message and send it to target user @yawei-->
+      <p:dialog header="Write Message" widgetVar="messageDialog" showEffect="fade" hideEffect="fade" resizable="false" id="messageDlg">
+          <h:panelGrid  columns="1" cellpadding="3" id="messagePanel">
+                Send To:#{groupMessageBean.selectedUserName}
+                <br/>
+                <p:inputText id="messageTitle" value="#{messageTitle}" required="true" placeholder="Message Title: Max 100 characters"
+                             requiredMessage="Please enter a title" maxlength="100" size="25"/>
+                <p:inputTextarea  id="messgeContent" value="#{messageContent}" maxlength="5000"  placeholder="Enter message here"
+                    rows="20" cols="50" counter="counterDisplay" required="true"
+                    requiredMessage="#{msg.groupDesErrorMessage}" counterTemplate="#{msg.charactersRemaining}:{0}"
+                    autoResize="false"/>                           
+                 <h:outputText id="counterDisplay" />                                   
+                 <p:commandButton update="growlUser,messagePanel"  icon="ui-icon-search" title="View" value="Send Message" 
+                                  actionListener="#{groupMessageBean.sendMessage(GroupBean.gid, UserBean.uid, messageTitle, messageContent)}">
+              </p:commandButton>              
+            </h:panelGrid> 
+    </p:dialog>
+      
+      <!--dialog to display selected message @yawei-->
+      <p:dialog header="View Message" widgetVar="viewMesDlg" showEffect="fade" hideEffect="fade" resizable="false" id="viewMessageDialog">
+          <h:panelGrid  columns="1" cellpadding="3" id="viewMessagePGrid">                 
+              <p:inputText id="viewMessageTitle" value="#{groupMessageBean.selMessageTitle}" readonly="true"/>
+              <p:inputTextarea  id="viewMessgeContent" value="#{groupMessageBean.selMessageContent}" readonly="true"  rows="10"  cols="30" 
+                    autoResize="false"/>                                                                      
+               <p:commandButton update="growlUser,viewMessageDialog"  icon="ui-icon-search" title="View" value="Send Message" 
+                                  actionListener="#{groupMessageBean.sendMessage(GroupBean.gid, UserBean.uid, messageTitle, messageContent)}">
+              </p:commandButton>
+                 
+            </h:panelGrid>
+      
+    </p:dialog>
              
              <!--confirmation for leaving the group @yawei-->
              <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

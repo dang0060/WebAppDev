@@ -90,4 +90,10 @@ public class GroupsServiceImpl implements GroupsService {
     public  String findGroupLeaedr(int gid){
       return groupsDAO.findGroupLeaedr(gid);
     }
+    
+    //find members of a group 
+    @Override
+      public List<Users> findGroupMembers(int gid){
+        return groupsDAO.findGroupMembers(gid);
+      }
 }

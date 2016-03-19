@@ -25,6 +25,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import serializer.Autowirer;
 import services.interfaces.GroupsService;
 import services.interfaces.UsersService;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -72,7 +74,7 @@ public class SearchBean {
     public void setGroups(List<Groups> groups) {
         this.groups = groups;
     }
-
+        
     /**
      * @return the users
      */
@@ -121,7 +123,7 @@ public class SearchBean {
     }   
       return false;
     }
-   
+    
     //show if user has joined a group @yawei
     public String JoinedGroup(int gid){    
       Groups group=groupsService.findGroupById(gid);

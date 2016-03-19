@@ -63,6 +63,18 @@ public class GroupsDAOImpl implements GroupsDAO {
     }  
     //end of group leader search function 
     
+    //get members of a group   @yawei
+    @Override
+    public List<Users> findGroupMembers(int gid) {
+        Session session = sFac.openSession();
+        Query query = session.createQuery("SELECT UG.users from UsersGroups UG where UG.groups.groupId = :group_id").setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);      
+        query.setParameter("group_id", gid);
+        List<Users> groupUsers = query.list();
+        session.close();
+        return groupUsers;
+    }  
+    //end of group member search function 
+    
     @Override
     public Groups findGroupByName(String groupName) {
         Session session = sFac.openSession();

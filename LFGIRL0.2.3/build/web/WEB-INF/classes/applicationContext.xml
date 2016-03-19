@@ -66,6 +66,14 @@
         <property name="ChatDAO" ref="ChatDAO" />
     </bean>
     
+    <bean id="GroupMessageDAO" class="daoImpl.GroupMessageDAOImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+     <bean id="GroupMessageService" class="services.implementation.GroupMessageServiceImpl">
+        <property name="GroupMessageDAO" ref="GroupMessageDAO" />
+    </bean>
+    
     <tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>

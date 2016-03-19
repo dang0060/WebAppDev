@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated Mar 17, 2016 2:29:47 AM by Hibernate Tools 4.3.1
+// Generated Mar 18, 2016 10:25:22 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -28,7 +28,8 @@ public class Groups  implements java.io.Serializable {
      private String groupname;
      private String description;
      private GroupLocations groupLocations;
-     private Set usersGroupses = new HashSet(0);
+     private Set<UsersGroups> usersGroupses = new HashSet<UsersGroups>(0);
+     private Set<GroupMessages> groupMessageses = new HashSet<GroupMessages>(0);
 
     public Groups() {
     }
@@ -37,11 +38,12 @@ public class Groups  implements java.io.Serializable {
     public Groups(String groupname) {
         this.groupname = groupname;
     }
-    public Groups(String groupname, String description, GroupLocations groupLocations, Set usersGroupses) {
+    public Groups(String groupname, String description, GroupLocations groupLocations, Set<UsersGroups> usersGroupses, Set<GroupMessages> groupMessageses) {
        this.groupname = groupname;
        this.description = description;
        this.groupLocations = groupLocations;
        this.usersGroupses = usersGroupses;
+       this.groupMessageses = groupMessageses;
     }
    
      @Id @GeneratedValue(strategy=IDENTITY)
@@ -86,12 +88,21 @@ public class Groups  implements java.io.Serializable {
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="groups")
-    public Set getUsersGroupses() {
+    public Set<UsersGroups> getUsersGroupses() {
         return this.usersGroupses;
     }
     
-    public void setUsersGroupses(Set usersGroupses) {
+    public void setUsersGroupses(Set<UsersGroups> usersGroupses) {
         this.usersGroupses = usersGroupses;
+    }
+
+@OneToMany(fetch=FetchType.LAZY, mappedBy="groups")
+    public Set<GroupMessages> getGroupMessageses() {
+        return this.groupMessageses;
+    }
+    
+    public void setGroupMessageses(Set<GroupMessages> groupMessageses) {
+        this.groupMessageses = groupMessageses;
     }
 
 

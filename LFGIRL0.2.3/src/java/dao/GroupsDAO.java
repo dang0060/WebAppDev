@@ -46,4 +46,7 @@ public interface GroupsDAO {
     
     //try to implment group leader search @yawei
     public  String findGroupLeaedr(int gid);
+    
+    //search for members of a group @yawei
+    public List<Users> findGroupMembers(int gid);
 }

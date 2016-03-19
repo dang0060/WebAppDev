@@ -42,4 +42,7 @@ public interface GroupsService {
     
     //try to implment leader search @yawei
     public String findGroupLeaedr(int gid);
+    
+    //searches for group members @yawei
+    public List<Users> findGroupMembers(int gid);
 }

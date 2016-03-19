@@ -11,6 +11,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS mydb;
 CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
 USE `mydb` ;
 
@@ -165,6 +166,7 @@ create table if not exists `mydb`.`group_locations` (
     `address` varchar(100) NULL,
     `latitude` float(10,6) NOT NULL,
 	`longitude` float(10,6) NOT NULL,
+    PRIMARY KEY (`group_id_fk`),
     constraint `group_id_fk`
 		foreign key (`group_id_fk`)
         references `mydb`.`groups`(`group_id`)
@@ -172,6 +174,27 @@ create table if not exists `mydb`.`group_locations` (
 engine=InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `mydb`.`group_messages`
+-- -----------------------------------------------------
+drop table if exists `mydb`.`group_messages`;
+
+create table if not exists `mydb`.`group_messages` (
+	`message_id` INT NOT NULL AUTO_INCREMENT,
+	`group_id_fk` INT NOT NULL,
+	`sender_user_id` INT NOT NULL,
+    `receiver_user_id` INT NOT NULL,
+    `message_title` varchar(100) NULL,
+    `message_content`  varchar(5000) NULL,
+	`message_read_status`  BIT(1) NULL,
+	`message_date` varchar(20) NULL,
+	PRIMARY KEY (`message_id`),
+   CONSTRAINT `group_id_fk_con`
+    FOREIGN KEY (`group_id_fk`)
+    REFERENCES `mydb`.`groups` (`group_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+engine=InnoDB;
 
 
 
@@ -201,8 +224,10 @@ DELETE FROM users_groups
 	WHERE users_groups.user_id = OLD.user_id;
     
 DELETE FROM user_info 
-WHERE
-    user_info.user_info_id = OLD.user_id;
+   WHERE user_info.user_info_id = OLD.user_id;
+   -- remove any message that sent to a user, if that user is deleted
+DELETE FROM group_messages
+   WHERE group_messages.receiver_user_id = OLD.user_id;
 
 END$$
 
@@ -215,6 +240,9 @@ BEGIN
 
 DELETE FROM users_groups
 	WHERE users_groups.group_id = OLD.group_id;
+    -- Delete all messages belongs to one group if group is deleted
+DELETE FROM group_messages 
+    WHERE group_messages.group_id_fk = OLD.group_id;
 
 END$$
 
