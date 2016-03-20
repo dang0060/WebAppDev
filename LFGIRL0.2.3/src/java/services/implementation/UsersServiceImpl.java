@@ -116,4 +116,10 @@ public class UsersServiceImpl implements UsersService {
         return usersDAO.userEmailCheck(email);
     }
     
+    /*find username through userId*/
+    @Override
+    @Transactional
+    public String findUserNameById(int id) {
+      return usersDAO.findUserNameById(id);
+    }
 }

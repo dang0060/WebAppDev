@@ -32,4 +32,6 @@ public interface UsersDAO {
     
     public void deleteUser(int id);
     
+    public String findUserNameById(int id);
+    
 }

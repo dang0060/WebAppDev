@@ -48,6 +48,16 @@ public class UsersDAOImpl implements UsersDAO{
         return user;
     }
     
+     @Override
+    public String findUserNameById(int user_id) {
+        Session session = sFac.openSession();
+        Query query = session.createQuery("SELECT U from Users U where U.userId = :uid");
+        query.setParameter("uid", user_id);
+        Users user = (Users)query.uniqueResult();
+        session.close();
+        return user.getUsername();
+    }
+    
     @Override
     public Users findUserByName(String userName) {
         Session session = sFac.openSession();

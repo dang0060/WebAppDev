@@ -26,6 +26,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import serializer.Autowirer;
 import services.interfaces.GroupsService;
 import services.interfaces.GroupMessageService;
+import services.interfaces.UsersService;
 
 /**
  *
@@ -40,6 +41,9 @@ public class groupMessageBean implements Serializable {
     @Autowired
     transient GroupMessageService groupMessageService;
     
+     @Autowired
+    transient UsersService usersService;
+    
     private String selectedUserName;
     private List<Users> groupMembers;
     private List<GroupMessages> groupMessages;
@@ -48,8 +52,10 @@ public class groupMessageBean implements Serializable {
     private String selMessageContent;
     private int selMessageId; 
     private int selectedUserID;
+    private int selMessageSenderId;
     private int gid;
     private int uid;
+    private boolean pollingToggle;
     
     @PostConstruct
     private void init() {
@@ -86,13 +92,35 @@ public class groupMessageBean implements Serializable {
         this.selectedUserID = selectedUserID;
     }
     
+    public boolean isPollingToggle() {
+        return pollingToggle;
+    }
+ 
+    public void setPollingToggle(boolean pollingToggle) {
+        this.pollingToggle = pollingToggle;
+    }
+    
+     /**
+     * @return the selMessageSenderId
+     */
+    public int getSelMessageSenderId() {
+        return selMessageSenderId;
+    }
+
+    /**
+     * @param selMessageSenderId the selMessageSenderId to set
+     */
+    public void setSelMessageSenderId(int selMessageSenderId) {
+        this.selMessageSenderId = selMessageSenderId;
+    }
+    
      /**
      * @return the selMessageId
      */
     public int getSelMessageId() {
         return selMessageId;
     }
-
+     
     /**
      * @param selMessageId the selMessageId to set
      */
@@ -221,6 +249,10 @@ public class groupMessageBean implements Serializable {
       return groupMembers;
     }
     
+    public String obtainSelMesSenderName(){
+       return usersService.findUserNameById(selMessageSenderId);        
+    }
+    
     /*setup SelectedUserId and SelecteduserName using params*/
     public void setUpSelectedUser(){      
      String tempselectedUserName = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("selectedUserName");
@@ -234,17 +266,27 @@ public class groupMessageBean implements Serializable {
      } 
     }
     
-    public void setUpSelectedMessage(){
+    public void setUpSelectedMessage(boolean deleteMessage){
        String tempMesTitle = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("messageTitle");
        String tempMesContent = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("messageContent");
        String tempMesId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("messagId");
-       
-       if(tempMesTitle != null && tempMesContent != null &&tempMesId != null ){
+       String tempSenderId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("senderId");
+              
+       if(tempMesTitle != null && tempMesContent != null &&tempMesId != null && tempSenderId !=null){
          selMessageTitle = tempMesTitle;
          selMessageContent = tempMesContent;
          selMessageId = Integer.parseInt(tempMesId);
+         selMessageSenderId =Integer.parseInt(tempSenderId);
+         
+         if(deleteMessage){ //delete message          
+            groupMessageService.deleteMessage(selMessageId);          
+            return;
+         }
          
          groupMessageService.updateReadStatus(selMessageId);
+         
+         System.out.println(selMessageTitle);
+         System.out.println(selMessageContent);
        }
            
     }
@@ -257,12 +299,15 @@ public class groupMessageBean implements Serializable {
    RequestContext context = RequestContext.getCurrentInstance();
    boolean readStatus = false; //defualt status is false, as the message has not been read yet 
    FacesMessage message;
-   
+  
    //get today's date
      Date dNow = new Date( );
      SimpleDateFormat ft = 
      new SimpleDateFormat ("yyyy.MM.dd");
      date =  ft.format(dNow);
+     
+     //remove newline charactere from input, so it won't cause loading problem on message read page
+     messageContent = messageContent.replaceAll("(\r\n|\n)", "   ");
      
      //setup the groupMessage object's attributes
      newMessage.setGroups(groupsService.findGroupById(gid));
@@ -283,5 +328,17 @@ public class groupMessageBean implements Serializable {
   public List<GroupMessages> listMessages(){
      setGroupMessages(groupMessageService.listMessages(gid, uid));
      return groupMessages;
+  }
+  
+  public void togglePolling(){
+      RequestContext context = RequestContext.getCurrentInstance(); 
+      
+      if(pollingToggle){
+        context.execute("PF('messagePoll').start()");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Polling Enabled"));
+        return;
+      }
+       context.execute("PF('messagePoll').stop()");
+       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Polling Disabled"));
   }
 }

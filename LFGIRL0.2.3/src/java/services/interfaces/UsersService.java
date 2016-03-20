@@ -36,5 +36,8 @@ public interface UsersService {
     
    /*check existing email, to be used in UsersView or a bean @yawei*/
     public boolean userEmailDupCheck(String email);
+    
+    /*get any user's name by user id*/
+    public String findUserNameById(int id);
 
 }

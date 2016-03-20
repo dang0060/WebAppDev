@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * GroupMessage DAO implementation @yawei
  */
 package daoImpl;
 
@@ -26,7 +24,7 @@ public class GroupMessageDAOImpl implements GroupMessageDAO {
         sFac = sessionFactory;
     }
     
-    //obtain messages that belong to a group
+    //obtain messages for a user that belongs to one group
     @Override
     public List<GroupMessages> listMessages(int gid, int receiverId) {
         Session session = sFac.openSession();
@@ -48,7 +46,7 @@ public class GroupMessageDAOImpl implements GroupMessageDAO {
        session.close();
     }
     
-    //delete message from database 
+    //delete selected message from database 
     @Override
     public void deleteMessage(int message_id) {
         Session session=sFac.openSession();
@@ -71,6 +69,7 @@ public class GroupMessageDAOImpl implements GroupMessageDAO {
         }
     }
     
+    /*change the read status of the selected message to true @yawei*/
     @Override
     public void updateReadStatus(int messageId){
         Session session=sFac.openSession();
@@ -80,7 +79,10 @@ public class GroupMessageDAOImpl implements GroupMessageDAO {
              Query query = session.createQuery("SELECT GM from GroupMessages GM where GM.messageId = :mes_id ");
              query.setParameter("mes_id", messageId);
              GroupMessages selectedMessage = (GroupMessages)query.uniqueResult();
-             selectedMessage.setMessageReadStatus(true);
+             if(selectedMessage.getMessageReadStatus()){ //return if status is already set to true
+                 return; 
+             }            
+             selectedMessage.setMessageReadStatus(true);             
              session.update(selectedMessage);
              tx.commit();
         } catch (Exception e) {
