@@ -5,7 +5,7 @@ body{
 	padding:0;
 	margin:0;
 	font-family: 'Titillium Web', 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
-	
+	 background-image: url("images/footer_lodyas.png");
 }
 
 H4 {
@@ -21,17 +21,17 @@ HR{
 	position:fixed;
 	height:100px;
 	width:100%;
-	z-index: 90;
+	z-index: -1;
+         background-image: url("images/dvsup.png");
 }
 
 .loginLink {
-	position:fixed;
+	position:absolute;
 	right:10px;
 	top:70px;
 	color:lightgray;
 	font-size: 12px;
 	text-decoration: none;
-        z-index: 100;
 }
 
 .loggedin{
@@ -95,6 +95,7 @@ overflow:hidden;
 transition:width .05s linear;
 -webkit-transform:translateZ(0) scale(1,1);
 z-index:1000;
+background-image: url("images/dvsup.png");
 }
 
 .sidemenu>ul {
@@ -169,16 +170,17 @@ padding:0;
 }
 .sidemenu li:hover>a,nav.sidemenu li.active>a,.dropdown-menu>li>a:hover,.dropdown-menu>li>a:focus,.dropdown-menu>.active>a,.dropdown-menu>.active>a:hover,.dropdown-menu>.active>a:focus,.no-touch .dashboard-page nav.dashboard-menu ul li:hover a,.dashboard-page nav.dashboard-menu ul li.active a, has-subnav {
 color:#fff;
-background-color:#E71515;
+background-color:#bf0000;
 }
 
 .content {
-	position:relative;
+	position:fixed;
 	top:100px;
-	left:100px;
-        overflow: auto;
-        height: 100%;
-        z-index: 0;
+	left:60px;
+        padding:10px;
+        color:lightgray;
+        width: 100%;
+       
 }
 
 .title {
@@ -202,7 +204,54 @@ div[id="userCreateForm:growlUser_container"] {
     top:20%;
     left:45%;
 }
-.langform{
-    position:fixed;
-    z-index: 100;
+
+.groupForm .ui-datatable{
+    width:90%;
+}
+
+.ui-datatable th{
+    
+    background-image: none !important;
+    color: #fff;
+    font-weight: normal;
+}
+button {
+	-moz-box-shadow:inset 0px 1px 0px 0px #f29c93 !important;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #f29c93 !important;
+	box-shadow:inset 0px 1px 0px 0px #f29c93 !important;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fe1a00), color-stop(1, #ce0100)) !important;
+	background:-moz-linear-gradient(top, #fe1a00 5%, #ce0100 100%) !important;
+	background:-webkit-linear-gradient(top, #fe1a00 5%, #ce0100 100%) !important;
+	background:-o-linear-gradient(top, #fe1a00 5%, #ce0100 100%) !important;
+	background:-ms-linear-gradient(top, #fe1a00 5%, #ce0100 100%) !important;
+	background:linear-gradient(to bottom, #fe1a00 5%, #ce0100 100%) !important;
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fe1a00', endColorstr='#ce0100',GradientType=0)!important;
+	background-color:#fe1a00 !important;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #d83526;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff !important;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #b23e35 !important;
+}
+button:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ce0100), color-stop(1, #fe1a00)) !important;
+	background:-moz-linear-gradient(top, #ce0100 5%, #fe1a00 100%)!important;
+	background:-webkit-linear-gradient(top, #ce0100 5%, #fe1a00 100%) !important;
+	background:-o-linear-gradient(top, #ce0100 5%, #fe1a00 100%) !important;
+	background:-ms-linear-gradient(top, #ce0100 5%, #fe1a00 100%)!important;
+	background:linear-gradient(to bottom, #ce0100 5%, #fe1a00 100%) !important;
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ce0100', endColorstr='#fe1a00',GradientType=0) !important;
+	background-color:#ce0100 !important;
+}
+button:active {
+	position:relative;
+	top:1px;
 }
