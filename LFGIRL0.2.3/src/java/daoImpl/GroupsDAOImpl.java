@@ -59,17 +59,19 @@ public class GroupsDAOImpl implements GroupsDAO {
         query.setParameter("group_id", gid);
         Users user = (Users)query.uniqueResult();
         session.close();
-        return (user.getUsername());
+        if(user != null)
+          return (user.getUsername());
+        return ""; //member is deleted, no name to return
     }  
     //end of group leader search function 
     
     //get members of a group   @yawei
     @Override
     public List<Users> findGroupMembers(int gid) {
-        Session session = sFac.openSession();
-        Query query = session.createQuery("SELECT UG.users from UsersGroups UG where UG.groups.groupId = :group_id").setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);      
+        Session session = sFac.openSession();      
+        Query query = session.createQuery("SELECT UG.users from UsersGroups UG where UG.groups.groupId = :group_id").setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);       
         query.setParameter("group_id", gid);
-        List<Users> groupUsers = query.list();
+         List<Users> groupUsers = query.list();
         session.close();
         return groupUsers;
     }  

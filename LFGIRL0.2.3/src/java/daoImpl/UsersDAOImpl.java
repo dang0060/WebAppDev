@@ -55,7 +55,9 @@ public class UsersDAOImpl implements UsersDAO{
         query.setParameter("uid", user_id);
         Users user = (Users)query.uniqueResult();
         session.close();
-        return user.getUsername();
+        if(user != null)
+          return user.getUsername();
+        return "null";
     }
     
     @Override
@@ -64,7 +66,7 @@ public class UsersDAOImpl implements UsersDAO{
         Query query = session.createQuery("from Users U left join fetch U.usersGroupses where U.username = :user_name");
         query.setParameter("user_name", userName);
         Users user = (Users)query.uniqueResult();
-        session.close();
+        session.close();      
         return user;
     }
     

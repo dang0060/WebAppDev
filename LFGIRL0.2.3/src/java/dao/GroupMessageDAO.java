@@ -18,6 +18,12 @@ public interface GroupMessageDAO {
     /*delete message from database  @yawei*/
     public void deleteMessage(int message_id); 
     
-      /*update read status  @yawei*/
-     public void updateReadStatus(int messageId);
+    /*update read status  @yawei*/
+    public void updateReadStatus(int messageId);
+    
+    /*delete all messages belongs to a user*/
+    public void deleteUserAllMessage(int uid, int gid);
+    
+    //check receiver id, make sure the member is a group member  
+    public Boolean verifyReceiverId(int gid, int receiverId);
 }

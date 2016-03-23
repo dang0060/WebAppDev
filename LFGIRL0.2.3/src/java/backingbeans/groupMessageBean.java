@@ -53,8 +53,8 @@ public class groupMessageBean implements Serializable {
     private int selMessageId; 
     private int selectedUserID;
     private int selMessageSenderId;
-    private int gid;
-    private int uid;
+    private int gid = -1;
+    private int uid = -1;
     private boolean pollingToggle;
     
     @PostConstruct
@@ -231,11 +231,6 @@ public class groupMessageBean implements Serializable {
         return groupMessages;
     }
     
-    public void testUidGid(){
-       System.out.println(uid);
-       System.out.println(gid);
-    }
-
     /**
      * @param groupMessages the groupMessages to set
      */
@@ -244,28 +239,50 @@ public class groupMessageBean implements Serializable {
     }
     
     /*get member of a group @yawei*/
-    public List<Users> findGroupMembers(int gid){   
+    public List<Users> findGroupMembers(){   
       setGroupMembers(groupsService.findGroupMembers(gid));
       return groupMembers;
     }
     
+    /*get the sender's user name*/
     public String obtainSelMesSenderName(){
-       return usersService.findUserNameById(selMessageSenderId);        
+        String senderName = usersService.findUserNameById(selMessageSenderId);
+        if(!senderName.equals("null"))
+           return senderName;
+        return "Deleted User, userID: " + selMessageSenderId;
+    }
+    
+    /*get the sender's user name*/
+    public String obtainSenderName(int senderId){
+        String senderName = usersService.findUserNameById(senderId);
+        if(!senderName.equals("null"))
+           return senderName;
+        return "Deleted User, userID: " + senderId;
     }
     
     /*setup SelectedUserId and SelecteduserName using params*/
-    public void setUpSelectedUser(){      
+    public void setUpSelectedUser(){
+     RequestContext context = RequestContext.getCurrentInstance();
      String tempselectedUserName = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("selectedUserName");
-     String tempselectedUserID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("selectedUserID");
-     String tempselectedGid = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("gid");
+     String tempselectedUserID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("selectedUserID"); 
      
-     if((tempselectedUserID != null) && (tempselectedUserName!= null) && (tempselectedGid != null)){
-        selectedUserID=Integer.parseInt(tempselectedUserID);
-        gid =Integer.parseInt(tempselectedGid);
-        selectedUserName = tempselectedUserName;
-     } 
+     //display message entry panel if all the information are present
+     if((tempselectedUserID != null) && (tempselectedUserName!= null)){
+        selectedUserID=Integer.parseInt(tempselectedUserID);    
+        selectedUserName = tempselectedUserName;      
+        context.execute("PF('messageDialog').show()");
+     }
     }
     
+    /*changes button text if sending message to self*/
+    public String obtainMessageButtonText(int uid){     
+          if(uid == this.uid){
+            return "Note to self";
+          }
+          return "Message";
+    }
+    
+    /*records attributes for the seleccted message, or delete the message if boolean parameter is set to true */
     public void setUpSelectedMessage(boolean deleteMessage){
        String tempMesTitle = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("messageTitle");
        String tempMesContent = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("messageContent");
@@ -282,25 +299,24 @@ public class groupMessageBean implements Serializable {
             groupMessageService.deleteMessage(selMessageId);          
             return;
          }
-         
+         //mark the message as read
          groupMessageService.updateReadStatus(selMessageId);
-         
-         System.out.println(selMessageTitle);
-         System.out.println(selMessageContent);
-       }
-           
+       }         
     }
   
  //send message to the target user
-  public void sendMessage (int gid, int senderId, String messageTitle, String messageContent){
+  public void sendMessage (String messageTitle, String messageContent){
    String date;
    GroupMessages newMessage = new GroupMessages();
    FacesContext fc = FacesContext.getCurrentInstance();
    RequestContext context = RequestContext.getCurrentInstance();
    boolean readStatus = false; //defualt status is false, as the message has not been read yet 
    FacesMessage message;
-  
-   //get today's date
+   
+   //verify receiver is still part of the group
+   if(groupMessageService.verifyReceiverId(gid, selectedUserID))
+   { 
+     //get today's date
      Date dNow = new Date( );
      SimpleDateFormat ft = 
      new SimpleDateFormat ("yyyy.MM.dd");
@@ -316,20 +332,28 @@ public class groupMessageBean implements Serializable {
      newMessage.setMessageReadStatus(readStatus);
      newMessage.setMessageTitle(messageTitle);
      newMessage.setReceiverUserId(selectedUserID);
-     newMessage.setSenderUserId(senderId);
+     newMessage.setSenderUserId(uid);
      groupMessageService.addMessage(newMessage); //call service to store message in database
      
      //display message after message is sent
      message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Message sent to",selectedUserName);
      context.execute("PF('messageDialog').hide()"); //close the message dialog after sending
      fc.addMessage(null, message);
+   }
+   else{ //receiving user is no longer part of the group
+     message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error, ", "The selected user is not part of the group");
+     context.execute("PF('messageDialog').hide()"); //close the message dialog afterwards
+     fc.addMessage(null, message);
+   }
   }
   
+  /*list all messages for the current user*/
   public List<GroupMessages> listMessages(){
      setGroupMessages(groupMessageService.listMessages(gid, uid));
      return groupMessages;
   }
   
+  /*turn the message polling feature on or off*/
   public void togglePolling(){
       RequestContext context = RequestContext.getCurrentInstance(); 
       

@@ -62,12 +62,12 @@ public class UserBean {
     
     
     private void setUID(){
+        
         LoginBean lv = (LoginBean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
         String tempId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("uid");
         isUser=false;
         updateFlag=false;
         
-    
         //pages that can be accessed by everyone
         if(FacesContext.getCurrentInstance().getViewRoot().getViewId().contains("userProfile")){
             if(tempId!=null){//set uid to parameter value
@@ -108,7 +108,7 @@ public class UserBean {
         
         user=usersService.getUserById(uid);
         setGroups(groupsService.findGroupsByUserId(user.getUserId()));
-        setUserInfo(user.getUserInfo());
+        setUserInfo(user.getUserInfo());     
     }
     
     private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {

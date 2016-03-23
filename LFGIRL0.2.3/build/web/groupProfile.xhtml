@@ -19,7 +19,7 @@
         <!--update the form every 20 seconds-->     
         <p:growl id="growlUser" sticky="false" showDetail="true" life="5000"/>
         <h:form id="groupProfileForm">
-            <!--trying to implement an option for user to turn polling on/off-->
+            <!--option for user to turn polling on/off-->
             <p:poll interval="5" update="groupMembers, messageTable" widgetVar="messagePoll" autoStart="false" />
             <h2>#{GroupBean.groupName}</h2>
             <br/>
@@ -52,11 +52,11 @@
                    <p:ajax listener="#{groupMessageBean.togglePolling()}" update="groupMembers,messageTable,growlUser" />
                 </p:inputSwitch>
               
-             
+             <!--The overlaypanel that holds the message datatable @yawei-->
              <p:overlayPanel id="messageDisPanel" for="checkMessage" hideEffect="fade" dynamic="true" dismissable="false" showCloseIcon="true"  >             
                      <p:dataTable var="messages" value="#{groupMessageBean.listMessages()}" rows="8" paginator="true" id="messageTable" style="width:1100px" >
                          <p:column headerText="Sender" style="width:5px;text-align: left">                         
-                             <h:outputText value="#{UsersService.findUserNameById(messages.senderUserId)}"/>                                                   
+                             <h:outputText value="#{groupMessageBean.obtainSenderName(messages.senderUserId)}"/>                                                   
                    </p:column>
                          
                     <p:column headerText="Title" style="width:5px;text-align: left">                         
@@ -98,7 +98,7 @@
              <b>#{msg.memberList}</b>
              <br/>          
               <!--shows members of a group @yawei-->         
-              <p:dataTable id="groupMembers" var="memberResults" value="#{groupMessageBean.findGroupMembers(GroupBean.gid)}" style="width:500px;">          
+              <p:dataTable id="groupMembers" var="memberResults" value="#{groupMessageBean.findGroupMembers()}" style="width:500px;">          
                 <p:column headerText="#{msg.memberName}" style="width:5px;text-align: center">
                     <h:outputLink  value="userProfile.xhtml">                
                         <h:outputText value="#{memberResults.username}"/>
@@ -108,11 +108,10 @@
                  
               <!--Button to send message to that user @yawei-->
               <p:column headerText="Option" style="width:5px;text-align: center" rendered="#{GroupBean.canGroupMessage()}">
-                  <p:commandButton update=":groupProfileForm:messageDlg"  process="@this" actionListener="#{groupMessageBean.setUpSelectedUser()}" oncomplete="PF('messageDialog').show()" 
-                                   icon="ui-icon-search" title="View" value="Message #{memberResults.username}">
+                  <p:commandButton update=":groupProfileForm:messageDlg, :groupProfileForm:groupMembers"  process="@this" actionListener="#{groupMessageBean.setUpSelectedUser()}"
+                                   icon="ui-icon-search" title="View" value="#{groupMessageBean.obtainMessageButtonText(memberResults.userId)}">
                      <f:param name="selectedUserName" value="#{memberResults.username}"/>
-                     <f:param name="selectedUserID" value="#{memberResults.userId}"/>
-                     <f:param name="gid" value="#{GroupBean.gid}"/>                    
+                     <f:param name="selectedUserID" value="#{memberResults.userId}"/>                                   
                  </p:commandButton>
                </p:column>
             </p:dataTable>
@@ -120,7 +119,7 @@
       <!--dialog that takes the message and send it to target user @yawei-->
       <p:dialog header="Write Message" widgetVar="messageDialog" showEffect="fade" hideEffect="fade" resizable="false" id="messageDlg">
           <h:panelGrid  columns="1" cellpadding="3" id="messagePanel">
-                Send To:#{groupMessageBean.selectedUserName}
+                Send To: #{groupMessageBean.selectedUserName}
                 <br/>
                 <p:inputText id="messageTitle" value="#{messageTitle}" required="true" placeholder="Message Title: Max 100 characters"
                              requiredMessage="Please enter a title" maxlength="100" size="25"/>
@@ -130,7 +129,7 @@
                     autoResize="false"/>                           
                  <h:outputText id="counterDisplay" />                                   
                  <p:commandButton update="growlUser,messagePanel"  icon="ui-icon-search" title="View" value="Send Message" 
-                                  actionListener="#{groupMessageBean.sendMessage(GroupBean.gid, UserBean.uid, messageTitle, messageContent)}">
+                                  actionListener="#{groupMessageBean.sendMessage(messageTitle, messageContent)}">
               </p:commandButton>              
             </h:panelGrid> 
     </p:dialog>

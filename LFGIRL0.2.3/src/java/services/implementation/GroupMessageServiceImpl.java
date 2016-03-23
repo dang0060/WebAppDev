@@ -56,4 +56,18 @@ public class GroupMessageServiceImpl implements GroupMessageService{
      public void updateReadStatus(int messageId){
        groupMessageDAO.updateReadStatus(messageId);
      }
+     
+      /*delete all messages belongs to a user*/
+      @Override
+      @Transactional
+      public void deleteUserAllMessage(int uid, int gid){
+        groupMessageDAO.deleteUserAllMessage(uid, gid);
+      }
+      
+    /*check receiver id, make sure the member is a group member*/
+    @Override
+    @Transactional
+    public Boolean verifyReceiverId(int gid, int receiverId){
+     return groupMessageDAO.verifyReceiverId(gid, receiverId);
+    }
 }

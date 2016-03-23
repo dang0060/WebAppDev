@@ -28,6 +28,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import serializer.Autowirer;
 import services.interfaces.GroupsService;
 import services.interfaces.UsersService;
+import services.interfaces.GroupMessageService;
 
 /**
  *
@@ -41,6 +42,9 @@ public class GroupBean {
     
     @Autowired
     transient UsersService usersService;
+    
+    @Autowired
+    transient GroupMessageService groupMessageService;
     
     private int gid;
     private int uid;
@@ -327,7 +331,10 @@ public class GroupBean {
        //get user and groups entites for the current user
        Users member=usersService.getUserById(uid);
        Groups group = groupsService.findGroupById(gid);
-       groupsService.deleteMember(member, group);                   
+       //remove all messages belongs to that user first before delete member from group
+       groupMessageService.deleteUserAllMessage(uid,gid);
+       groupsService.deleteMember(member, group);  
+       
        group=groupsService.findGroupById(gid);
       //make sure the user is really left the group
       Set<UsersGroups> members = group.getUsersGroupses();
@@ -336,7 +343,7 @@ public class GroupBean {
                        leaveSuccess = false;
                 }
             }
-            //join Success, redirect to group display page
+            //leave Success, redirect to group display page
             if(leaveSuccess){
               FacesContext.getCurrentInstance().getExternalContext().redirect("groupDisplay.xhtml");
             }else{

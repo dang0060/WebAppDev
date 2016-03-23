@@ -25,8 +25,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import serializer.Autowirer;
 import services.interfaces.GroupsService;
 import services.interfaces.UsersService;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -90,7 +88,7 @@ public class SearchBean {
     }
     
     public void userNameSearch(String username) {
-        setUsers(usersService.getUsersByName(username));
+       setUsers(usersService.getUsersByName(username));  
         //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Searching...", "Search in progress"));
     }
     
