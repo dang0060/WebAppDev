@@ -12,10 +12,12 @@ import hibernate.dataobjects.UsersGroups;
 import hibernate.dataobjects.UsersGroupsId;
 import java.util.List;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.transform.*;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.stereotype.Repository;
 import services.interfaces.UsersService;
 
@@ -53,14 +55,14 @@ public class GroupsDAOImpl implements GroupsDAO {
 
     //get the name of the leader for one group, based on group id  @yawei
     @Override
-    public String findGroupLeaedr(int gid) {
+    public String findGroupLeader(int gid) {
         Session session = sFac.openSession();
         Query query = session.createQuery("SELECT UG.users from UsersGroups UG where UG.isLeader= '1' AND UG.groups.groupId = :group_id");
         query.setParameter("group_id", gid);
         Users user = (Users)query.uniqueResult();
         session.close();
         if(user != null)
-          return (user.getUsername());
+            return (user.getUsername());
         return ""; //member is deleted, no name to return
     }  
     //end of group leader search function 
@@ -68,10 +70,10 @@ public class GroupsDAOImpl implements GroupsDAO {
     //get members of a group   @yawei
     @Override
     public List<Users> findGroupMembers(int gid) {
-        Session session = sFac.openSession();      
-        Query query = session.createQuery("SELECT UG.users from UsersGroups UG where UG.groups.groupId = :group_id").setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);       
+        Session session = sFac.openSession();
+        Query query = session.createQuery("SELECT UG.users from UsersGroups UG where UG.groups.groupId = :group_id").setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);      
         query.setParameter("group_id", gid);
-         List<Users> groupUsers = query.list();
+        List<Users> groupUsers = query.list();
         session.close();
         return groupUsers;
     }  
@@ -113,10 +115,7 @@ public class GroupsDAOImpl implements GroupsDAO {
         Transaction tx=null;
         try {
              tx = session.beginTransaction();
-             Groups oldGroup=(Groups)session.get(Groups.class, g.getGroupId());
-             oldGroup.setDescription(g.getDescription());
-             oldGroup.setGroupname(g.getGroupname());
-             session.update(oldGroup);
+             session.update(g);
              tx.commit();
         } catch (Exception e) {
             if (tx != null) {
@@ -128,7 +127,7 @@ public class GroupsDAOImpl implements GroupsDAO {
             session.close();
         }
     }
-    
+
     /*try to define using the same format as addUser, can be removed if better definiation is available @yawei*/
     @Override
     public void addGroup(Groups g) {
@@ -218,6 +217,67 @@ public class GroupsDAOImpl implements GroupsDAO {
             session.close();
         }
     }
-              
+     
+    @Override
+    public List<Object[]> findNearestGroups(float lati, float longi, float maxDistance) {
+        Session session = sFac.openSession();
+        SQLQuery getDistances=session.createSQLQuery("Select groups.*, "
+                + "(6371 * acos( cos( radians(:lati )) * cos( radians( groups.latitude ) ) * cos( radians( groups.longitude ) - radians(:longi) ) + sin( radians(:lati) ) * sin( radians( groups.latitude ) ) ) ) as distance "
+                + "from groups having distance < :maxDistance order by distance;");
+        getDistances.setParameter("lati", lati);
+        getDistances.setParameter("longi", longi);
+        getDistances.setParameter("maxDistance", maxDistance);
+        getDistances.addEntity("groups",Groups.class);
+        getDistances.addScalar("distance", StandardBasicTypes.FLOAT);
+        List closestGroups=getDistances.list();
+        return closestGroups;
+    }
+    
+    @Override
+    public List<Object[]> findNearestGroupsByName(float lati, float longi, float maxDistance, String searchTerm) {
+        Session session = sFac.openSession();
+        SQLQuery getDistances=session.createSQLQuery("Select groups.*, "
+                + "(6371 * acos( cos( radians(:lati )) * cos( radians( groups.latitude ) ) * cos( radians( groups.longitude ) - radians(:longi) ) + sin( radians(:lati) ) * sin( radians( groups.latitude ) ) ) ) as distance "
+                + "from groups where groups.groupname like concat('%', :name , '%') having distance < :maxDistance order by distance;");
+        getDistances.setParameter("lati", lati);
+        getDistances.setParameter("longi", longi);
+        getDistances.setParameter("maxDistance", maxDistance);
+        getDistances.setParameter("name", searchTerm);
+        getDistances.addEntity("groups",Groups.class);
+        getDistances.addScalar("distance", StandardBasicTypes.FLOAT);
+        List closestGroups=getDistances.list();
+        return closestGroups;
+    }
+    
+    @Override
+    public List<Object[]> findNearestGroupsByDesc(float lati, float longi, float maxDistance, String description) {
+        Session session = sFac.openSession();
+        SQLQuery getDistances=session.createSQLQuery("Select groups.*, "
+                + "(6371 * acos( cos( radians(:lati )) * cos( radians( groups.latitude ) ) * cos( radians( groups.longitude ) - radians(:longi) ) + sin( radians(:lati) ) * sin( radians( groups.latitude ) ) ) ) as distance "
+                + "from groups where groups.description like concat('%', :name , '%') having distance < :maxDistance order by distance;");
+        getDistances.setParameter("lati", lati);
+        getDistances.setParameter("longi", longi);
+        getDistances.setParameter("maxDistance", maxDistance);
+        getDistances.setParameter("name", description);
+        getDistances.addEntity("groups",Groups.class);
+        getDistances.addScalar("distance", StandardBasicTypes.FLOAT);
+        List closestGroups=getDistances.list();
+        return closestGroups;
+    }
+    
+    @Override
+    public String getSecretKey(String name){
+        Session session = sFac.openSession();
+        SQLQuery getKey=session.createSQLQuery("Select key_value from secret_keys where key_name=:name");
+        getKey.setParameter("name", name);
+        String result=(String)getKey.uniqueResult();
+        return result;
+    
+    }
+
+    
+    
+    
+    
     }
     

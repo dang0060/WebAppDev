@@ -27,6 +27,10 @@
                    <h:outputText id="counterDisplay" />        
                  <h:panelGroup />
                            
+                 <h:outputLabel for="editlocation" value="#{msg.Location}"/>
+                 <p:inputText id="editlocation" value="#{GroupBean.address}" validator="#{GroupBean.validateAddress}" validatorMessage="#{msg.LocationInvalid}" />
+                 <h:message for="editlocation" style="color:red;"/>
+                 
                 <p:commandButton value="#{msg.SaveChanges}" actionListener="#{GroupBean.editGroup()}" update="editGroupPanel"></p:commandButton>  
                  <h:panelGroup />
                 <!--had to remove those old codes, was going to comment them out, but it will give injection error if I did, the new code will make confirmation box work @yawei -->

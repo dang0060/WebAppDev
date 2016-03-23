@@ -5,6 +5,9 @@
  */
 package backingbeans;
 
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.model.GeocodingResult;
 import hibernate.dataobjects.Groups;
 import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
@@ -17,14 +20,18 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.servlet.ServletContext;
 import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import other.dataobjects.Keychain;
 import serializer.Autowirer;
 import services.interfaces.GroupsService;
 import services.interfaces.UsersService;
@@ -62,6 +69,8 @@ public class GroupBean {
                 
         if(!FacesContext.getCurrentInstance().getViewRoot().getViewId().contains("groupCreate"))
             setGID();
+        else 
+            group=new Groups();
     }
     
     private void setGID(){
@@ -69,20 +78,20 @@ public class GroupBean {
         gid=Integer.parseInt(tempId);
         group=groupsService.findGroupById(gid);
         updateFlag=false;
-            LoginBean user = (LoginBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
+        LoginBean user = (LoginBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
+        
         if(user!=null){
             Set<UsersGroups> members = group.getUsersGroupses();
             for(UsersGroups member:members){
                 if(member.getUsers().getUserId()==user.getUserId()){
-                   // isLeader=member.getIsLeader();
                     setIsLeader(member.getIsLeader());
                     setIsMember(true); //try to implement join group funtion @yawei
                 }
             }
         }
+        
         if(isLeader==null)
-            //isLeader=false;
-         setIsLeader(false);
+            setIsLeader(false);
         
         if(isLeader==false && FacesContext.getCurrentInstance().getViewRoot().getViewId().contains("groupEdit")){
             String groupPage=String.format("groupProfile.xhtml?gid=%d", gid);
@@ -179,6 +188,25 @@ public class GroupBean {
         }
     }
     
+    public String getAddress(){
+        return group.getAddress();
+    }
+    
+    public void setAddress(String address){
+        if(!address.equals(getAddress())){
+            GeoSearchBean search=new GeoSearchBean();
+            search.init();
+            Object[] result=search.addressToCoordinate(address);
+            if(!((String)result[0]).equals("none")){
+                group.setAddress((String)result[0]);
+                group.setLatitude((float)result[1]);
+                group.setLongitude((float)result[2]);
+                updateFlag=true;
+            }
+        }
+    }
+    
+    
      //determine if a user can join a group @yawei
     public boolean canJoinGroup(){ 
         isUserLoggedIn();
@@ -263,18 +291,15 @@ public class GroupBean {
     }
     
     /*to be used in the group creation page, checks for existing group first, remove if needed @yawei*/
-    public void addGroup(String groupName, String description){
+    public void addGroup(){
         RequestContext context = RequestContext.getCurrentInstance();
       //if username exists, it will show a dialog on creation page
-      if(groupsService.groupCheck(groupName)){
+      if(groupsService.groupCheck(group.getGroupname())){
          context.execute("PF('groupFailDlg').show()");
       } else {
-        group=new Groups();
-        group.setGroupname(groupName);
-        group.setDescription(description);
         groupsService.addGroup(group);
        
-        List<Groups> groups=groupsService.findGroupsByName(groupName);
+        List<Groups> groups=groupsService.findGroupsByName(group.getGroupname());
         
         if (groups.size()>1){//if there is more than one group returned, sort by id
            //DON'T convert to lambda experession, it will break the bean
@@ -333,8 +358,7 @@ public class GroupBean {
        Groups group = groupsService.findGroupById(gid);
        //remove all messages belongs to that user first before delete member from group
        groupMessageService.deleteUserAllMessage(uid,gid);
-       groupsService.deleteMember(member, group);  
-       
+       groupsService.deleteMember(member, group);                   
        group=groupsService.findGroupById(gid);
       //make sure the user is really left the group
       Set<UsersGroups> members = group.getUsersGroupses();
@@ -343,7 +367,7 @@ public class GroupBean {
                        leaveSuccess = false;
                 }
             }
-            //leave Success, redirect to group display page
+            //join Success, redirect to group display page
             if(leaveSuccess){
               FacesContext.getCurrentInstance().getExternalContext().redirect("groupDisplay.xhtml");
             }else{
@@ -355,5 +379,27 @@ public class GroupBean {
      */
     public GroupBean() {
         
-    }    
+    }  
+    
+    /*for group creation and editing pages, does not allow empty location*/
+    public void validateAddress(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+        String location=value.toString();
+        String key=groupsService.getSecretKey("googlemapsapi");
+        try {
+            if(location==null||location.isEmpty()){
+                throw new Exception();
+            }
+                
+            GeoApiContext apiContext = new GeoApiContext().setApiKey(key);
+            GeocodingResult[] results =  GeocodingApi.geocode(apiContext,location).await();
+            if(results==null||results.length==0)
+               throw new Exception();
+        }
+        catch (Exception ex) {
+            FacesMessage message=new FacesMessage("Invalid Location");
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
+       
+    }
 }

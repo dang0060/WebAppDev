@@ -18,22 +18,26 @@
             <p:spacer height="10"/><br/>
             <h:panelGrid id="groupCreationPanel" columns="3" cellpadding="8">                
                 <h:outputLabel for="groupNameEntry" value="#{msg.groupNameEntry}" />
-                  <p:inputText id="groupNameEntry" value="#{groupName}" label="groupNameEntry"  required="true"
+                <p:inputText id="groupNameEntry" value="#{GroupBean.groupName}" label="groupNameEntry"  required="true"
                                requiredMessage="#{msg.groupNameErrorMessage}" maxlength="100"/>
                   <h:message for="groupNameEntry" style="color: red;"/>                           
                                                  
                   <h:outputLabel for="descriptionEntry" value="#{msg.descriptionEntry}"/>
                   <p:inputTextarea id="descriptionEntry" rows="4" cols="23" counter="counterDisplay" 
-                                   value ="#{groupDescription}" required="true" requiredMessage="#{msg.groupDesErrorMessage}"
+                                   value ="#{GroupBean.description}" required="true" requiredMessage="#{msg.groupDesErrorMessage}"
                                   maxlength="45" counterTemplate="#{msg.charactersRemaining}:{0}." autoResize="false"/>
                  <h:message for="descriptionEntry" style="color: red;"/>
                  <h:panelGroup />
                  <h:outputText id="counterDisplay" />        
                  <h:panelGroup />
                  
+                 <h:outputLabel for="locationEntry" value="#{msg.Location}"/>
+                 <p:inputText id="locationEntry" value="#{GroupBean.address}" validator="#{GroupBean.validateAddress}" validatorMessage="#{msg.LocationInvalid}" required="true" />
+                 <h:message for="locationEntry" style="color:red;"/>
+                 
                  <!--groupDescription needed to pass the input, unless the value in descriptionEntry and property files were changed to other name @yawei-->
                  <p:commandButton id="updateInfo" value="#{msg.groupCreationButton}" update="groupCreationPanel" 
-                                  action="#{GroupBean.addGroup(groupName, groupDescription)}"></p:commandButton>   
+                                  action="#{GroupBean.addGroup()}"></p:commandButton>   
                              
                  <!--dialogs for success or failure -->
                  <p:dialog header="#{msg.cannotCreateGroupDlgHeader}" widgetVar="groupFailDlg" minHeight="60">

@@ -8,7 +8,7 @@ package backingbeans;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
-import hibernate.dataobjects.GroupLocations;
+import hibernate.dataobjects.Groups;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -28,10 +28,10 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import other.dataobjects.GeoSearchGroup;
+import other.dataobjects.SearchResult;
 import other.dataobjects.Keychain;
 import serializer.Autowirer;
-import services.interfaces.GeoService;
+import services.interfaces.GroupsService;
 
 /**
  *
@@ -41,10 +41,10 @@ import services.interfaces.GeoService;
 @ViewScoped
 public class GeoSearchBean implements Serializable{
     @Autowired
-    transient GeoService geoService;
+    transient GroupsService groupService;
     
     
-    private ArrayList<GeoSearchGroup> locations=new ArrayList<>();
+    private ArrayList<SearchResult> locations=new ArrayList<>();
     private float latitude;
     private float longitude;
     private String address;
@@ -68,11 +68,11 @@ public class GeoSearchBean implements Serializable{
         this.key=key;
     }
     
-    public ArrayList<GeoSearchGroup> getLocations(){
+    public ArrayList<SearchResult> getLocations(){
         return locations;
     }
     
-    public void setLocations(ArrayList<GeoSearchGroup> locations){
+    public void setLocations(ArrayList<SearchResult> locations){
         this.locations=locations;
     }
     
@@ -120,29 +120,34 @@ public class GeoSearchBean implements Serializable{
     }
     
     public void search(){
+        locations.clear();
         if(!address.isEmpty())
-            addressToCoordinate();
-        List<Object[]> tempLocations=geoService.findNearestGroups(latitude, longitude, 50);
+            addressToCoordinate(address);
+        List<Object[]> tempLocations=groupService.findNearestGroups(latitude, longitude, 50);
         for(Object[] gl: tempLocations){
-            GeoSearchGroup temp=new GeoSearchGroup((GroupLocations)gl[0], (float)gl[1]);
+            SearchResult temp=new SearchResult((Groups)gl[0], (float)gl[1]);
             locations.add(temp);
         }
         makeMarkers();
     }
 
-    private void addressToCoordinate() {
+    public Object[] addressToCoordinate(String address) {
+        Object[] result = new Object[3];
+        result[0]="none";
         try {
-
             GeoApiContext context = new GeoApiContext().setApiKey(key);
             GeocodingResult[] results =  GeocodingApi.geocode(context,address).await();
-            if(results!=null){
+            if(results!=null&&results.length>0){
                 setLatitude((float)results[0].geometry.location.lat);
                 setLongitude((float)results[0].geometry.location.lng);
+                result[1]=latitude;
+                result[2]=longitude;
+                result[0]=results[0].formattedAddress;
             }
         } catch (Exception ex) {
             Logger.getLogger(GeoSearchBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return result;
     }
     /*makes a string of xml that defines map markers*/
     private void makeMarkers(){
@@ -153,12 +158,23 @@ public class GeoSearchBean implements Serializable{
             streamWriter.writeStartDocument("utf-8", "1.0");
             streamWriter.writeStartElement("markers");
             
-            for(GeoSearchGroup loc:locations){
+            /*create marker for search location*/
+            
+            streamWriter.writeStartElement("marker");
+            streamWriter.writeAttribute("name", "");
+            streamWriter.writeAttribute("address", address);
+            streamWriter.writeAttribute("lat", Float.toString(latitude));
+            streamWriter.writeAttribute("lng", Float.toString(longitude));
+            streamWriter.writeAttribute("distance", "0.0");
+            streamWriter.writeEndElement();
+            
+            /*create markers for search results*/
+            for(SearchResult loc:locations){
                 streamWriter.writeStartElement("marker");
-                streamWriter.writeAttribute("name", escapeXML(loc.getGroupLocation().getGroups().getGroupname()));
-                streamWriter.writeAttribute("address", escapeXML(loc.getGroupLocation().getAddress()));
-                streamWriter.writeAttribute("lat", Float.toString(loc.getGroupLocation().getLatitude()));
-                streamWriter.writeAttribute("lng", Float.toString(loc.getGroupLocation().getLongitude()));
+                streamWriter.writeAttribute("name", escapeXML(loc.getGroup().getGroupname()));
+                streamWriter.writeAttribute("address", escapeXML(loc.getGroup().getAddress()));
+                streamWriter.writeAttribute("lat", Float.toString(loc.getGroup().getLatitude()));
+                streamWriter.writeAttribute("lng", Float.toString(loc.getGroup().getLongitude()));
                 streamWriter.writeAttribute("distance", Float.toString(loc.getDistance()));
                 streamWriter.writeEndElement();
             }

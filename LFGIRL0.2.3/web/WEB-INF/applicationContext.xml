@@ -62,14 +62,6 @@
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
     
-    <bean id="GeoDAO" class="daoImpl.GeoDAOImpl"> 
-        <property name="sessionFactory" ref="sessionFactory" />
-    </bean>
-    
-    <bean id="GeoService" class="services.implementation.GeoServiceImpl">
-        <property name="GeoDAO" ref="GeoDAO"/>
-    </bean>
-    
     <bean id="MessagingService" class="services.implementation.MessagingServiceImpl">
         <property name="ChatDAO" ref="ChatDAO" />
     </bean>

@@ -85,7 +85,7 @@ public class UserBean {
                 try {
                     FacesContext.getCurrentInstance().getExternalContext().redirect(groupPage);
                 } catch (IOException ex) {
-                    Logger.getLogger(GroupBean.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 }
         }
@@ -100,7 +100,7 @@ public class UserBean {
                     FacesContext.getCurrentInstance().getExternalContext().redirect(groupPage);
                     return;
                 } catch (IOException ex) {
-                    Logger.getLogger(GroupBean.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(UserBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
