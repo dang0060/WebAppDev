@@ -11,15 +11,17 @@
     <ui:define name="title">#{msg.GroupSearchTitle}</ui:define>
     <ui:define name="content">
         <h:form>
-            <h2>#{msg.GroupSearchTitle}</h2>
+            <h2 style="text-align: center; padding-right: 4.2% ">#{msg.GroupSearchTitle}</h2>
             #{msg.GroupSearchGuide}
             <br/>
             <p:spacer height="10"/><br/>
             <p:inputText id="groupname" value="#{input}"  />
             <p:commandButton id="submitGroupname" value="#{msg.searchButton}" action="#{SearchBean.searchForGroup(input)}" 
                    update="groupSearchResults" icon="ui-icon-search"></p:commandButton>
-            <p:spacer height="10"/><br/>         
+            <p:spacer height="10"/><br/>
+            <br/>
             <p:dataTable id="groupSearchResults" var="groupResults" value="#{SearchBean.groups}">
+                 
                 <p:column headerText="#{msg.searchID}">
                     <h:outputText value="#{groupResults.groupId}" />
                 </p:column>

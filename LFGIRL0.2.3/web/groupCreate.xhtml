@@ -13,8 +13,9 @@
         <h:form>
             <!--3 columns, the last column is for the message after the textbox-->
             <!--textarea auto limits number of input characters based on requirement, in this case is the database limit-->
-            <p:spacer height="20"/>
-            <h2>#{msg.GroupCreation}</h2> 
+            <h2 style="text-align: center; padding-right: 4.2% ">#{msg.GroupCreation}</h2> 
+            <br/>
+            <p:spacer height="10"/><br/>
             <h:panelGrid id="groupCreationPanel" columns="3" cellpadding="8">                
                 <h:outputLabel for="groupNameEntry" value="#{msg.groupNameEntry}" />
                   <p:inputText id="groupNameEntry" value="#{groupName}" label="groupNameEntry"  required="true"

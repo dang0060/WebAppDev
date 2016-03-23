@@ -16,7 +16,7 @@ and open the template in the editor.
         #{msg.GroupDisplayTitle}
     </ui:define>
     <ui:define name="content">
-        <h2> #{msg.myGroups}</h2>
+        <h2 style="text-align: center; padding-right: 4.2% "> #{msg.myGroups}</h2>
         <h:form>
             <p:dataTable id="groupList" var="groupResults" value="#{UserBean.groups}">
                 <p:column headerText="#{msg.searchID}">

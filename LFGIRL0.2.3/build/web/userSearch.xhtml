@@ -9,13 +9,15 @@
     <ui:define name="title">#{msg.UserSearch}</ui:define>
     <ui:define name="content">
         <h:form>
-            <h2>#{msg.UserSearch}</h2>
+            <h2 style="text-align: center; padding-right: 4.2% ">#{msg.UserSearch}</h2>
             #{msg.playerSearchGuide}
+            <br/>
             <p:spacer height="10"/><br/>
             <p:inputText id="username" value="#{input}" />
             <p:commandButton id="submitUsername" value="#{msg.searchButton}" action="#{SearchBean.userNameSearch(input)}" 
                    update="userSearchResults" icon="ui-icon-search"></p:commandButton>
-	    <br/><p:spacer height="10"/><br/>
+	    <p:spacer height="10"/><br/>
+            <br/>
             <p:dataTable id="userSearchResults" var="userResults" value="#{SearchBean.users}">
                 <p:column headerText="#{msg.searchID}">
                     <h:outputText value="#{userResults.userId}" />

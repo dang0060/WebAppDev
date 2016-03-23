@@ -160,7 +160,6 @@ nav {
 -moz-user-select:none;
 -ms-user-select:none;
 -o-user-select:none;
-user-select:none;
 }
 
 nav ul,nav li {
@@ -176,11 +175,11 @@ background-color:#bf0000;
 .content {
 	position:fixed;
 	top:100px;
-	left:60px;
-        padding:10px;
+	left:40px;
+        padding-left:4.2%;
         color:lightgray;
-        width: 100%;
-       
+        width: 90%;
+        align-items: center;
 }
 
 .title {
