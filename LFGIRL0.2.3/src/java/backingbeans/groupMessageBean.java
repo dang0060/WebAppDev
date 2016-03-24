@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ResourceBundle;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.servlet.ServletContext;
@@ -275,11 +276,13 @@ public class groupMessageBean implements Serializable {
     }
     
     /*changes button text if sending message to self*/
-    public String obtainMessageButtonText(int uid){     
+    public String obtainMessageButtonText(int uid){
+      FacesContext context = FacesContext.getCurrentInstance();
+      ResourceBundle msg = context.getApplication().evaluateExpressionGet(context,"#{msg}", ResourceBundle.class);
           if(uid == this.uid){
-            return "Note to self";
+            return msg.getString("noteToSelf");
           }
-          return "Message";
+           return msg.getString("messageButton");
     }
     
     /*records attributes for the seleccted message, or delete the message if boolean parameter is set to true */
@@ -310,6 +313,7 @@ public class groupMessageBean implements Serializable {
    GroupMessages newMessage = new GroupMessages();
    FacesContext fc = FacesContext.getCurrentInstance();
    RequestContext context = RequestContext.getCurrentInstance();
+   ResourceBundle msg = fc.getApplication().evaluateExpressionGet(fc,"#{msg}", ResourceBundle.class);
    boolean readStatus = false; //defualt status is false, as the message has not been read yet 
    FacesMessage message;
    
@@ -336,12 +340,12 @@ public class groupMessageBean implements Serializable {
      groupMessageService.addMessage(newMessage); //call service to store message in database
      
      //display message after message is sent
-     message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Message sent to",selectedUserName);
+     message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg.getString("mesSentTo"),selectedUserName);
      context.execute("PF('messageDialog').hide()"); //close the message dialog after sending
      fc.addMessage(null, message);
    }
    else{ //receiving user is no longer part of the group
-     message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error, ", "The selected user is not part of the group");
+     message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! ", "The selected user is not part of the group");
      context.execute("PF('messageDialog').hide()"); //close the message dialog afterwards
      fc.addMessage(null, message);
    }
@@ -353,16 +357,27 @@ public class groupMessageBean implements Serializable {
      return groupMessages;
   }
   
+  /*return read status on message as I18N string*/
+  public String obtainReadStatus(boolean readStatus){
+      FacesContext fContext = FacesContext.getCurrentInstance();
+      ResourceBundle msg = fContext.getApplication().evaluateExpressionGet(fContext,"#{msg}", ResourceBundle.class);
+    if(readStatus)
+        return msg.getString("yesButton");
+    return msg.getString("noButton");
+  }
+  
   /*turn the message polling feature on or off*/
   public void togglePolling(){
-      RequestContext context = RequestContext.getCurrentInstance(); 
+      RequestContext context = RequestContext.getCurrentInstance();
+      FacesContext fContext = FacesContext.getCurrentInstance();
+      ResourceBundle msg = fContext.getApplication().evaluateExpressionGet(fContext,"#{msg}", ResourceBundle.class);
       
       if(pollingToggle){
         context.execute("PF('messagePoll').start()");
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Polling Enabled"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg.getString("pollingOn")));
         return;
       }
        context.execute("PF('messagePoll').stop()");
-       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Polling Disabled"));
+       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg.getString("pollingOff")));
   }
 }

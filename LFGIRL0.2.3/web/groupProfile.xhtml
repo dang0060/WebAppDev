@@ -25,7 +25,7 @@
             <br/>
             #{GroupBean.description}
             <br/>   
-            #{msg.Location}:#{GroupBean.address} 
+            #{msg.Location}: #{GroupBean.address} 
             <br/>
             <!--c:if for condition?-->
             <h:outputLink  rendered="#{GroupBean.isLeader}" value="groupEdit.xhtml">
@@ -46,37 +46,39 @@
              <p:spacer width="120" height="50"/> 
              
              <!--show message table in a dynamic panel @yawei-->
-             <p:commandButton id="checkMessage" process="@this" value="Check Message" type="button" rendered="#{GroupBean.canGroupMessage()}"/>
+             <p:commandButton id="checkMessage" process="@this" value="#{msg.checkMessage}" type="button" rendered="#{GroupBean.canGroupMessage()}"/>
              
              <br/><br/><br/>       
-             <h:outputText value="Activate Message Polling: " rendered="#{GroupBean.canGroupMessage()}"/>
-                <p:inputSwitch value="#{groupMessageBean.pollingToggle}" rendered="#{GroupBean.canGroupMessage()}">
+             <h:outputText value="#{msg.pollingToggle}: " rendered="#{GroupBean.canGroupMessage()}"/>
+             <br/>
+                <p:inputSwitch value="#{groupMessageBean.pollingToggle}" rendered="#{GroupBean.canGroupMessage()}" onLabel="#{msg.on}" offLabel="#{msg.off}">
                    <p:ajax listener="#{groupMessageBean.togglePolling()}" update="groupMembers,messageTable,growlUser" />
                 </p:inputSwitch>
               
              <!--The overlaypanel that holds the message datatable @yawei-->
              <p:overlayPanel id="messageDisPanel" for="checkMessage" hideEffect="fade" dynamic="true" dismissable="false" showCloseIcon="true"  >             
-                     <p:dataTable var="messages" value="#{groupMessageBean.listMessages()}" rows="8" paginator="true" id="messageTable" style="width:1100px" >
-                         <p:column headerText="Sender" style="width:5px;text-align: left">                         
+                     <p:dataTable var="messages" value="#{groupMessageBean.listMessages()}" rows="8" paginator="true" id="messageTable" style="width:1100px"
+                                  emptyMessage="#{msg.emptyMessage}">
+                        <p:column headerText="#{msg.mesSender}" style="width:5px;text-align: left">                         
                              <h:outputText value="#{groupMessageBean.obtainSenderName(messages.senderUserId)}"/>                                                   
-                   </p:column>
+                        </p:column>
                          
-                    <p:column headerText="Title" style="width:5px;text-align: left">                         
-                      <h:outputText value="#{messages.messageTitle}"/>                                                   
-                   </p:column>
+                        <p:column headerText="#{msg.mesTitle}" style="width:5px;text-align: left">                         
+                          <h:outputText value="#{messages.messageTitle}"/>                                                   
+                       </p:column>
                       
-                  <p:column headerText="Date" style="width:5px;text-align: left">                         
-                      <h:outputText value="#{messages.messageDate}"/>                                                   
-                  </p:column>
+                        <p:column headerText="#{msg.mesDate}" style="width:5px;text-align: left">                         
+                         <h:outputText value="#{messages.messageDate}"/>                                                   
+                       </p:column>
                       
-                    <p:column headerText="Read Status" style="width:5px;text-align: left">                         
-                      <h:outputText value="#{messages.messageReadStatus}"/>                                                   
-                  </p:column>
+                         <p:column headerText="#{msg.mesReadStatus}" style="width:5px;text-align: left">                         
+                            <h:outputText value="#{groupMessageBean.obtainReadStatus(messages.messageReadStatus)}"/>                                                   
+                        </p:column>
  
                  <!--the column that contains the button to view messages, function parameter false meant not to delete message @yawei-->
-                  <p:column headerText="Option" style="width:5px;text-align: center" rendered="#{GroupBean.canGroupMessage()}">
+                 <p:column headerText="#{msg.option}" style="width:5px;text-align: center" rendered="#{GroupBean.canGroupMessage()}">
                       <p:commandButton update=":groupProfileForm:viewMessagePGrid,:groupProfileForm:messageTable"  process="@this" actionListener="#{groupMessageBean.setUpSelectedMessage(false)}"  oncomplete="PF('viewMesDlg').show()" 
-                                   icon="ui-icon-search" title="View" value="Read">
+                                       icon="ui-icon-search" title="View" value="#{msg.mesReadButton}">
                           <f:param name="messageTitle" value="#{messages.messageTitle}"/>
                           <f:param name="messageContent" value="#{messages.messageContent}"/>
                           <f:param name="messagId" value="#{messages.messageId}"/>
@@ -85,7 +87,7 @@
                   
                   <!--button to delete the message function parameter true meant to delete message @yawei-->
                   <p:commandButton update=":groupProfileForm:messageTable"  process="@this" actionListener="#{groupMessageBean.setUpSelectedMessage(true)}"  oncomplete="PF('mesDelVar').show()"
-                                   icon="ui-icon-search" title="View" value="Delete">
+                                   icon="ui-icon-search" title="View" value="#{msg.mesDeleteButton}">
                        <f:param name="messageTitle" value="#{messages.messageTitle}"/>
                        <f:param name="messageContent" value="#{messages.messageContent}"/>
                        <f:param name="messagId" value="#{messages.messageId}"/> 
@@ -100,7 +102,8 @@
              <b>#{msg.memberList}</b>
              <br/>          
               <!--shows members of a group @yawei-->         
-              <p:dataTable id="groupMembers" var="memberResults" value="#{groupMessageBean.findGroupMembers()}" style="width:500px;">          
+              <p:dataTable id="groupMembers" var="memberResults" value="#{groupMessageBean.findGroupMembers()}" style="width:500px;"
+                           emptyMessage="#{msg.emptyMessage}">          
                 <p:column headerText="#{msg.memberName}" style="width:5px;text-align: center">
                     <h:outputLink  value="userProfile.xhtml">                
                         <h:outputText value="#{memberResults.username}"/>
@@ -109,7 +112,7 @@
                 </p:column>
                  
               <!--Button to send message to that user @yawei-->
-              <p:column headerText="Option" style="width:5px;text-align: center" rendered="#{GroupBean.canGroupMessage()}">
+              <p:column headerText="#{msg.option}" style="width:5px;text-align: center" rendered="#{GroupBean.canGroupMessage()}">
                   <p:commandButton update=":groupProfileForm:messageDlg, :groupProfileForm:groupMembers"  process="@this" actionListener="#{groupMessageBean.setUpSelectedUser()}"
                                    icon="ui-icon-search" title="View" value="#{groupMessageBean.obtainMessageButtonText(memberResults.userId)}">
                      <f:param name="selectedUserName" value="#{memberResults.username}"/>
@@ -119,29 +122,29 @@
             </p:dataTable>
         
       <!--dialog that takes the message and send it to target user @yawei-->
-      <p:dialog header="Write Message" widgetVar="messageDialog" showEffect="fade" hideEffect="fade" resizable="false" id="messageDlg">
+      <p:dialog header="#{msg.sendMessage}" widgetVar="messageDialog" showEffect="fade" hideEffect="fade" resizable="false" id="messageDlg">
           <h:panelGrid  columns="1" cellpadding="3" id="messagePanel">
-                Send To: #{groupMessageBean.selectedUserName}
+                #{msg.sendTo}: #{groupMessageBean.selectedUserName}
                 <br/>
-                <p:inputText id="messageTitle" value="#{messageTitle}" required="true" placeholder="Message Title: Max 100 characters"
-                             requiredMessage="Please enter a title" maxlength="100" size="25"/>
-                <p:inputTextarea  id="messgeContent" value="#{messageContent}" maxlength="5000"  placeholder="Enter message here"
+                <p:inputText id="messageTitle" value="#{messageTitle}" required="true" placeholder="#{msg.messgeTitlePlaceHolder}"
+                             requiredMessage="#{msg.mesTitleReqMessage}" maxlength="100" size="30"/>
+                <p:inputTextarea  id="messgeContent" value="#{messageContent}" maxlength="5000"  placeholder="#{msg.messageBodyPlaceHolder}"
                     rows="10" cols="50" counter="counterDisplay" required="true"
-                    requiredMessage="#{msg.groupDesErrorMessage}" counterTemplate="#{msg.charactersRemaining}:{0}"
+                    requiredMessage="#{msg.messageReqMessage}" counterTemplate="#{msg.charactersRemaining}:{0}"
                     autoResize="false"/>                           
                  <h:outputText id="counterDisplay" />                                   
-                 <p:commandButton update="growlUser,messagePanel"  icon="ui-icon-search" title="View" value="Send Message" 
+                 <p:commandButton update="growlUser,messagePanel"  icon="ui-icon-search" title="View" value="#{msg.sendMessage}" 
                                   actionListener="#{groupMessageBean.sendMessage(messageTitle, messageContent)}">
               </p:commandButton>              
             </h:panelGrid> 
     </p:dialog>
       
       <!--dialog to display selected message @yawei-->
-      <p:dialog header="Message" widgetVar="viewMesDlg" showEffect="fade" hideEffect="fade" resizable="false" id="viewMessageDialog" dynamic="true">
+      <p:dialog header="#{msg.messageButton}" widgetVar="viewMesDlg" showEffect="fade" hideEffect="fade" resizable="false" id="viewMessageDialog" dynamic="true">
           <h:panelGrid  columns="1" cellpadding="3" id="viewMessagePGrid">
-              From: #{groupMessageBean.obtainSelMesSenderName()}
+              #{msg.mesFrom}:  #{groupMessageBean.obtainSelMesSenderName()}
               <br/><br/>
-              Title: #{groupMessageBean.selMessageTitle}
+              #{msg.mesTitle}:  #{groupMessageBean.selMessageTitle}
               <br/>          
               <p:inputTextarea  id="viewMessgeContent" value="#{groupMessageBean.selMessageContent}" readonly="true"  rows="10"  cols="30" 
                     autoResize="false"/>                                                                                       
@@ -159,8 +162,8 @@
                  <h:outputText value="#{msg.groupErrorDlgMessage}"/>
             </p:dialog>   
              
-             <p:dialog header="Message Deleted" widgetVar="mesDelVar" minHeight="60">
-                 <h:outputText value="Message has been deleted"/>
+             <p:dialog header="#{msg.mesDelDlgHeader}" widgetVar="mesDelVar" minHeight="60">
+                 <h:outputText value="#{msg.mesDelDlgBody}"/>
             </p:dialog>
         </h:form>
     </ui:define>

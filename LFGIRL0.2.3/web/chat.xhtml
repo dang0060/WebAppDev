@@ -15,7 +15,7 @@ and open the template in the editor.
     
     
    
-    <ui:define name="title">Chat</ui:define>
+    <ui:define name="title">#{msg.chatTitle}</ui:define>
         <ui:define name="content">
             <h:outputScript name="chatcore.js" library="js" target="head" />
             <h:outputScript name="bootstrap.js" library="bootstrap" target="head" />
@@ -27,22 +27,22 @@ and open the template in the editor.
         <h:form>
             <div class="container chat-signin">
 		<form class="form-signin">
-			<h2 class="form-signin-heading" style="text-align: center; padding-right: 4.2% ">Chat sign in</h2>
+                    <h2 class="form-signin-heading" style="text-align: center; padding-right: 4.2% ">#{msg.chatSignIn}</h2>
         
                         <p:spacer height="25"/><br/>
-			<label for="nickname">Nickname</label> <input type="text"
-				class="input-block-level" placeholder="Nickname" id="nickname" />
+                        <label for="nickname">#{msg.chatName}</label> <input type="text"
+                              class="input-block-level" placeholder="#{msg.chatName}" id="nickname" />
 			<div class="btn-group">
-				<label for="chatroom">Chatroom</label> <select size="1"
+                            <label for="chatroom">#{msg.chatroom}</label> <select size="1"
 					id="chatroom">
-					<option>DnD</option>
-					<option>Battletech</option>
-					<option>Warhammer40k</option>
-					<option>CoD</option>
+                                        <option>#{msg.gameDND}</option>
+                                        <option>#{msg.gameBattletech}</option>
+                                        <option>#{msg.gameWarhammer}</option>
+                                        <option>#{msg.gameCoD}</option>
 				</select>
 			</div>
 			<button class="btn btn-large btn-primary" type="submit"
-				id="enterRoom">Sign in</button>
+                                id="enterRoom">#{msg.enterRoom}</button>
 		</form>
 	</div>
 	<!-- /container -->
@@ -52,13 +52,12 @@ and open the template in the editor.
 			<h2 class="alert alert-success"></h2>
 			<table id="response" class="table table-bordered"></table>
 			<fieldset>
-				<legend>Enter your message..</legend>
+                            <legend>#{msg.enterMessageField}</legend>
 				<div class="controls">
-					<input type="text" class="input-block-level" placeholder="Your message..." id="message" style="height:60px"/>
+                                    <input type="text" class="input-block-level" placeholder="#{msg.enterPlaceHolder}" id="message" style="height:60px"/>
 					<input type="submit" class="btn btn-large btn-block btn-primary"
-						value="Send message" />
-					<button class="btn btn-large btn-block" type="button" id="leave-room">Leave
-						room</button>
+                                               value="#{msg.chatSendMessage}" />
+                                        <button class="btn btn-large btn-block" type="button" id="leave-room">#{msg.leaveButton}</button>
 				</div>
 			</fieldset>
 		</form>

@@ -15,20 +15,20 @@
             #{msg.GroupSearchGuide}
             <br/>
             <p:spacer height="10"/><br/>
-            <p:inputText id="groupname" value="#{input}"  />
+            <p:inputText id="groupname" value="#{input}" placeholder="#{msg.GroupNameInputPlaceHolder}"/>
             
             
-            <p:inputText id="maxdistance" value="#{distance}">
+            <p:inputText id="maxdistance" value="#{distance}" placeholder="#{msg.GroupDisInputPlaceHolder}">
             </p:inputText>
          
-            <h:outputLabel for="searchlocation" value=" km or less from:"/>
-            <p:inputText id="searchlocation" value="#{address}" />
+            <h:outputLabel for="searchlocation" value=" #{msg.GroupKmOrLess}:"/>
+            <p:inputText id="searchlocation" value="#{address}" placeholder="#{msg.GroupAdrInputPlaceHolder}" />
             
             <p:commandButton id="submitGroupname" value="#{msg.searchButton}" onclick="clearLocations()" action="#{SearchBean.searchForGroup(input,distance,address)}" 
                              update="groupSearchResults mapScripts" oncomplete="updateMap()" icon="ui-icon-search"></p:commandButton>
             <p:spacer height="10"/><br/> 
             <ui:include src="/map.xhtml" />
-            <p:dataTable id="groupSearchResults" var="groupResults" value="#{SearchBean.locations}" emptyMessage="#{SearchBean.emptyMessage}">
+            <p:dataTable id="groupSearchResults" var="groupResults" value="#{SearchBean.locations}" emptyMessage="#{msg.emptyMessage}">
                 <p:column headerText="Distance" rendered="#{SearchBean.isGeoSearch}">
                     <h:outputText value="#{groupResults.distance}"/>
                 </p:column>
