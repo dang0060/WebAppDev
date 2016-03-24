@@ -194,7 +194,7 @@ public class GroupBean {
     
     public void setAddress(String address){
         if(!address.equals(getAddress())){
-            GeoSearchBean search=new GeoSearchBean();
+            SearchBean search=new SearchBean();
             search.init();
             Object[] result=search.addressToCoordinate(address);
             if(!((String)result[0]).equals("none")){

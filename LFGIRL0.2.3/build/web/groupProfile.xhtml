@@ -24,7 +24,9 @@
             <h2 style="text-align: center; padding-right: 4.2% ">#{GroupBean.groupName}</h2>
             <br/>
             #{GroupBean.description}
-            <br/>                       
+            <br/>   
+            #{msg.Location}:#{GroupBean.address} 
+            <br/>
             <!--c:if for condition?-->
             <h:outputLink  rendered="#{GroupBean.isLeader}" value="groupEdit.xhtml">
                 <h:outputText value="#{msg.Edit}"/>

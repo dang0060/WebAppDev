@@ -21,13 +21,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.servlet.ServletContext;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -70,7 +67,7 @@ public class SearchBean {
     
     
     @PostConstruct
-    private void init() {
+    public void init() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ServletContext sC = (ServletContext) ec.getContext();
         WebApplicationContextUtils.getRequiredWebApplicationContext(sC).getAutowireCapableBeanFactory().autowireBean(this);
@@ -82,20 +79,6 @@ public class SearchBean {
         Autowirer.wireObject(this);
     }
 
-    /**
-     * @return the groups
-    
-    public List<Groups> getGroups() {
-        return groups;
-    }
-  */
-    /**
-     * @param groups the groups to set
-     
-    public void setGroups(List<Groups> groups) {
-        this.groups = groups;
-    }
-      */  
     /**
      * @return the users
      */
@@ -263,6 +246,7 @@ public class SearchBean {
             locations.add(new SearchResult(group, -1.0f));
         }
         setIsGeoSearch(false);
+        makeMarkers();
     }
     
     private void searchWithLocation(String searchTerm, float maxDistance, String address) {
@@ -283,11 +267,13 @@ public class SearchBean {
             for(Object[] gl: results){
                 locations.add(new SearchResult((Groups)gl[0], (float)gl[1]));
             }
-            makeMarkers();
             setIsGeoSearch(true);
+            makeMarkers();
+            
     }
     
-    public void addressToCoordinate(String address) {
+    public Object[] addressToCoordinate(String address) {
+        Object[] result={"none",0.0,0.0};
         try {
             GeoApiContext geoContext = new GeoApiContext().setApiKey(key);
             GeocodingResult[] results =  GeocodingApi.geocode(geoContext,address).await();
@@ -295,13 +281,17 @@ public class SearchBean {
                 setLatitude((float)results[0].geometry.location.lat);
                 setLongitude((float)results[0].geometry.location.lng);
                 setAddress(results[0].formattedAddress);
+                result[0]=this.address;
+                result[1]=latitude;
+                result[2]=longitude;
             }
             else{
                 emptyMessage="Location not found.";
             }
         } catch (Exception ex) {
-            Logger.getLogger(GeoSearchBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SearchBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return result;
     }
     /*makes a string of xml that defines map markers*/
     private void makeMarkers(){
@@ -312,8 +302,8 @@ public class SearchBean {
             streamWriter.writeStartDocument("utf-8", "1.0");
             streamWriter.writeStartElement("markers");
             
-            /*create marker for search location*/
-            
+            /*create marker for search location if searching by location*/
+            if(isGeoSearch){
             streamWriter.writeStartElement("marker");
             streamWriter.writeAttribute("name", "");
             streamWriter.writeAttribute("address", address);
@@ -321,7 +311,7 @@ public class SearchBean {
             streamWriter.writeAttribute("lng", Float.toString(longitude));
             streamWriter.writeAttribute("distance", "0.0");
             streamWriter.writeEndElement();
-            
+            }
             /*create markers for search results*/
             for(SearchResult loc:locations){
                 streamWriter.writeStartElement("marker");
@@ -344,7 +334,7 @@ public class SearchBean {
             stringWriter.close();
                
         } catch (XMLStreamException | IOException ex) {
-            Logger.getLogger(GeoSearchBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SearchBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     /*escape special characters*/
