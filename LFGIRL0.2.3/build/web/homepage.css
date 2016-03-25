@@ -180,6 +180,7 @@ background-color:#bf0000;
         color:lightgray;
         width: 90%;
         align-items: center;
+        text-shadow:black 0.1em 0.1em 0.2em !important;
 }
 
 .title {
@@ -211,8 +212,10 @@ div[id="userCreateForm:growlUser_container"] {
 .ui-datatable th{
     
     background-image: none !important;
+    background-color: #5a5c51;
     color: #fff;
     font-weight: normal;
+    text-shadow: black 0.1em 0.1em 0.2em;
 }
 button {
 	-moz-box-shadow:inset 0px 1px 0px 0px #f29c93 !important;
@@ -225,7 +228,7 @@ button {
 	background:-ms-linear-gradient(top, #fe1a00 5%, #ce0100 100%) !important;
 	background:linear-gradient(to bottom, #fe1a00 5%, #ce0100 100%) !important;
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fe1a00', endColorstr='#ce0100',GradientType=0)!important;
-	background-color:#fe1a00 !important;
+	background-color:#bf0000 !important;
 	-moz-border-radius:6px;
 	-webkit-border-radius:6px;
 	border-radius:6px;
@@ -238,7 +241,7 @@ button {
 	font-weight:bold;
 	padding:6px 24px;
 	text-decoration:none;
-	text-shadow:0px 1px 0px #b23e35 !important;
+	text-shadow:black 0.1em 0.1em 0.2em !important;
 }
 button:hover {
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ce0100), color-stop(1, #fe1a00)) !important;
@@ -253,4 +256,68 @@ button:hover {
 button:active {
 	position:relative;
 	top:1px;
+}
+
+.ui-icon {
+    background-color: #fff !important;
+    text-shadow:black 0.1em 0.1em 0.2em !important;
+}
+
+.ui-button-text{
+    text-align: center !important;
+    color: #fff;
+}
+
+label{
+    color: lightgray;
+    text-shadow:black 0.1em 0.1em 0.2em !important;
+}
+
+td{
+    text-shadow: none !important;
+}
+
+H2{
+    text-align: center;
+}
+
+.ui-widget-header{
+    background-image: none !important;
+    background-color: #5a5c51 !important;
+    color: #fff !important;
+    font-weight: normal !important;
+    text-shadow: black 0.1em 0.1em 0.2em !important;
+    text-align: center !important;
+}
+
+.ui-dialog-title{
+    padding-left: 45% !important;
+}
+
+.ui-dialog-content{
+    background-image: none !important;
+    background-color: #5a5c51 !important;
+    text-shadow: black 0.1em 0.1em 0.2em !important;
+    color: #fff !important;
+    font-weight: normal !important;
+}
+
+.ui-panelgrid{
+    background-image: none !important;
+    background-color: #5a5c51 !important;
+    text-shadow: black 0.1em 0.1em 0.2em !important;
+    color: #fff !important;
+    font-weight: normal !important;
+}
+
+.newtext{
+    color: lightgray;
+}
+
+select{
+    color:#111111 !important;
+}
+
+.input-block-level{
+    color:#111111 !important;
 }

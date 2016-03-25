@@ -10,8 +10,8 @@
     <ui:define name="content">       
         <h:form>
             <h2>#{msg.editUserProfile}</h2>
-            <h:panelGrid id="userInfoDisplayPanel" columns="2" cellpadding="5">
-                <h:outputLabel for="firstname" value="#{msg.Profile_firstName}" class="nav-text"/>
+            <h:panelGrid id="userInfoDisplayPanel" columns="2" cellpadding="5" styleClass="newtext">
+                <h:outputLabel for="firstname" value="#{msg.Profile_firstName}"/>
                 <p:inputText id="firstname" value="#{UserBean.firstName}" label="firstname" />
                 <h:outputLabel for="lastname" value="#{msg.Profile_lastName}" class="nav-text"/>
                 <p:inputText id="lastname" value="#{UserBean.lastName}" label="lastname" />

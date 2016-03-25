@@ -9,7 +9,7 @@
     <ui:define name="content">
         <h2 style="text-align: center; padding-right: 4.2% ">#{msg.AboutMe}</h2>
         <br/>
-        <h:panelGrid columns="2">
+        <h:panelGrid columns="2" styleClass="ui-datatable ui-panelgrid">
             <h:outputText value="#{msg.Profile_firstName}: "/>
             <h:outputText value="#{UserBean.userInfo.firstName}"/>
             <h:outputText value="#{msg.Profile_lastName}: "/>

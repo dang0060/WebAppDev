@@ -74,7 +74,7 @@
                  <!--the column that contains the button to view messages, function parameter false meant not to delete message @yawei-->
                   <p:column headerText="Option" style="width:5px;text-align: center" rendered="#{GroupBean.canGroupMessage()}">
                       <p:commandButton update=":groupProfileForm:viewMessagePGrid,:groupProfileForm:messageTable"  process="@this" actionListener="#{groupMessageBean.setUpSelectedMessage(false)}"  oncomplete="PF('viewMesDlg').show()" 
-                                   icon="ui-icon-search" title="View" value="Read">
+                                   icon="ui-icon-mail-open" title="View" value="Read">
                           <f:param name="messageTitle" value="#{messages.messageTitle}"/>
                           <f:param name="messageContent" value="#{messages.messageContent}"/>
                           <f:param name="messagId" value="#{messages.messageId}"/>
@@ -83,7 +83,7 @@
                   
                   <!--button to delete the message function parameter true meant to delete message @yawei-->
                   <p:commandButton update=":groupProfileForm:messageTable"  process="@this" actionListener="#{groupMessageBean.setUpSelectedMessage(true)}"  oncomplete="PF('mesDelVar').show()"
-                                   icon="ui-icon-search" title="View" value="Delete">
+                                   icon="ui-icon-trash" title="View" value="Delete">
                        <f:param name="messageTitle" value="#{messages.messageTitle}"/>
                        <f:param name="messageContent" value="#{messages.messageContent}"/>
                        <f:param name="messagId" value="#{messages.messageId}"/> 
@@ -109,7 +109,7 @@
               <!--Button to send message to that user @yawei-->
               <p:column headerText="Option" style="width:5px;text-align: center" rendered="#{GroupBean.canGroupMessage()}">
                   <p:commandButton update=":groupProfileForm:messageDlg, :groupProfileForm:groupMembers"  process="@this" actionListener="#{groupMessageBean.setUpSelectedUser()}"
-                                   icon="ui-icon-search" title="View" value="#{groupMessageBean.obtainMessageButtonText(memberResults.userId)}">
+                                   icon="ui-icon-comment" title="View" value="#{groupMessageBean.obtainMessageButtonText(memberResults.userId)}">
                      <f:param name="selectedUserName" value="#{memberResults.username}"/>
                      <f:param name="selectedUserID" value="#{memberResults.userId}"/>                                   
                  </p:commandButton>
@@ -121,14 +121,14 @@
           <h:panelGrid  columns="1" cellpadding="3" id="messagePanel">
                 Send To: #{groupMessageBean.selectedUserName}
                 <br/>
-                <p:inputText id="messageTitle" value="#{messageTitle}" required="true" placeholder="Message Title: Max 100 characters"
+                <p:inputText id="messageTitle" value="#{messageTitle}" required="true" placeholder="Title: Max 100 characters"
                              requiredMessage="Please enter a title" maxlength="100" size="25"/>
-                <p:inputTextarea  id="messgeContent" value="#{messageContent}" maxlength="5000"  placeholder="Enter message here"
+                <p:inputTextarea  id="messgeContent" value="#{messageContent}" maxlength="5000"  placeholder="Enter message text here..."
                     rows="10" cols="50" counter="counterDisplay" required="true"
                     requiredMessage="#{msg.groupDesErrorMessage}" counterTemplate="#{msg.charactersRemaining}:{0}"
                     autoResize="false"/>                           
                  <h:outputText id="counterDisplay" />                                   
-                 <p:commandButton update="growlUser,messagePanel"  icon="ui-icon-search" title="View" value="Send Message" 
+                 <p:commandButton update="growlUser,messagePanel"  icon="ui-icon-mail-closed" title="View" value="Send Message" 
                                   actionListener="#{groupMessageBean.sendMessage(messageTitle, messageContent)}">
               </p:commandButton>              
             </h:panelGrid> 

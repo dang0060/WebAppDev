@@ -25,7 +25,7 @@
                   <h:outputLabel for="descriptionEntry" value="#{msg.descriptionEntry}"/>
                   <p:inputTextarea id="descriptionEntry" rows="4" cols="23" counter="counterDisplay" 
                                    value ="#{groupDescription}" required="true" requiredMessage="#{msg.groupDesErrorMessage}"
-                                  maxlength="45" counterTemplate="#{msg.charactersRemaining}:{0}." autoResize="false"/>
+                                   maxlength="45" counterTemplate="#{msg.charactersRemaining}:{0}." autoResize="false"/>
                  <h:message for="descriptionEntry" style="color: red;"/>
                  <h:panelGroup />
                  <h:outputText id="counterDisplay" />        
