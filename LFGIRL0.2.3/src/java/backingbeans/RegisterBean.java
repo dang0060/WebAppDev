@@ -8,6 +8,7 @@ package backingbeans;
 import hibernate.dataobjects.Users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -27,7 +28,7 @@ import services.interfaces.UsersService;
  */
 @ManagedBean(name = "RegisterBean" ,eager=true)
 @RequestScoped
-public class RegisterBean {
+public class RegisterBean implements Serializable{
     
     @Autowired
     private UsersService usersService;

@@ -72,17 +72,13 @@
                        </p:column>
                       
                          <p:column headerText="#{msg.mesReadStatus}" style="width:5px;text-align: left">                         
-                            <h:outputText value="#{groupMessageBean.obtainReadStatus(messages.messageReadStatus)}"/>                                                   
+                             <h:outputText value="#{groupMessageBean.obtainReadStatus(messages.messageReadStatus)}"/>                                                   
                         </p:column>
  
                  <!--the column that contains the button to view messages, function parameter false meant not to delete message @yawei-->
                  <p:column headerText="#{msg.option}" style="width:5px;text-align: center" rendered="#{GroupBean.canGroupMessage()}">
                       <p:commandButton update=":groupProfileForm:viewMessagePGrid,:groupProfileForm:messageTable"  process="@this" actionListener="#{groupMessageBean.setUpSelectedMessage(false)}"  oncomplete="PF('viewMesDlg').show()" 
-<<<<<<< HEAD
-                                   icon="ui-icon-mail-open" title="View" value="Read">
-=======
-                                       icon="ui-icon-search" title="View" value="#{msg.mesReadButton}">
->>>>>>> c6b577cc01d63c4e9ac91401dee130d54aa6fb3c
+                                       icon="ui-icon-mail-open" title="View" value="#{msg.mesReadButton}">
                           <f:param name="messageTitle" value="#{messages.messageTitle}"/>
                           <f:param name="messageContent" value="#{messages.messageContent}"/>
                           <f:param name="messagId" value="#{messages.messageId}"/>
@@ -91,11 +87,7 @@
                   
                   <!--button to delete the message function parameter true meant to delete message @yawei-->
                   <p:commandButton update=":groupProfileForm:messageTable"  process="@this" actionListener="#{groupMessageBean.setUpSelectedMessage(true)}"  oncomplete="PF('mesDelVar').show()"
-<<<<<<< HEAD
-                                   icon="ui-icon-trash" title="View" value="Delete">
-=======
-                                   icon="ui-icon-search" title="View" value="#{msg.mesDeleteButton}">
->>>>>>> c6b577cc01d63c4e9ac91401dee130d54aa6fb3c
+                                   icon="ui-icon-trash" title="View" value="#{msg.mesDeleteButton}">
                        <f:param name="messageTitle" value="#{messages.messageTitle}"/>
                        <f:param name="messageContent" value="#{messages.messageContent}"/>
                        <f:param name="messagId" value="#{messages.messageId}"/> 
@@ -134,24 +126,14 @@
           <h:panelGrid  columns="1" cellpadding="3" id="messagePanel">
                 #{msg.sendTo}: #{groupMessageBean.selectedUserName}
                 <br/>
-<<<<<<< HEAD
-                <p:inputText id="messageTitle" value="#{messageTitle}" required="true" placeholder="Title: Max 100 characters"
-                             requiredMessage="Please enter a title" maxlength="100" size="25"/>
-                <p:inputTextarea  id="messgeContent" value="#{messageContent}" maxlength="5000"  placeholder="Enter message text here..."
-=======
                 <p:inputText id="messageTitle" value="#{messageTitle}" required="true" placeholder="#{msg.messgeTitlePlaceHolder}"
                              requiredMessage="#{msg.mesTitleReqMessage}" maxlength="100" size="30"/>
                 <p:inputTextarea  id="messgeContent" value="#{messageContent}" maxlength="5000"  placeholder="#{msg.messageBodyPlaceHolder}"
->>>>>>> c6b577cc01d63c4e9ac91401dee130d54aa6fb3c
                     rows="10" cols="50" counter="counterDisplay" required="true"
                     requiredMessage="#{msg.messageReqMessage}" counterTemplate="#{msg.charactersRemaining}:{0}"
                     autoResize="false"/>                           
                  <h:outputText id="counterDisplay" />                                   
-<<<<<<< HEAD
-                 <p:commandButton update="growlUser,messagePanel"  icon="ui-icon-mail-closed" title="View" value="Send Message" 
-=======
-                 <p:commandButton update="growlUser,messagePanel"  icon="ui-icon-search" title="View" value="#{msg.sendMessage}" 
->>>>>>> c6b577cc01d63c4e9ac91401dee130d54aa6fb3c
+                 <p:commandButton update="growlUser,messagePanel"  icon="ui-icon-mail-closed" title="View" value="#{msg.sendMessage}" 
                                   actionListener="#{groupMessageBean.sendMessage(messageTitle, messageContent)}">
               </p:commandButton>              
             </h:panelGrid> 

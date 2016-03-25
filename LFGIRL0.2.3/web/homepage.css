@@ -184,11 +184,8 @@ background-color:#bf0000;
         width: 90%;
         height: 100%;
         align-items: center;
-<<<<<<< HEAD
         text-shadow:black 0.1em 0.1em 0.2em !important;
-=======
         z-index: 0;
->>>>>>> c6b577cc01d63c4e9ac91401dee130d54aa6fb3c
 }
 
 .title {

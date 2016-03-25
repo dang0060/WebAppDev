@@ -10,6 +10,7 @@ import hibernate.dataobjects.UserInfo;
 import hibernate.dataobjects.Users;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -33,7 +34,7 @@ import services.interfaces.UsersService;
  */
 @ManagedBean(name = "UserBean" ,eager=true)
 @ViewScoped
-public class UserBean {
+public class UserBean implements Serializable {
 
     @Autowired
     transient GroupsService groupsService;

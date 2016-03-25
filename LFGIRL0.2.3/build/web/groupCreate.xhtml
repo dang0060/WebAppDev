@@ -24,13 +24,8 @@
                                                  
                   <h:outputLabel for="descriptionEntry" value="#{msg.descriptionEntry}"/>
                   <p:inputTextarea id="descriptionEntry" rows="4" cols="23" counter="counterDisplay" 
-<<<<<<< HEAD
-                                   value ="#{groupDescription}" required="true" requiredMessage="#{msg.groupDesErrorMessage}"
-                                   maxlength="45" counterTemplate="#{msg.charactersRemaining}:{0}." autoResize="false"/>
-=======
                                    value ="#{GroupBean.description}" required="true" requiredMessage="#{msg.groupDesErrorMessage}"
                                   maxlength="45" counterTemplate="#{msg.charactersRemaining}:{0}." autoResize="false"/>
->>>>>>> c6b577cc01d63c4e9ac91401dee130d54aa6fb3c
                  <h:message for="descriptionEntry" style="color: red;"/>
                  <h:panelGroup />
                  <h:outputText id="counterDisplay" />        

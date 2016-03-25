@@ -13,6 +13,7 @@ import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ import other.dataobjects.SearchResult;
  */
 @ManagedBean(name="SearchBean" ,eager=true)
 @ViewScoped
-public class SearchBean {
+public class SearchBean implements Serializable {
     
     @Autowired
     transient GroupsService groupsService;
