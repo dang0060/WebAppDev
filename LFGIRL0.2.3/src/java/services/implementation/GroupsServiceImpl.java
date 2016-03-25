@@ -9,7 +9,6 @@ import dao.GroupsDAO;
 import hibernate.dataobjects.Groups;
 import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
-import hibernate.dataobjects.UsersGroupsId;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -87,8 +86,8 @@ public class GroupsServiceImpl implements GroupsService {
     
     //try to implement group leader search
     @Override
-    public  String findGroupLeaedr(int gid){
-      return groupsDAO.findGroupLeaedr(gid);
+    public  String findGroupLeader(int gid){
+      return groupsDAO.findGroupLeader(gid);
     }
     
     //find members of a group 
@@ -96,4 +95,24 @@ public class GroupsServiceImpl implements GroupsService {
       public List<Users> findGroupMembers(int gid){
         return groupsDAO.findGroupMembers(gid);
       }
+      
+    @Override
+        public List<Object[]> findNearestGroups(float lati, float longi, float maxDistance){
+            return groupsDAO.findNearestGroups(lati, longi, maxDistance);
+        }
+
+    @Override
+    public List<Object[]> findNearestGroupsbyName(float lati, float longi, float maxDistance, String name) {
+        return groupsDAO.findNearestGroupsByName(lati, longi, maxDistance, name);
+    }
+
+    @Override
+    public List<Object[]> findNearestGroupsbyDesc(float lati, float longi, float maxDistance, String description) {
+        return groupsDAO.findNearestGroupsByDesc(lati, longi, maxDistance, description);
+    }
+
+    @Override
+    public String getSecretKey(String name) {
+        return groupsDAO.getSecretKey(name);
+    }
 }

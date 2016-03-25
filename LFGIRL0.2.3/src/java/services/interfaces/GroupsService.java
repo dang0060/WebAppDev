@@ -8,7 +8,6 @@ package services.interfaces;
 import hibernate.dataobjects.Groups;
 import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -41,8 +40,16 @@ public interface GroupsService {
     public boolean groupCheck(String s);
     
     //try to implment leader search @yawei
-    public String findGroupLeaedr(int gid);
+    public String findGroupLeader(int gid);
     
     //searches for group members @yawei
     public List<Users> findGroupMembers(int gid);
+    
+    public List<Object[]> findNearestGroups(float lati, float longi, float maxDistance);
+    
+    public List<Object[]> findNearestGroupsbyName(float lati, float longi, float maxDistance, String name);
+    
+    public List<Object[]> findNearestGroupsbyDesc(float lati, float longi, float maxDistance, String description);
+
+    public String getSecretKey(String name);
 }

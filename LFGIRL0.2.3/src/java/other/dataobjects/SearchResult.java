@@ -5,20 +5,20 @@
  */
 package other.dataobjects;
 
-import hibernate.dataobjects.GroupLocations;
+import hibernate.dataobjects.Groups;
 
 /**
  *
  * @author Alayna
  */
-public class GeoSearchGroup {
+public class SearchResult {
     private float distance;
-    private GroupLocations groupLocation;
+    private Groups group;
     
-    public GeoSearchGroup(){}
+    public SearchResult(){}
     
-    public GeoSearchGroup(GroupLocations groupLocation, float distance){
-        this.groupLocation=groupLocation;
+    public SearchResult(Groups group, float distance){
+        this.group=group;
         this.distance=distance;
     }
     
@@ -30,11 +30,11 @@ public class GeoSearchGroup {
         return distance;
     }
     
-    public void setGroupLocation(GroupLocations groupLocation){
-        this.groupLocation=groupLocation;
+    public void setGroup(Groups group){
+        this.group=group;
     }
     
-    public GroupLocations getGroupLocation(){
-        return groupLocation;
+    public Groups getGroup(){
+        return group;
     }
 }

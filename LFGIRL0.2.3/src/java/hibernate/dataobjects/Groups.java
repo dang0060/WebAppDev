@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated Mar 18, 2016 10:25:22 PM by Hibernate Tools 4.3.1
+// Generated 23-Mar-2016 6:16:41 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -27,7 +26,9 @@ public class Groups  implements java.io.Serializable {
      private Integer groupId;
      private String groupname;
      private String description;
-     private GroupLocations groupLocations;
+     private String address;
+     private Float latitude;
+     private Float longitude;
      private Set<UsersGroups> usersGroupses = new HashSet<UsersGroups>(0);
      private Set<GroupMessages> groupMessageses = new HashSet<GroupMessages>(0);
 
@@ -38,10 +39,12 @@ public class Groups  implements java.io.Serializable {
     public Groups(String groupname) {
         this.groupname = groupname;
     }
-    public Groups(String groupname, String description, GroupLocations groupLocations, Set<UsersGroups> usersGroupses, Set<GroupMessages> groupMessageses) {
+    public Groups(String groupname, String description, String address, Float latitude, Float longitude, Set<UsersGroups> usersGroupses, Set<GroupMessages> groupMessageses) {
        this.groupname = groupname;
        this.description = description;
-       this.groupLocations = groupLocations;
+       this.address = address;
+       this.latitude = latitude;
+       this.longitude = longitude;
        this.usersGroupses = usersGroupses;
        this.groupMessageses = groupMessageses;
     }
@@ -78,13 +81,34 @@ public class Groups  implements java.io.Serializable {
         this.description = description;
     }
 
-@OneToOne(fetch=FetchType.LAZY, mappedBy="groups")
-    public GroupLocations getGroupLocations() {
-        return this.groupLocations;
+    
+    @Column(name="address", length=100)
+    public String getAddress() {
+        return this.address;
     }
     
-    public void setGroupLocations(GroupLocations groupLocations) {
-        this.groupLocations = groupLocations;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    
+    @Column(name="latitude", precision=10, scale=6)
+    public Float getLatitude() {
+        return this.latitude;
+    }
+    
+    public void setLatitude(Float latitude) {
+        this.latitude = latitude;
+    }
+
+    
+    @Column(name="longitude", precision=10, scale=6)
+    public Float getLongitude() {
+        return this.longitude;
+    }
+    
+    public void setLongitude(Float longitude) {
+        this.longitude = longitude;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="groups")

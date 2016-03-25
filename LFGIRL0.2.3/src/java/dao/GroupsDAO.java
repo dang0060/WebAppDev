@@ -45,8 +45,16 @@ public interface GroupsDAO {
     public void deleteMember(Users user, Groups group); 
     
     //try to implment group leader search @yawei
-    public  String findGroupLeaedr(int gid);
+    public  String findGroupLeader(int gid);
     
     //search for members of a group @yawei
     public List<Users> findGroupMembers(int gid);
+    
+    public List<Object[]> findNearestGroups(float lati, float longi, float maxDistance);
+    
+    public List<Object[]> findNearestGroupsByName(float lati, float longi, float maxDistance, String name);
+    
+    public List<Object[]> findNearestGroupsByDesc(float lati, float longi, float maxDistance, String description);
+
+    public String getSecretKey(String name);
 }

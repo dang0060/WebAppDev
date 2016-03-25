@@ -19,19 +19,22 @@ HR{
 	will-change: transform;
 	background-color:black;
 	position:fixed;
+        top:0px;
 	height:100px;
 	width:100%;
-	z-index: -1;
+	z-index: 90;
          background-image: url("images/dvsup.png");
+         border-bottom: 1px white solid;
 }
 
 .loginLink {
-	position:absolute;
+	position:fixed;
 	right:10px;
 	top:70px;
 	color:lightgray;
 	font-size: 12px;
 	text-decoration: none;
+        z-index: 100;
 }
 
 .loggedin{
@@ -173,14 +176,19 @@ background-color:#bf0000;
 }
 
 .content {
-	position:fixed;
+	position:relative;
 	top:100px;
 	left:40px;
         padding-left:4.2%;
         color:lightgray;
         width: 90%;
+        height: 100%;
         align-items: center;
+<<<<<<< HEAD
         text-shadow:black 0.1em 0.1em 0.2em !important;
+=======
+        z-index: 0;
+>>>>>>> c6b577cc01d63c4e9ac91401dee130d54aa6fb3c
 }
 
 .title {
@@ -191,6 +199,11 @@ background-color:#bf0000;
 	opacity: 0.3;
 	
 }
+
+.langform{
+    position:fixed;
+    z-index: 100;
+} 
 /*changed the global growl position @yawei*/
 .ui-growl{
 	position: absolute;
