@@ -27,7 +27,8 @@
             <br/>   
             #{msg.Location}: #{GroupBean.address} 
             <br/>
-            <!--c:if for condition?-->
+            #{msg.tags}: <ui:repeat value="#{GroupBean.tagsList}" var="t"> #{t.getTagName()} </ui:repeat>
+            <br/>
             <h:outputLink  rendered="#{GroupBean.isLeader}" value="groupEdit.xhtml">
                 <h:outputText value="#{msg.Edit}"/>
                 <f:param name="gid" value="#{GroupBean.gid}"/>

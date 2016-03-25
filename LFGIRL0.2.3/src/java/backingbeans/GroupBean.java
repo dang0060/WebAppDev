@@ -9,13 +9,17 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import hibernate.dataobjects.Groups;
+import hibernate.dataobjects.Tags;
 import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
 import hibernate.dataobjects.UsersGroupsId;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -32,7 +36,6 @@ import javax.servlet.ServletContext;
 import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import other.dataobjects.Keychain;
 import serializer.Autowirer;
 import services.interfaces.GroupsService;
 import services.interfaces.UsersService;
@@ -44,7 +47,7 @@ import services.interfaces.GroupMessageService;
  */
 @ManagedBean(name = "GroupBean", eager=true)
 @ViewScoped
-public class GroupBean implements Serializable {
+public class GroupBean implements Serializable{
     @Autowired
     transient GroupsService groupsService;
     
@@ -61,6 +64,8 @@ public class GroupBean implements Serializable {
     private Boolean isLeader;
     private Boolean isMember = false; //try to implement join group funtion @yawei
     private Boolean isUser = false; //try to implement join group funtion @yawei
+    private Set<Tags> tags=null;//temporary list of tags @alayna
+    private String newTagName="";
     
    @PostConstruct
     private void init() {
@@ -207,7 +212,42 @@ public class GroupBean implements Serializable {
         }
     }
     
+    public void setNewTagName(String newTagName){
+        this.newTagName=newTagName;
+    }
     
+    public String getNewTagName(){
+        return newTagName;
+    }
+    
+    public void setTagsList(List<Tags> tags){
+        Set tagsSet = new HashSet<>(tags);       
+        group.setTagses(tagsSet);
+    }
+    /*converts tag set to list so that repeat and datatable can use it*/ 
+    public List<Tags> getTagsList(){
+        if(tags==null){
+            tags=new HashSet<>(group.getTagses());
+        }
+        ArrayList list=new ArrayList<>(tags);
+        return list;
+    }
+    /*adds tag to temporary list*/
+    public void addTag(){
+
+        Tags tag=groupsService.findTagByName(newTagName);
+        //if tag isn't in db
+        if(tag==null){
+            //create placeholder tag with null groups
+            tag=new Tags(newTagName.toLowerCase(), null);
+        } 
+        tags.add(tag); 
+        newTagName="";
+    }
+    /*remove tag from temporary list*/
+    public void removeTag(Tags tag){
+        tags.remove(tag);
+    }
      //determine if a user can join a group @yawei
     public boolean canJoinGroup(){ 
         isUserLoggedIn();
@@ -284,6 +324,18 @@ public class GroupBean implements Serializable {
     }
     
     public void editGroup() throws IOException{
+        if(!group.getTagses().equals(tags)){
+            updateFlag=true;
+            for(Tags tag:tags){
+                /*add new tags to db, replace the tags with db version with id*/
+                if(tag.getGroupses()==null){
+                    Tags tempTag=groupsService.addNewTag(tag);
+                    tags.remove(tag);
+                    tags.add(tempTag);
+                }
+            }
+            group.setTagses(tags);            
+        }
         if(updateFlag==true)
             groupsService.updateGroupInfo(group);
         
@@ -298,6 +350,22 @@ public class GroupBean implements Serializable {
       if(groupsService.groupCheck(group.getGroupname())){
          context.execute("PF('groupFailDlg').show()");
       } else {
+        /*add new tags to db*/
+          Iterator<Tags> ite=tags.iterator();
+            while(ite.hasNext()){
+                /*add new tags and replace taglist entries*/
+                Tags tag=ite.next();
+
+                if(tag.getGroupses()==null){
+                    Tags tempTag=groupsService.addNewTag(tag);
+                    ite.remove();
+                    tags.add(tempTag);
+                }
+            }
+            
+            group.setTagses(tags);            
+        
+          
         groupsService.addGroup(group);
        
         List<Groups> groups=groupsService.findGroupsByName(group.getGroupname());
@@ -331,7 +399,6 @@ public class GroupBean implements Serializable {
     }
     
     public void deleteGroup() throws IOException {
-        int gid = group.getGroupId();
         System.out.println(gid);
         groupsService.deleteGroup(gid);
         FacesContext.getCurrentInstance().getExternalContext().redirect("homepage.xhtml");

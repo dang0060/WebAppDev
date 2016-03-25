@@ -31,6 +31,16 @@
                  <p:inputText id="editlocation" value="#{GroupBean.address}" validator="#{GroupBean.validateAddress}" validatorMessage="#{msg.LocationInvalid}" />
                  <h:message for="editlocation" style="color:red;"/>
                  
+                  #{msg.tags}: 
+                 <h:panelGroup id="edittags">
+                     <ui:repeat id="currtags" value="#{GroupBean.tagsList}" var="t" varStatus="tagstatus">#{t.getTagName()} <p:commandButton value="✕" action="#{GroupBean.removeTag(t)}" update=":#{p:component('edittags')}"/></ui:repeat>
+                     <p:inputText id="addtag" value="#{GroupBean.newTagName}"/> 
+                 <p:commandButton value="＋" action="#{GroupBean.addTag()}" update=":#{p:component('edittags')}">
+                     <p:resetInput target="addtag"/>
+                 </p:commandButton>
+                 </h:panelGroup>
+                 <br/>
+                 
                 <p:commandButton value="#{msg.SaveChanges}" actionListener="#{GroupBean.editGroup()}" update="editGroupPanel"></p:commandButton>  
                  <h:panelGroup />
                 <!--had to remove those old codes, was going to comment them out, but it will give injection error if I did, the new code will make confirmation box work @yawei -->

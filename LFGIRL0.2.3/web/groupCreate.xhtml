@@ -35,6 +35,16 @@
                  <p:inputText id="locationEntry" value="#{GroupBean.address}" validator="#{GroupBean.validateAddress}" validatorMessage="#{msg.LocationInvalid}" required="true" />
                  <h:message for="locationEntry" style="color:red;"/>
                  
+                 #{msg.tags}: 
+                 <h:panelGroup id="edittags">
+                     <ui:repeat id="currtags" value="#{GroupBean.tagsList}" var="t" varStatus="tagstatus">#{t.getTagName()} <p:commandButton value="✕" action="#{GroupBean.removeTag(t)}" update=":#{p:component('edittags')}"/></ui:repeat>
+                     <p:inputText id="addtag" value="#{GroupBean.newTagName}"/> 
+                 <p:commandButton value="＋" action="#{GroupBean.addTag()}" update=":#{p:component('edittags')}">
+                     <p:resetInput target="addtag"/>
+                 </p:commandButton>
+                 </h:panelGroup>
+                 <br/>
+                 
                  <!--groupDescription needed to pass the input, unless the value in descriptionEntry and property files were changed to other name @yawei-->
                  <p:commandButton id="updateInfo" value="#{msg.groupCreationButton}" update="groupCreationPanel" 
                                   action="#{GroupBean.addGroup()}"></p:commandButton>   

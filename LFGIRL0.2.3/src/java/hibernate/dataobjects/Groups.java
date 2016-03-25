@@ -1,5 +1,5 @@
 package hibernate.dataobjects;
-// Generated 23-Mar-2016 6:16:41 PM by Hibernate Tools 4.3.1
+// Generated 24-Mar-2016 2:09:04 PM by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -10,6 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -29,6 +32,7 @@ public class Groups  implements java.io.Serializable {
      private String address;
      private Float latitude;
      private Float longitude;
+     private Set<Tags> tagses = new HashSet<Tags>(0);
      private Set<UsersGroups> usersGroupses = new HashSet<UsersGroups>(0);
      private Set<GroupMessages> groupMessageses = new HashSet<GroupMessages>(0);
 
@@ -39,12 +43,13 @@ public class Groups  implements java.io.Serializable {
     public Groups(String groupname) {
         this.groupname = groupname;
     }
-    public Groups(String groupname, String description, String address, Float latitude, Float longitude, Set<UsersGroups> usersGroupses, Set<GroupMessages> groupMessageses) {
+    public Groups(String groupname, String description, String address, Float latitude, Float longitude, Set<Tags> tagses, Set<UsersGroups> usersGroupses, Set<GroupMessages> groupMessageses) {
        this.groupname = groupname;
        this.description = description;
        this.address = address;
        this.latitude = latitude;
        this.longitude = longitude;
+       this.tagses = tagses;
        this.usersGroupses = usersGroupses;
        this.groupMessageses = groupMessageses;
     }
@@ -109,6 +114,18 @@ public class Groups  implements java.io.Serializable {
     
     public void setLongitude(Float longitude) {
         this.longitude = longitude;
+    }
+
+@ManyToMany(fetch=FetchType.LAZY)
+    @JoinTable(name="groups_tags", catalog="mydb", joinColumns = { 
+        @JoinColumn(name="group_id_fk", nullable=false, updatable=false) }, inverseJoinColumns = { 
+        @JoinColumn(name="tag_id_fk", nullable=false, updatable=false) })
+    public Set<Tags> getTagses() {
+        return this.tagses;
+    }
+    
+    public void setTagses(Set<Tags> tagses) {
+        this.tagses = tagses;
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="groups")

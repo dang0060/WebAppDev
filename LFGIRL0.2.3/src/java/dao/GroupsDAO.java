@@ -6,6 +6,7 @@
 package dao;
 
 import hibernate.dataobjects.Groups;
+import hibernate.dataobjects.Tags;
 import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
 import java.util.*;
@@ -55,6 +56,10 @@ public interface GroupsDAO {
     public List<Object[]> findNearestGroupsByName(float lati, float longi, float maxDistance, String name);
     
     public List<Object[]> findNearestGroupsByDesc(float lati, float longi, float maxDistance, String description);
+    
+    public Tags findTagByName(String name);
+    
+    public Tags addNewTag(Tags tags);
 
     public String getSecretKey(String name);
 }

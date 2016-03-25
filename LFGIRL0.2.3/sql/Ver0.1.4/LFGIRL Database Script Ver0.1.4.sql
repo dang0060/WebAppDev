@@ -188,6 +188,43 @@ create table if not exists `mydb`.`group_messages` (
 engine=InnoDB;
 
 -- -----------------------------------------------------
+-- Table `mydb`.`tags`
+-- -----------------------------------------------------
+drop table if exists `mydb`.`tags`;
+create table if not exists `mydb`.`tags`(
+	`tag_id` INT NOT NULL AUTO_INCREMENT,
+    `tag_name` VARCHAR(50) NOT NULL UNIQUE,
+    primary key (`tag_id`),
+    UNIQUE INDEX `tag_id_UNIQUE` (`tag_id` ASC),
+    UNIQUE INDEX `tag_name_UNIQUE` (`tag_name` ASC)
+)
+engine=InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`groups_tags`
+-- -----------------------------------------------------
+drop table if exists `mydb`.`groups_tags`;
+create table if not exists `mydb`.`groups_tags`(
+	`group_id_fk`INT NOT NULL,
+	`tag_id_fk` INT NOT NULL,
+    INDEX `group_id_idx` (`group_id_fk` ASC),
+    INDEX `tag_id_idx` (`tag_id_fk` ASC),
+    PRIMARY KEY (`group_id_fk`,`tag_id_fk`),
+    CONSTRAINT `group_id_fk`
+		FOREIGN KEY (`group_id_fk`)
+		REFERENCES `mydb`.`groups` (`group_id`)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION,
+    CONSTRAINT `tag_id_fk`
+		FOREIGN KEY (`tag_id_fk`)
+		REFERENCES `mydb`.`tags` (`tag_id`)
+		ON DELETE CASCADE
+		ON UPDATE NO ACTION)
+engine=InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `mydb`.`secret_keys`
 -- -----------------------------------------------------
 drop table if exists `mydb`.`secret_keys`;
@@ -243,6 +280,8 @@ DELETE FROM users_groups
     -- Delete all messages belongs to one group if group is deleted
 DELETE FROM group_messages 
     WHERE group_messages.group_id_fk = OLD.group_id;
+DELETE FROM groups_tags
+	where groups_tags.group_id_fk=OLD.group_id;
 
 END$$
 

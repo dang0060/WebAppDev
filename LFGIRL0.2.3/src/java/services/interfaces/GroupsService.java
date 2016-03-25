@@ -6,6 +6,7 @@
 package services.interfaces;
 
 import hibernate.dataobjects.Groups;
+import hibernate.dataobjects.Tags;
 import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
 import java.util.List;
@@ -50,6 +51,10 @@ public interface GroupsService {
     public List<Object[]> findNearestGroupsbyName(float lati, float longi, float maxDistance, String name);
     
     public List<Object[]> findNearestGroupsbyDesc(float lati, float longi, float maxDistance, String description);
+    
+    public Tags findTagByName(String name);
+    
+    public Tags addNewTag(Tags tags);
 
     public String getSecretKey(String name);
 }

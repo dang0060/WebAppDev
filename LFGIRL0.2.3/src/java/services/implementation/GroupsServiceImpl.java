@@ -7,6 +7,7 @@ package services.implementation;
 
 import dao.GroupsDAO;
 import hibernate.dataobjects.Groups;
+import hibernate.dataobjects.Tags;
 import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
 import java.util.List;
@@ -32,6 +33,7 @@ public class GroupsServiceImpl implements GroupsService {
     }
     
     @Override
+    @Transactional
     public Groups findGroupById(int id) {
         return groupsDAO.findGroupById(id);
     }
@@ -114,5 +116,15 @@ public class GroupsServiceImpl implements GroupsService {
     @Override
     public String getSecretKey(String name) {
         return groupsDAO.getSecretKey(name);
+    }
+
+    @Override
+    public Tags findTagByName(String name) {
+        return groupsDAO.findTagByName(name);
+    }
+
+    @Override
+    public Tags addNewTag(Tags tag) {
+        return groupsDAO.addNewTag(tag);
     }
 }

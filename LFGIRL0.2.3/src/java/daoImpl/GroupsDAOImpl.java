@@ -7,9 +7,11 @@ package daoImpl;
 
 import dao.GroupsDAO;
 import hibernate.dataobjects.Groups;
+import hibernate.dataobjects.Tags;
 import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
 import hibernate.dataobjects.UsersGroupsId;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -46,7 +48,7 @@ public class GroupsDAOImpl implements GroupsDAO {
     @Override
     public Groups findGroupById(int id) {
         Session session = sFac.openSession();
-        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses where G.id = :group_id");
+        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses left join fetch G.tagses where G.id = :group_id");
         query.setParameter("group_id", id);
         Groups group = (Groups)query.uniqueResult();
         session.close();
@@ -273,6 +275,27 @@ public class GroupsDAOImpl implements GroupsDAO {
         String result=(String)getKey.uniqueResult();
         return result;
     
+    }
+
+    @Override
+    public Tags findTagByName(String name) {
+        Session session=sFac.openSession();
+        Query query=session.createQuery("from Tags T where T.tagName = :name");
+        query.setParameter("name", name.toLowerCase());
+        Tags result=(Tags)query.uniqueResult();
+        return result;
+    }
+
+    @Override
+    public Tags addNewTag(Tags tag) {
+        Session session=sFac.openSession();
+        Transaction tx = session.beginTransaction();        
+        session.persist(tag);
+        tx.commit();
+        session.close();
+        Tags results=findTagByName(tag.getTagName());
+        
+        return results;
     }
 
     

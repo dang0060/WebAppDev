@@ -49,3 +49,19 @@ INSERT INTO mydb.conversation_message (message, time_stamp, user_id_fk, conversa
 ('This internet stuff is hard', NOW(), 1, 1),
 ('No, youre just dumb Homer', NOW(), 3, 1);
 
+INSERT INTO mydb.tags (tag_name) VALUES 
+('mtg'), 
+('pathfinder'),
+('cs:go'),
+('ddr'),
+('wow'),
+('starwars');
+
+insert into mydb.groups_tags(group_id_fk,tag_id_fk) values 
+(1,1),
+(2,2),
+(3,3),
+(4,4),
+(5,5),
+(6,6);
+
