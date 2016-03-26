@@ -13,6 +13,7 @@ import hibernate.dataobjects.UsersGroups;
 import hibernate.dataobjects.UsersGroupsId;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -21,6 +22,7 @@ import org.hibernate.Transaction;
 import org.hibernate.transform.*;
 import org.hibernate.type.StandardBasicTypes;
 import org.springframework.stereotype.Repository;
+import other.dataobjects.SearchResult;
 import services.interfaces.UsersService;
 
 /**
@@ -221,50 +223,120 @@ public class GroupsDAOImpl implements GroupsDAO {
     }
      
     @Override
-    public List<Object[]> findNearestGroups(float lati, float longi, float maxDistance) {
+    public List<SearchResult> findNearestGroups(float lati, float longi, float maxDistance) {
         Session session = sFac.openSession();
-        SQLQuery getDistances=session.createSQLQuery("Select groups.*, "
+        SQLQuery getDistances=session.createSQLQuery("Select groups.group_id, "
                 + "(6371 * acos( cos( radians(:lati )) * cos( radians( groups.latitude ) ) * cos( radians( groups.longitude ) - radians(:longi) ) + sin( radians(:lati) ) * sin( radians( groups.latitude ) ) ) ) as distance "
                 + "from groups having distance < :maxDistance order by distance;");
         getDistances.setParameter("lati", lati);
         getDistances.setParameter("longi", longi);
         getDistances.setParameter("maxDistance", maxDistance);
-        getDistances.addEntity("groups",Groups.class);
+        getDistances.addScalar("group_id",StandardBasicTypes.INTEGER);
         getDistances.addScalar("distance", StandardBasicTypes.FLOAT);
-        List closestGroups=getDistances.list();
-        return closestGroups;
+        
+        List<Object[]> closestGroups=getDistances.list();
+        
+        if(closestGroups.isEmpty())
+            return new ArrayList<>();
+        
+        ArrayList groupsToGet = new ArrayList<>();
+        
+        for(Object[] r:closestGroups){
+            int i=(int)r[0];
+            groupsToGet.add(i);
+        }
+        
+        Query getGroups = session.createQuery("from Groups G left join fetch G.tagses where G.groupId in (:ids)");
+        getGroups.setParameterList("ids", groupsToGet);
+        getGroups.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Groups> groupsFound = getGroups.list();
+        
+        ArrayList<SearchResult> results=new ArrayList<>();
+        
+        for(int i=0; i<groupsFound.size();i++){
+            SearchResult s = new SearchResult(groupsFound.get(i), (float)(closestGroups.get(i)[1]));
+            results.add(s);
+        }
+        
+        return results;
     }
     
     @Override
-    public List<Object[]> findNearestGroupsByName(float lati, float longi, float maxDistance, String searchTerm) {
+    public List<SearchResult> findNearestGroupsByName(float lati, float longi, float maxDistance, String searchTerm) {
         Session session = sFac.openSession();
-        SQLQuery getDistances=session.createSQLQuery("Select groups.*, "
+        SQLQuery getDistances=session.createSQLQuery("Select groups.group_id, "
                 + "(6371 * acos( cos( radians(:lati )) * cos( radians( groups.latitude ) ) * cos( radians( groups.longitude ) - radians(:longi) ) + sin( radians(:lati) ) * sin( radians( groups.latitude ) ) ) ) as distance "
                 + "from groups where groups.groupname like concat('%', :name , '%') having distance < :maxDistance order by distance;");
         getDistances.setParameter("lati", lati);
         getDistances.setParameter("longi", longi);
         getDistances.setParameter("maxDistance", maxDistance);
         getDistances.setParameter("name", searchTerm);
-        getDistances.addEntity("groups",Groups.class);
+        getDistances.addScalar("group_id",StandardBasicTypes.INTEGER);
         getDistances.addScalar("distance", StandardBasicTypes.FLOAT);
-        List closestGroups=getDistances.list();
-        return closestGroups;
+        List<Object[]> closestGroups=getDistances.list();
+        
+        if(closestGroups.isEmpty())
+            return new ArrayList<>();
+        
+        ArrayList groupsToGet = new ArrayList<>();
+        
+        for(Object[] r:closestGroups){
+            int i=(int)r[0];
+            groupsToGet.add(i);
+        }
+        
+        Query getGroups = session.createQuery("from Groups G left join fetch G.tagses where G.groupId in (:ids)");
+        getGroups.setParameterList("ids", groupsToGet);
+        getGroups.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Groups> groupsFound = getGroups.list();
+        
+        ArrayList<SearchResult> results=new ArrayList<>();
+        
+        for(int i=0; i<groupsFound.size();i++){
+            SearchResult s = new SearchResult(groupsFound.get(i), (float)(closestGroups.get(i)[1]));
+            results.add(s);
+        }
+        
+        return results;
     }
     
     @Override
-    public List<Object[]> findNearestGroupsByDesc(float lati, float longi, float maxDistance, String description) {
+    public List<SearchResult> findNearestGroupsByDesc(float lati, float longi, float maxDistance, String description) {
         Session session = sFac.openSession();
-        SQLQuery getDistances=session.createSQLQuery("Select groups.*, "
+        SQLQuery getDistances=session.createSQLQuery("Select groups.group_id, "
                 + "(6371 * acos( cos( radians(:lati )) * cos( radians( groups.latitude ) ) * cos( radians( groups.longitude ) - radians(:longi) ) + sin( radians(:lati) ) * sin( radians( groups.latitude ) ) ) ) as distance "
                 + "from groups where groups.description like concat('%', :name , '%') having distance < :maxDistance order by distance;");
         getDistances.setParameter("lati", lati);
         getDistances.setParameter("longi", longi);
         getDistances.setParameter("maxDistance", maxDistance);
         getDistances.setParameter("name", description);
-        getDistances.addEntity("groups",Groups.class);
+        getDistances.addScalar("group_id",StandardBasicTypes.INTEGER);
         getDistances.addScalar("distance", StandardBasicTypes.FLOAT);
-        List closestGroups=getDistances.list();
-        return closestGroups;
+        List<Object[]> closestGroups=getDistances.list();
+        
+        if(closestGroups.isEmpty())
+            return new ArrayList<>();
+        
+        ArrayList groupsToGet = new ArrayList<>();
+        
+        for(Object[] r:closestGroups){
+            int i=(int)r[0];
+            groupsToGet.add(i);
+        }
+        
+        Query getGroups = session.createQuery("from Groups G left join fetch G.tagses where G.groupId in (:ids)");
+        getGroups.setParameterList("ids", groupsToGet);
+        getGroups.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Groups> groupsFound = getGroups.list();
+        
+        ArrayList<SearchResult> results=new ArrayList<>();
+        
+        for(int i=0; i<groupsFound.size();i++){
+            SearchResult s = new SearchResult(groupsFound.get(i), (float)(closestGroups.get(i)[1]));
+            results.add(s);
+        }
+        
+        return results;
     }
     
     @Override
@@ -296,6 +368,54 @@ public class GroupsDAOImpl implements GroupsDAO {
         Tags results=findTagByName(tag.getTagName());
         
         return results;
+    }
+
+    @Override
+    public List<SearchResult> findNearestGroupsByTag(float latitude, float longitude, float maxDistance, String tag) {
+        Session session = sFac.openSession();
+        SQLQuery query = session.createSQLQuery("Select groups.group_id, (6371 * acos( cos( radians(:lati )) * cos( radians( groups.latitude ) ) * cos( radians( groups.longitude ) - radians(:longi) ) + sin( radians(:lati) ) * sin( radians( groups.latitude ) ) ) ) as distance from groups join groups_tags on (groups.group_id=groups_tags.group_id_fk) join tags on (groups_tags.tag_id_fk=tags.tag_id) where tags.tag_name = :tagname having distance < :dist order by distance;");
+        query.setParameter("lati", latitude);
+        query.setParameter("longi", longitude);
+        query.setParameter("tagname", tag);
+        query.setParameter("dist", maxDistance);
+        query.addScalar("group_id", StandardBasicTypes.INTEGER);
+        query.addScalar("group_id", StandardBasicTypes.FLOAT);
+
+        List<Object[]> closestGroups=query.list();
+        
+        if(closestGroups.isEmpty())
+            return new ArrayList<>();
+        
+        ArrayList groupsToGet = new ArrayList<>();
+        
+        for(Object[] r:closestGroups){
+            int i=(int)r[0];
+            groupsToGet.add(i);
+        }
+        
+        Query getGroups = session.createQuery("from Groups G left join fetch G.tagses where G.groupId in (:ids)");
+        getGroups.setParameterList("ids", groupsToGet);
+        getGroups.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Groups> groupsFound = getGroups.list();
+        
+        ArrayList<SearchResult> results=new ArrayList<>();
+        
+        for(int i=0; i<groupsFound.size();i++){
+            SearchResult s = new SearchResult(groupsFound.get(i), (float)(closestGroups.get(i)[1]));
+            results.add(s);
+        }
+        
+        return results;
+    }
+
+    @Override
+    public List<Groups> findGroupByTag(String searchTerm) {
+        Session session = sFac.openSession();
+        Query query = session.createQuery("select from Groups G left join fetch G.tagses T where T.tagName = :tag");
+        query.setParameter("tag", searchTerm);
+        List<Groups> groups = query.list();
+        session.close();
+        return groups;
     }
 
     

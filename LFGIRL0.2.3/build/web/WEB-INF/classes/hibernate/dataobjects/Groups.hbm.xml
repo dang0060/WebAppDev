@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 23-Mar-2016 6:16:43 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated 24-Mar-2016 2:09:04 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="hibernate.dataobjects.Groups" table="groups" catalog="mydb" optimistic-lock="version">
         <id name="groupId" type="java.lang.Integer">
@@ -23,6 +23,14 @@
         <property name="longitude" type="java.lang.Float">
             <column name="longitude" precision="10" scale="6" />
         </property>
+        <set name="tagses" table="groups_tags" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="group_id_fk" not-null="true" />
+            </key>
+            <many-to-many entity-name="hibernate.dataobjects.Tags">
+                <column name="tag_id_fk" not-null="true" />
+            </many-to-many>
+        </set>
         <set name="usersGroupses" table="users_groups" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="group_id" not-null="true" />
