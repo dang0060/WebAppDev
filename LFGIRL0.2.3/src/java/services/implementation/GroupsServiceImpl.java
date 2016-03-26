@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import other.dataobjects.SearchResult;
 import services.interfaces.GroupsService;
 
 /**
@@ -100,17 +99,17 @@ public class GroupsServiceImpl implements GroupsService {
       }
       
     @Override
-        public List<SearchResult> findNearestGroups(float lati, float longi, float maxDistance){
+        public List<Object[]> findNearestGroups(float lati, float longi, float maxDistance){
             return groupsDAO.findNearestGroups(lati, longi, maxDistance);
         }
 
     @Override
-    public List<SearchResult> findNearestGroupsbyName(float lati, float longi, float maxDistance, String name) {
+    public List<Object[]> findNearestGroupsbyName(float lati, float longi, float maxDistance, String name) {
         return groupsDAO.findNearestGroupsByName(lati, longi, maxDistance, name);
     }
 
     @Override
-    public List<SearchResult> findNearestGroupsbyDesc(float lati, float longi, float maxDistance, String description) {
+    public List<Object[]> findNearestGroupsbyDesc(float lati, float longi, float maxDistance, String description) {
         return groupsDAO.findNearestGroupsByDesc(lati, longi, maxDistance, description);
     }
 
@@ -127,15 +126,5 @@ public class GroupsServiceImpl implements GroupsService {
     @Override
     public Tags addNewTag(Tags tag) {
         return groupsDAO.addNewTag(tag);
-    }
-
-    @Override
-    public List<SearchResult> findNearestGroupsByTag(float latitude, float longitude, float maxDistance, String tag) {
-        return groupsDAO.findNearestGroupsByTag(latitude, longitude, maxDistance, tag);
-    }
-
-    @Override
-    public List<Groups> findGroupByTag(String searchTerm) {
-        return groupsDAO.findGroupByTag(searchTerm);
     }
 }

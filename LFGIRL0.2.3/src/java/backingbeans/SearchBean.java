@@ -59,7 +59,6 @@ public class SearchBean implements Serializable {
     private FacesContext context = FacesContext.getCurrentInstance(); //for I18n of yes and no strings
     private ResourceBundle msg = context.getApplication().evaluateExpressionGet(context,"#{msg}", ResourceBundle.class); //for I18n of yes and no strings
     private boolean isGeoSearch=false;
-    private boolean isTagSearch=false;
     private float latitude=100;
     private float longitude=100;
     private String address="";
@@ -160,9 +159,6 @@ public class SearchBean implements Serializable {
         this.emptyMessage=emptyMessage;
     }
     
-
-    
-    
     public void userNameSearch(String username) {
         setUsers(usersService.getUsersByName(username));
         //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Searching...", "Search in progress"));
@@ -178,20 +174,7 @@ public class SearchBean implements Serializable {
 
             
     }
-    
-    public void searchForGroupByTag(String input, float distance, String address){
-        emptyMessage="No records found.";
-        isTagSearch=true;
-        
-        if(address==null||address.isEmpty()){
-            searchWithoutLocation(input);
-        }
-        else
-            searchWithLocation(input, distance, address);
-        
-    }
-    
-    
+      
      //get the name of the group leader @yawei 
      public String searchGroupLeader(int gid) {
         return groupsService.findGroupLeader(gid);
@@ -254,19 +237,14 @@ public class SearchBean implements Serializable {
         setAddress("");
         setLatitude(100);
         setLongitude(100);
-        List<Groups> results;
-        if(isTagSearch){
-            results=groupsService.findGroupByTag(searchTerm);
+        List<Groups> results=groupsService.findGroupsByName(searchTerm);
+        
+        if (results.isEmpty()) {
+            results=groupsService.findGroupByDescription(searchTerm);
         }
-        else{
-            results=groupsService.findGroupsByName(searchTerm);
-
-            if (results.isEmpty()) {
-                results=groupsService.findGroupByDescription(searchTerm);
-            }
-            }
-            for(Groups group:results){
-                locations.add(new SearchResult(group, -1.0f));
+        
+        for(Groups group:results){
+            locations.add(new SearchResult(group, -1.0f));
         }
         setIsGeoSearch(false);
         makeMarkers();
@@ -277,24 +255,19 @@ public class SearchBean implements Serializable {
             addressToCoordinate(address);
             if (maxDistance<=0||maxDistance>12756)
                 maxDistance=10;
-            List<SearchResult>results;
-             
-            if(isTagSearch){
-                results=groupsService.findNearestGroupsByTag(latitude, longitude, maxDistance, searchTerm);
-                
+            
+            List<Object[]> results; 
+            if(searchTerm==null||searchTerm.isEmpty()){
+                results=groupsService.findNearestGroups(latitude, longitude, maxDistance);
             }
             else{
-                if(searchTerm==null||searchTerm.isEmpty()){
-                    results=groupsService.findNearestGroups(latitude, longitude, maxDistance);
-                }
-                else{
-                    results=groupsService.findNearestGroupsbyName(latitude, longitude, maxDistance, searchTerm);
-                    if(results.isEmpty())
-                        results=groupsService.findNearestGroupsbyDesc(latitude, longitude, maxDistance, searchTerm);
-                }
+                results=groupsService.findNearestGroupsbyName(latitude, longitude, maxDistance, searchTerm);
+                if(results.isEmpty())
+                    results=groupsService.findNearestGroupsbyDesc(latitude, longitude, maxDistance, searchTerm);
             }
-            
-            setLocations(new ArrayList<>(results));
+            for(Object[] gl: results){
+                locations.add(new SearchResult((Groups)gl[0], (float)gl[1]));
+            }
             setIsGeoSearch(true);
             makeMarkers();
             
@@ -375,6 +348,4 @@ public class SearchBean implements Serializable {
         return s;
         
     }
-    
-
 }

@@ -35,7 +35,7 @@
                  <p:inputText id="locationEntry" value="#{GroupBean.address}" validator="#{GroupBean.validateAddress}" validatorMessage="#{msg.LocationInvalid}" required="true" />
                  <h:message for="locationEntry" style="color:red;"/>
                  
-                 <h:outputLabel for="edittags" value="#{msg.tags}:"/>  
+                 #{msg.tags}: 
                  <h:panelGroup id="edittags">
                      <ui:repeat id="currtags" value="#{GroupBean.tagsList}" var="t" varStatus="tagstatus">#{t.getTagName()} <p:commandButton value="✕" action="#{GroupBean.removeTag(t)}" update=":#{p:component('edittags')}"/></ui:repeat>
                      <p:inputText id="addtag" value="#{GroupBean.newTagName}"/> 

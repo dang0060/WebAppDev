@@ -10,7 +10,6 @@ import hibernate.dataobjects.Tags;
 import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
 import java.util.List;
-import other.dataobjects.SearchResult;
 
 /**
  *
@@ -47,19 +46,15 @@ public interface GroupsService {
     //searches for group members @yawei
     public List<Users> findGroupMembers(int gid);
     
-    public List<SearchResult> findNearestGroups(float lati, float longi, float maxDistance);
+    public List<Object[]> findNearestGroups(float lati, float longi, float maxDistance);
     
-    public List<SearchResult> findNearestGroupsbyName(float lati, float longi, float maxDistance, String name);
+    public List<Object[]> findNearestGroupsbyName(float lati, float longi, float maxDistance, String name);
     
-    public List<SearchResult> findNearestGroupsbyDesc(float lati, float longi, float maxDistance, String description);
+    public List<Object[]> findNearestGroupsbyDesc(float lati, float longi, float maxDistance, String description);
     
     public Tags findTagByName(String name);
     
     public Tags addNewTag(Tags tags);
 
     public String getSecretKey(String name);
-
-    public List<SearchResult> findNearestGroupsByTag(float latitude, float longitude, float maxDistance, String searchTerm);
-
-    public List<Groups> findGroupByTag(String searchTerm);
 }

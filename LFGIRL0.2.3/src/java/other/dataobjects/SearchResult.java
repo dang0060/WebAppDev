@@ -6,10 +6,6 @@
 package other.dataobjects;
 
 import hibernate.dataobjects.Groups;
-import hibernate.dataobjects.Tags;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 
 /**
  *
@@ -40,13 +36,5 @@ public class SearchResult {
     
     public Groups getGroup(){
         return group;
-    }
-    
-    public void setTagList(List<Tags> tags){
-        group.setTagses(new HashSet<>(tags));
-    }
-    
-    public ArrayList<Tags> getTagsList(){
-        return new ArrayList<>(group.getTagses());
     }
 }
