@@ -74,14 +74,6 @@
         <property name="GroupMessageDAO" ref="GroupMessageDAO" />
     </bean>
     
-    <bean id="GeoDAO" class="daoImpl.GeoDAOImpl">
-        <property name="sessionFactory" ref="sessionFactory" />
-    </bean>
-    
-    <bean id="GeoService" class="services.implementation.GeoServiceImpl">
-        <property name="GeoDAO" ref="GeoDAO" />
-    </bean>
-    
     <tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>
