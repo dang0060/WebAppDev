@@ -257,7 +257,7 @@ public class GroupsDAOImpl implements GroupsDAO {
             SearchResult s = new SearchResult(groupsFound.get(i), (float)(closestGroups.get(i)[1]));
             results.add(s);
         }
-        
+        session.close();
         return results;
     }
     
@@ -296,7 +296,7 @@ public class GroupsDAOImpl implements GroupsDAO {
             SearchResult s = new SearchResult(groupsFound.get(i), (float)(closestGroups.get(i)[1]));
             results.add(s);
         }
-        
+        session.close();
         return results;
     }
     
@@ -335,7 +335,7 @@ public class GroupsDAOImpl implements GroupsDAO {
             SearchResult s = new SearchResult(groupsFound.get(i), (float)(closestGroups.get(i)[1]));
             results.add(s);
         }
-        
+        session.close();
         return results;
     }
     
@@ -345,8 +345,8 @@ public class GroupsDAOImpl implements GroupsDAO {
         SQLQuery getKey=session.createSQLQuery("Select key_value from secret_keys where key_name=:name");
         getKey.setParameter("name", name);
         String result=(String)getKey.uniqueResult();
-        return result;
-    
+        session.close();
+        return result;   
     }
 
     @Override
@@ -355,6 +355,7 @@ public class GroupsDAOImpl implements GroupsDAO {
         Query query=session.createQuery("from Tags T where T.tagName = :name");
         query.setParameter("name", name.toLowerCase());
         Tags result=(Tags)query.uniqueResult();
+        session.close();
         return result;
     }
 
@@ -404,7 +405,7 @@ public class GroupsDAOImpl implements GroupsDAO {
             SearchResult s = new SearchResult(groupsFound.get(i), (float)(closestGroups.get(i)[1]));
             results.add(s);
         }
-        
+        session.close();
         return results;
     }
 
@@ -416,11 +417,6 @@ public class GroupsDAOImpl implements GroupsDAO {
         List<Groups> groups = query.list();
         session.close();
         return groups;
-    }
-
-    
-    
-    
-    
-    }
+    }  
+  }
     
