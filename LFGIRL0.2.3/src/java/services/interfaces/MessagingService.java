@@ -5,7 +5,9 @@
  */
 package services.interfaces;
 
+import hibernate.dataobjects.Conversation;
 import hibernate.dataobjects.ConversationMessage;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -14,8 +16,8 @@ import java.util.List;
  */
 public interface MessagingService {
     
-    public List<ConversationMessage> retrieveConversation(int conversationId, int userRequesting, int userTarget);
+    public void speakConversation(String userName, String targetUser, String message);
     
-    public void speakConversation(int conversationId, int userId, String message);
+    public HashMap<Integer, Conversation> retrieveConversations(int userId);
     
 }

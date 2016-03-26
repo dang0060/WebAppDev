@@ -9,6 +9,7 @@ package com.resources.chat;
  *
  * @author Protostar
  */
+import java.math.BigDecimal;
 import javax.json.Json;
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;

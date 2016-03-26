@@ -237,6 +237,17 @@
                     </a>
                 </li>
             </ui:fragment>
+                
+                <ui:fragment rendered="#{LoginBean.userName!=null}">
+                <li class="has-subnav">
+                    <a id="chat" href="messages.xhtml">
+                       <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
+                        <span class="nav-text">
+                            Test Chat
+                        </span>
+                    </a>
+                </li>
+            </ui:fragment>
                 <!--end of link to group creation  -->
             </ul>
         </nav>
