@@ -5,7 +5,9 @@
  */
 package dao;
 
+import hibernate.dataobjects.Conversation;
 import hibernate.dataobjects.ConversationMessage;
+import hibernate.dataobjects.Users;
 import java.util.List;
 
 /**
@@ -14,10 +16,14 @@ import java.util.List;
  */
 public interface ChatDAO {
     
-    public List<ConversationMessage> getConversation(int conversationId, int userRequesting, int userTarget);
+    public Conversation getConversation(String user1, String user2);
     
     public void insertMessage(ConversationMessage cm);
     
-    public List<?> getConversationTest(int conversationId);
+    public List<Object[]> getMyMessages(int userId);
+    
+    public boolean checkForConversation(String user1, String user2);
+    
+    public void buildConversation(Conversation c);
     
 }

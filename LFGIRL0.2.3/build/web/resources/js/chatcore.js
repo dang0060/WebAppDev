@@ -1,5 +1,5 @@
         var wsocket;
-	var serviceLocation = "ws://localhost:36165/LFGIRL0.2.3/chat/";
+	var serviceLocation = "ws://localhost:36165/LFGIRL0.2.3.2/chat/";
 	var $nickName;
 	var $message;
 	var $chatWindow;
@@ -52,7 +52,7 @@
 		});
 		$('#do-chat').submit(function(evt) {
 			evt.preventDefault();
-			sendMessage();
+			sendMessage()
 		});
  
 		$('#leave-room').click(function(){

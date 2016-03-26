@@ -18,10 +18,7 @@
                    update="userSearchResults" icon="ui-icon-search"></p:commandButton>
 	    <p:spacer height="10"/><br/>
             <br/>
-            <p:dataTable id="userSearchResults" var="userResults" value="#{SearchBean.users}">
-                <p:column headerText="#{msg.searchID}">
-                    <h:outputText value="#{userResults.userId}" />
-                </p:column>
+            <p:dataTable id="userSearchResults" var="userResults" value="#{SearchBean.users}" style="width:400px;">
                 <p:column headerText="#{msg.searchUserName}">
                     <h:outputLink  value="userProfile.xhtml">
                         <h:outputText value="#{userResults.username}"/>

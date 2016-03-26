@@ -32,9 +32,6 @@
                 <p:column headerText="Distance" rendered="#{SearchBean.isGeoSearch}">
                     <h:outputText value="#{groupResults.distance}"/>
                 </p:column>
-                <p:column headerText="#{msg.searchID}">
-                    <h:outputText value="#{groupResults.getGroup().groupId}" />
-                </p:column>
                 <p:column headerText="#{msg.GroupName}">
                     <h:outputLink  value="groupProfile.xhtml">
                         <h:outputText value="#{groupResults.getGroup().groupname}"/>

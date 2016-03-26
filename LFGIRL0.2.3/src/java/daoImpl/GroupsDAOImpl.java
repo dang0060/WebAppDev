@@ -11,7 +11,6 @@ import hibernate.dataobjects.Tags;
 import hibernate.dataobjects.Users;
 import hibernate.dataobjects.UsersGroups;
 import hibernate.dataobjects.UsersGroupsId;
-import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -232,6 +231,7 @@ public class GroupsDAOImpl implements GroupsDAO {
         getDistances.addEntity("groups",Groups.class);
         getDistances.addScalar("distance", StandardBasicTypes.FLOAT);
         List closestGroups=getDistances.list();
+        session.close();
         return closestGroups;
     }
     
@@ -248,6 +248,7 @@ public class GroupsDAOImpl implements GroupsDAO {
         getDistances.addEntity("groups",Groups.class);
         getDistances.addScalar("distance", StandardBasicTypes.FLOAT);
         List closestGroups=getDistances.list();
+        session.close();
         return closestGroups;
     }
     
@@ -264,6 +265,7 @@ public class GroupsDAOImpl implements GroupsDAO {
         getDistances.addEntity("groups",Groups.class);
         getDistances.addScalar("distance", StandardBasicTypes.FLOAT);
         List closestGroups=getDistances.list();
+        session.close();
         return closestGroups;
     }
     
@@ -273,6 +275,7 @@ public class GroupsDAOImpl implements GroupsDAO {
         SQLQuery getKey=session.createSQLQuery("Select key_value from secret_keys where key_name=:name");
         getKey.setParameter("name", name);
         String result=(String)getKey.uniqueResult();
+        session.close();
         return result;
     
     }
@@ -283,6 +286,7 @@ public class GroupsDAOImpl implements GroupsDAO {
         Query query=session.createQuery("from Tags T where T.tagName = :name");
         query.setParameter("name", name.toLowerCase());
         Tags result=(Tags)query.uniqueResult();
+        session.close();
         return result;
     }
 

@@ -19,9 +19,6 @@ and open the template in the editor.
         <h2 style="text-align: center; padding-right: 4.2% "> #{msg.myGroups}</h2>
         <h:form>
             <p:dataTable id="groupList" var="groupResults" value="#{UserBean.groups}">
-                <p:column headerText="#{msg.searchID}">
-                    <h:outputText value="#{groupResults.groupId}" />
-                </p:column>
                 <p:column headerText="#{msg.GroupName}">
                     <h:outputLink  value="groupProfile.xhtml">
                         <h:outputText value="#{groupResults.groupname}"/>

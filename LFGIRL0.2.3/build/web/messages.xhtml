@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition 
+    template="homepage.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+
+    <ui:define name="title">Message</ui:define>
+    <ui:define name="content">
+        <p:growl id="growl" showDetail="true" />
+
+        <h:form id="form">
+
+            <h:panelGroup>
+                <h:panelGrid columns="1" columnClasses="usersColumn" style="width:80%">
+                    <p:outputPanel id="public" layout="block" styleClass="ui-corner-all ui-widget-content chatlogs">
+                        <p:dataTable id="conversations" var="conversation" value="#{MessagingBean.displayConversations}" rows="10" paginator="true">
+                            <f:facet name="header">
+                                Your Conversations
+                            </f:facet>
+
+                            <p:column>
+                                <h:outputText value="Conversation between you and #{MessagingBean.nameCheck(conversation)}" />
+                            </p:column>
+
+                            <p:column>
+                                <p:commandButton id="openConvo" value="Open Conversation" process="@this" actionListener="#{MessagingBean.castMessages(conversation)}" oncomplete="PF('convoView').show()" update="form:convoMessages"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:outputPanel>
+
+                    <p:dataList id="users" var="user" value="#{MessagingBean.userNames}" styleClass="usersList" paginator="true" rows="8">
+                        <f:facet name="header">
+                            Users
+                        </f:facet>
+
+                        <p:commandButton title="Chat" icon="ui-icon-comment" oncomplete="PF('pChat').show()" update="form:messagePanel" process="@this" actionListener="#{MessagingBean.setTargetUser(user)}">
+                            <f:setPropertyActionListener value="#{user}" target="#{MessagingBean.targetUser}" />
+                        </p:commandButton>
+                        #{user}
+                    </p:dataList>
+                </h:panelGrid>
+            </h:panelGroup>
+
+            <p:dialog id="sendMessageDlg" widgetVar="pChat" header="Send Message" showEffect="fade" hideEffect="fade">
+                <h:panelGrid  columns="1" cellpadding="3" id="messagePanel">
+                    Send To: #{MessagingBean.targetUser}
+                    <br/>
+                    <p:inputTextarea  id="messgeContent" value="#{messageContent}" maxlength="5000"  placeholder="Enter message here"
+                                      rows="10" cols="50" counter="counterDisplay" required="true"
+                                      requiredMessage="#{msg.groupDesErrorMessage}" counterTemplate="#{msg.charactersRemaining}:{0}"
+                                      autoResize="false"/>                           
+                    <h:outputText id="counterDisplay" />                                   
+                    <p:commandButton update="form:convoMessages"  icon="ui-icon-search" title="View" value="Send Message" process="@this"
+                                     actionListener="#{MessagingBean.sendMessage(messageContent)}" oncomplete="PF('pChat').hide()">
+                    </p:commandButton>              
+                </h:panelGrid> 
+            </p:dialog>
+
+            <p:dialog id="convoMessages" widgetVar="convoView" header="Conversation" showEffect="fade" hideEffect="fade" resizable="false" style="width:60%">
+                <p:dataTable id="messages" var="message" value="#{MessagingBean.myMessages}" rows="10" paginator="true" sortBy="#{message.timeStamp}">
+                    <f:facet name="header">
+                        Your Messages
+                    </f:facet>
+
+                    <p:column headerText="Sender">
+                        <h:outputText value="#{message.users.username}" />
+                    </p:column>
+
+                    <p:column headerText="Message">
+                        <h:outputText value="#{message.message}" />
+                    </p:column>
+
+                    <p:column headerText="Sent">
+                        <h:outputText value="#{message.timeStamp}" />
+                    </p:column>
+
+                </p:dataTable>
+            </p:dialog>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

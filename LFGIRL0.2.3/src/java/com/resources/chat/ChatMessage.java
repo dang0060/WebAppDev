@@ -15,6 +15,7 @@ public class ChatMessage {
 	
     private String message;
     private String sender;
+    private String receiver;
     private Date received;
 
     public ChatMessage() {
@@ -60,5 +61,19 @@ public class ChatMessage {
      */
     public void setReceived(Date received) {
         this.received = received;
+    }
+
+    /**
+     * @return the receiver
+     */
+    public String getReceiver() {
+        return receiver;
+    }
+
+    /**
+     * @param receiver the receiver to set
+     */
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 }

@@ -136,13 +136,13 @@ public class LoginBean implements Serializable {
       ResourceBundle msg = context.getApplication().evaluateExpressionGet(context,"#{msg}", ResourceBundle.class);
       /*use msg.getString("keyname in property file") to add I18n string later, no need to use double quotes*/
       if(userName == null){
-        return "<html><h1>Welcome to LFGIRL, this is the place to meet up</h1></br>"  
-                + "<h3>If you are a member, you can sign in to edit your personal profile, create a group and manage your groups' profiles</h3></br>"
-                + "<h3>If you are new, feel free to search for groups and players. If you want to create your own group, just take a minute to sign up and start having fun!"
+        return "<html><h1>" + msg.getString("welcomeMessage") + "</h1></br>"  
+                + "<h3>" + msg.getString("ifMemberLine") + "</h3></br>"
+                + "<h3>" + msg.getString("ifNewLine")
                 +"</h3></html>";
        }
       else{
-        return "<html><h1>Welcome back " +userName + ", have fun</h1></html>";  
+        return "<html><h1>" + msg.getString("memberWelcomeBack") +" "+ userName + ", " + msg.getString("memberHaveFun") + "</h1></html>";  
               }
     }
 }
