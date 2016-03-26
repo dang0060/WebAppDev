@@ -86,7 +86,7 @@ public class GroupsDAOImpl implements GroupsDAO {
     @Override
     public Groups findGroupByName(String groupName) {
         Session session = sFac.openSession();
-        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses where G.groupname = :group_name");
+        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses left join fetch G.tagses where G.groupname = :group_name");
         query.setParameter("group_name", groupName);
         Groups group = (Groups)query.uniqueResult();
         session.close();
@@ -96,7 +96,7 @@ public class GroupsDAOImpl implements GroupsDAO {
     @Override
     public List<Groups> findGroupsByName(String groupName) {
         Session session = sFac.openSession();
-        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses where G.groupname like concat('%', :group_name , '%')").setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
+        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses left join fetch G.tagses where G.groupname like concat('%', :group_name , '%')").setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
         query.setParameter("group_name", groupName);
         List<Groups> groups = query.list();
         session.close();
@@ -106,7 +106,7 @@ public class GroupsDAOImpl implements GroupsDAO {
     @Override
     public List<Groups> findGroupsByDesc(String desc) {
         Session session = sFac.openSession();
-        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses where G.description like concat('%', :desc , '%')").setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
+        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses left join fetch G.tagses where G.description like concat('%', :desc , '%')").setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
         query.setParameter("desc", desc);
         List<Groups> groups = query.list();
         session.close();
@@ -159,7 +159,7 @@ public class GroupsDAOImpl implements GroupsDAO {
     @Override
     public List<Groups> findGroupsByUserId(int userId) {
         Session session = sFac.openSession();
-        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses UG where UG.users.userId = :user_id");
+        Query query = session.createQuery("from Groups G left join fetch G.usersGroupses UG left join fetch G.tagses where UG.users.userId = :user_id");
         query.setParameter("user_id", userId);
         List<Groups> groups = query.list();
         session.close();
@@ -246,7 +246,7 @@ public class GroupsDAOImpl implements GroupsDAO {
             groupsToGet.add(i);
         }
         
-        Query getGroups = session.createQuery("from Groups G left join fetch G.tagses where G.groupId in (:ids)");
+        Query getGroups = session.createQuery("from Groups G left join fetch G.tagses left join fetch G.usersGroupses where G.groupId in (:ids)");
         getGroups.setParameterList("ids", groupsToGet);
         getGroups.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Groups> groupsFound = getGroups.list();
@@ -285,7 +285,7 @@ public class GroupsDAOImpl implements GroupsDAO {
             groupsToGet.add(i);
         }
         
-        Query getGroups = session.createQuery("from Groups G left join fetch G.tagses where G.groupId in (:ids)");
+        Query getGroups = session.createQuery("from Groups G left join fetch G.tagses left join fetch G.usersGroupses where G.groupId in (:ids)");
         getGroups.setParameterList("ids", groupsToGet);
         getGroups.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Groups> groupsFound = getGroups.list();
@@ -324,7 +324,7 @@ public class GroupsDAOImpl implements GroupsDAO {
             groupsToGet.add(i);
         }
         
-        Query getGroups = session.createQuery("from Groups G left join fetch G.tagses where G.groupId in (:ids)");
+        Query getGroups = session.createQuery("from Groups G left join fetch G.tagses left join fetch G.usersGroupses where G.groupId in (:ids)");
         getGroups.setParameterList("ids", groupsToGet);
         getGroups.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Groups> groupsFound = getGroups.list();
@@ -393,7 +393,7 @@ public class GroupsDAOImpl implements GroupsDAO {
             groupsToGet.add(i);
         }
         
-        Query getGroups = session.createQuery("from Groups G left join fetch G.tagses where G.groupId in (:ids)");
+        Query getGroups = session.createQuery("from Groups G left join fetch G.tagses left join fetch G.usersGroupses where G.groupId in (:ids)");
         getGroups.setParameterList("ids", groupsToGet);
         getGroups.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Groups> groupsFound = getGroups.list();
@@ -411,7 +411,7 @@ public class GroupsDAOImpl implements GroupsDAO {
     @Override
     public List<Groups> findGroupByTag(String searchTerm) {
         Session session = sFac.openSession();
-        Query query = session.createQuery("select from Groups G left join fetch G.tagses T where T.tagName = :tag");
+        Query query = session.createQuery("select from Groups G left join fetch G.tagses T left join fetch G.usersGroupses where T.tagName = :tag");
         query.setParameter("tag", searchTerm);
         List<Groups> groups = query.list();
         session.close();

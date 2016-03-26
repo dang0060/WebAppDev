@@ -42,7 +42,7 @@ public class SearchResult {
         return group;
     }
     
-    public void setTagList(List<Tags> tags){
+    public void setTagsList(List<Tags> tags){
         group.setTagses(new HashSet<>(tags));
     }
     

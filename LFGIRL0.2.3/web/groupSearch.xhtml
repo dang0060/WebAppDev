@@ -41,6 +41,9 @@
                 <p:column headerText="#{msg.GroupDescription}">
                     <h:outputText value="#{groupResults.getGroup().description}" />
                 </p:column>
+                <p:column headerText="#{msg.tags}">
+                    <ui:repeat id="taglist" value="#{groupResults.getTagsList()}" var="tag" >#{tag.getTagName()} </ui:repeat>
+                </p:column>
                 <!--display name of the group leader @yawei-->
                 <p:column headerText="#{msg.leaderName}">
                     <h:outputText value="#{SearchBean.searchGroupLeader(groupResults.getGroup().groupId)}" />
