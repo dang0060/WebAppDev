@@ -345,7 +345,7 @@ public class groupMessageBean implements Serializable {
      fc.addMessage(null, message);
    }
    else{ //receiving user is no longer part of the group
-     message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! ", "The selected user is not part of the group");
+     message = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg.getString("groupErrorDlgHeader") + "! ", msg.getString("mesUserNotFound"));
      context.execute("PF('messageDialog').hide()"); //close the message dialog afterwards
      fc.addMessage(null, message);
    }
