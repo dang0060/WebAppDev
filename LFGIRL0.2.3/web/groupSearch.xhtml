@@ -42,7 +42,12 @@
                     <h:outputText value="#{groupResults.getGroup().description}" />
                 </p:column>
                 <p:column headerText="#{msg.tags}">
-                    <ui:repeat id="taglist" value="#{groupResults.getTagsList()}" var="tag" >#{tag.getTagName()} </ui:repeat>
+                    <ui:repeat id="taglist" value="#{groupResults.getTagsList()}" var="tag" >
+                        <h:outputLink value="tagDisplay.xhtml">
+                            <h:outputText value="#{tag.getTagName()} "/>
+                            <f:param name="tid" value="#{tag.getTagId()}"/>
+                        </h:outputLink> 
+                    </ui:repeat>
                 </p:column>
                 <!--display name of the group leader @yawei-->
                 <p:column headerText="#{msg.leaderName}">

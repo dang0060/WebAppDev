@@ -410,13 +410,34 @@ public class GroupsDAOImpl implements GroupsDAO {
     }
 
     @Override
-    public List<Groups> findGroupByTag(String searchTerm) {
+    public List<Groups> findGroupsByTagName(String searchTerm) {
         Session session = sFac.openSession();
-        Query query = session.createQuery("select from Groups G left join fetch G.tagses T left join fetch G.usersGroupses where T.tagName = :tag");
+        Query query = session.createQuery("from Groups G left join fetch G.tagses T left join fetch G.usersGroupses where T.tagName = :tag");
         query.setParameter("tag", searchTerm);
         List<Groups> groups = query.list();
         session.close();
         return groups;
     }  
+
+    @Override
+    public List<Groups> findGroupsByTagID(int id) {
+        Session session = sFac.openSession();
+        Query query = session.createQuery("from Groups G left join fetch G.tagses T left join fetch G.usersGroupses where T.tagId = :tag");
+        query.setParameter("tag", id);
+        query.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        List<Groups> groups = query.list();
+        session.close();
+        return groups;
+    }
+
+    @Override
+    public Tags findTagByID(int id) {
+        Session session = sFac.openSession();
+        Query query = session.createQuery("from Tags T where T.tagId = :id");
+        query.setParameter("id", id);
+        Tags tag=(Tags)query.uniqueResult();
+        session.close();
+        return tag;
+    }
   }
     

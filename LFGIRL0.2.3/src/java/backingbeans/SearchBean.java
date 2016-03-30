@@ -192,6 +192,7 @@ public class SearchBean implements Serializable {
     }
     
     
+    
      //get the name of the group leader @yawei 
      public String searchGroupLeader(int gid) {
         return groupsService.findGroupLeader(gid);
@@ -256,7 +257,7 @@ public class SearchBean implements Serializable {
         setLongitude(100);
         List<Groups> results;
         if(isTagSearch){
-            results=groupsService.findGroupByTag(searchTerm);
+            results=groupsService.findGroupsByTagName(searchTerm);
         }
         else{
             results=groupsService.findGroupsByName(searchTerm);
