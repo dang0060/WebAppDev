@@ -138,7 +138,8 @@
                    <!--changed the position and size of the user name @yawei-->
                   
                    <h:outputLink rendered="#{LoginBean.userName!=null}" value="userProfile.xhtml" styleClass="menutext">
-                      <h3> #{LoginBean.userName}</h3></h:outputLink> 
+                       <h:outputText value="#{LoginBean.userName}" style="font-weight: bold"/></h:outputLink> 
+                   <br/>
                    <p:commandLink rendered= "#{LoginBean.userName!=null}" value="#{msg.signOut}" action="#{LoginBean.signOut()}" styleClass="menutext"/>
                 </h:form>
                 <!--end of language change buttons -->

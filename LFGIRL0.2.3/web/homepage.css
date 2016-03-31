@@ -47,7 +47,7 @@ HR{
 
 .menutext{
     color:lightgray;
-    font-size: 12px;
+    font-size: 14px;
     text-decoration: none;
 }
 
@@ -200,6 +200,7 @@ background-color:#bf0000;
 
 .langform{
     position:fixed;
+    top:0;
     z-index: 100;
 } 
 /*changed the global growl position @yawei*/
