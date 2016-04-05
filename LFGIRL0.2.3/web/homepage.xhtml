@@ -7,6 +7,7 @@
     <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="homepage.css"></link>
     <ui:insert name="stylesheet"></ui:insert>
+    <h:outputScript name="chatcore.js" library="js" />
     <title><ui:insert name="title">Welcome to LFG:IRL</ui:insert></title>
 </h:head>
     <script>
@@ -64,6 +65,9 @@
     </script>
     
 <h:body>
+    <h:form>
+        <p:remoteCommand name="getUsername({value:'#{LoginBean.userName}'})" autoRun="true" />
+    </h:form>
 <f:view locale="#{language.locale}"> <!--The view tag ensures the contained JSF components maintain correct I18n locale until user changes the locale @yawei-->
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<DIV class="navbar-border"></DIV>

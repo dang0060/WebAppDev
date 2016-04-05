@@ -91,6 +91,7 @@ public class LoginBean implements Serializable {
     
     public void userLogin(String username, String password) {
         FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage message;
         boolean loggedIn;
@@ -108,6 +109,7 @@ public class LoginBean implements Serializable {
                 //session.setAttribute("userId", user.getUserId());
                 this.userId = user.getUserId();
                 this.userName = user.getUsername();
+                ec.getSessionMap().put("user", username);
                 loggedIn = true;
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", username);
             }

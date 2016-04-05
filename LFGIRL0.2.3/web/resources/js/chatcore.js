@@ -1,9 +1,12 @@
         var wsocket;
-	var serviceLocation = "ws://localhost:36165/LFGIRL0.2.3.2/chat/";
+	var serviceLocation = "ws://localhost:36165/LFGIRL0.3.1/chat/";
 	var $nickName;
 	var $message;
 	var $chatWindow;
+        var $privateMessage;
+        var $targetUser;
 	var room = '';
+        var userName = '';
  
 	function onMessageReceived(evt) {
 		//var msg = eval('(' + evt.data + ')');
@@ -14,17 +17,37 @@
 				+ '</td></tr>');
 		$chatWindow.append($messageLine);
 	}
+        
+        function onPrivateMessageReceived(evt) {
+            var msg = JSON.parse(evt.data);
+            alert(msg.sender + ' said to you: ' + msg.message);
+        }
+        
 	function sendMessage() {
 		var msg = '{"message":"' + $message.val() + '", "sender":"'
 				+ $nickName.val() + '", "received":""}';
 		wsocket.send(msg);
 		$message.val('').focus();
 	}
+        
+        function sendPrivateMessage() {
+                var msg = '{"message":"' + $privateMessage.val() + '", "sender":"'
+				+ userName + '", "receiver":"' + $targetUser.val() + '", "received":""}';
+		wsocket.send(msg);
+		$privateMessage.val('').focus();
+        }
  
 	function connectToChatserver() {
 		room = $('#chatroom option:selected').val();
 		wsocket = new WebSocket(serviceLocation + room);
 		wsocket.onmessage = onMessageReceived;
+	}
+        
+        function openAndConfig(value) {
+		room = value;
+                userName = value;
+		wsocket = new WebSocket(serviceLocation + room);
+		wsocket.onmessage = onPrivateMessageReceived;
 	}
  
 	function leaveRoom() {
@@ -34,11 +57,22 @@
 		$('.chat-signin').show();
 		$nickName.focus();
 	}
+        
+        function getUsername(value) {
+            var msg = JSON.stringify(value);
+            var values = JSON.parse(msg);
+            if (values.value) {
+                userName = values.value;
+                openAndConfig(values.value);
+            }           
+        }
  
 	$(document).ready(function() {
 		$nickName = $('#nickname');
 		$message = $('#message');
 		$chatWindow = $('#response');
+                $privateMessage = $('#privateMessage');
+                $targetUser = $('#targetUser');
 		$('.chat-wrapper').hide();
 		$nickName.focus();
  
@@ -54,6 +88,11 @@
 			evt.preventDefault();
 			sendMessage()
 		});
+                
+                $('#private-message').submit(function(evt) {
+                        evt.preventDefault();
+                        sendPrivateMessage()
+                });
  
 		$('#leave-room').click(function(){
 			leaveRoom();
