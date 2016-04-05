@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import serializer.Autowirer;
 import services.interfaces.UsersService;
+import services.interfaces.SecurityService;
 
 /**
  *
@@ -35,6 +36,8 @@ public class LoginBean implements Serializable {
     
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private SecurityService securityService;
     
     private Users user;
     private int userId;
@@ -102,8 +105,8 @@ public class LoginBean implements Serializable {
         }
         else{
             user = usersService.getUserByName(username);
-
-            if(user != null && (password.equals(user.getPassword()))){
+            //decrypts password in database, and compare wiht the plain text input
+            if(user != null && (password.equals(securityService.decrypt(user.getPassword())))){
                 //HttpSession session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                 //session.setAttribute("name", user.getUsername());
                 //session.setAttribute("userId", user.getUserId());

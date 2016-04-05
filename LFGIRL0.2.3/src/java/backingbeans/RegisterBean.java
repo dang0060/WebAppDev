@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import serializer.Autowirer;
 import services.interfaces.UsersService;
+import services.interfaces.SecurityService;
 
 /**
  *
@@ -32,6 +33,8 @@ public class RegisterBean implements Serializable{
     
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private SecurityService securityService;
     
     @PostConstruct
     private void init() {
@@ -45,13 +48,14 @@ public class RegisterBean implements Serializable{
         Autowirer.wireObject(this);
     }
     
+    /*Encrypts password and email when creating new user*/
     public void registerUser(String userName, String password, String email) {
         FacesContext fc = FacesContext.getCurrentInstance();
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage message;
         boolean success;
-        Users newUser = new Users(userName, password);
-        newUser.setEmail(email);
+        Users newUser = new Users(userName, securityService.encrypt(password));
+        newUser.setEmail(securityService.encrypt(email));
         String result = usersService.registerNewUser(newUser);
         if (result != null) {
             message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Registration Error", result);
