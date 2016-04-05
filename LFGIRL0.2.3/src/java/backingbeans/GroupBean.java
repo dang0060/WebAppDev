@@ -65,7 +65,6 @@ public class GroupBean implements Serializable{
     private Boolean isMember = false; //try to implement join group funtion @yawei
     private Boolean isUser = false; //try to implement join group funtion @yawei
     private Set<Tags> tags=null;//temporary list of tags @alayna
-    private String newTagName="";
     
    @PostConstruct
     private void init() {
@@ -212,13 +211,7 @@ public class GroupBean implements Serializable{
         }
     }
     
-    public void setNewTagName(String newTagName){
-        this.newTagName=newTagName;
-    }
-    
-    public String getNewTagName(){
-        return newTagName;
-    }
+
     
     public void setTagsList(List<Tags> tags){
         Set tagsSet = new HashSet<>(tags);       
@@ -233,7 +226,7 @@ public class GroupBean implements Serializable{
         return list;
     }
     /*adds tag to temporary list*/
-    public void addTag(){
+    public void addTag(String newTagName){
 
         Tags tag=groupsService.findTagByName(newTagName);
         //if tag isn't in db
@@ -452,16 +445,21 @@ public class GroupBean implements Serializable{
     /*for group creation and editing pages, does not allow empty location*/
     public void validateAddress(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         String location=value.toString();
-        String key=groupsService.getSecretKey("googlemapsapi");
+        
         try {
+            String key=groupsService.getSecretKey("googlemapsapi");
+            if(key==null){
+                throw new Exception("Map API key missing");
+            }
+            
             if(location==null||location.isEmpty()){
-                throw new Exception();
+                throw new Exception("Invalid Location");
             }
                 
             GeoApiContext apiContext = new GeoApiContext().setApiKey(key);
             GeocodingResult[] results =  GeocodingApi.geocode(apiContext,location).await();
             if(results==null||results.length==0)
-               throw new Exception();
+               throw new Exception("Invalid Location");
         }
         catch (Exception ex) {
             FacesMessage message=new FacesMessage("Invalid Location");

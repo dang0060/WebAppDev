@@ -28,7 +28,7 @@
             #{msg.Location}: #{GroupBean.address} 
             <br/>
             #{msg.tags}: 
-            <ui:repeat id="taglist" value="#{groupsList.tagsList}" var="tag" >
+            <ui:repeat id="taglist" value="#{GroupBean.tagsList}" var="tag" >
                 <h:outputLink value="tagDisplay.xhtml">
                     <h:outputText value="#{tag.getTagName()}"/>
                     <f:param name="tid" value="#{tag.getTagId()}"/>
