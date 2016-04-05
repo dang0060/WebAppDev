@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--I18N completed as of Mar 7 @yawei @mimi-->
 <ui:composition 
       template="homepage.xhtml"
       xmlns="http://www.w3.org/1999/xhtml"
@@ -8,14 +6,14 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
    
-    <ui:define name="title">#{msg.GroupSearchTitle}</ui:define>
+    <ui:define name="title">Tag Search</ui:define>
     <ui:define name="content">
         <h:form>
-            <h2 style="text-align: center; padding-right: 4.2% ">#{msg.GroupSearchTitle}</h2>
-            #{msg.GroupSearchGuide}
+            <h2 style="text-align: center; padding-right: 4.2% ">Tag Search</h2>
+            Find groups using tag and location
             <br/>
             <p:spacer height="10"/><br/>
-            <p:inputText id="groupname" value="#{input}" placeholder="#{msg.GroupNameInputPlaceHolder}"/>
+            <p:inputText id="tagname" value="#{input}" placeholder="Enter tag here" required="true"/>
             
             
             <p:inputText id="maxdistance" value="#{distance}" placeholder="#{msg.GroupDisInputPlaceHolder}">
@@ -24,7 +22,7 @@
             <h:outputLabel for="searchlocation" value=" #{msg.GroupKmOrLess}:"/>
             <p:inputText id="searchlocation" value="#{address}" placeholder="#{msg.GroupAdrInputPlaceHolder}" />
             
-            <p:commandButton id="submitGroupname" value="#{msg.searchButton}" onclick="clearLocations()" action="#{SearchBean.searchForGroup(input,distance,address)}" 
+            <p:commandButton id="submitGroupname" value="#{msg.searchButton}" onclick="clearLocations()" action="#{SearchBean.searchForGroupByTag(input,distance,address)}" 
                              update="groupSearchResults mapScripts" oncomplete="updateMap()" icon="ui-icon-search"></p:commandButton>
             <p:spacer height="10"/><br/> 
             <ui:include src="/map.xhtml" />
@@ -42,12 +40,7 @@
                     <h:outputText value="#{groupResults.getGroup().description}" />
                 </p:column>
                 <p:column headerText="#{msg.tags}">
-                    <ui:repeat id="taglist" value="#{groupResults.getTagsList()}" var="tag" >
-                        <h:outputLink value="tagDisplay.xhtml">
-                            <h:outputText value="#{tag.getTagName()} "/>
-                            <f:param name="tid" value="#{tag.getTagId()}"/>
-                        </h:outputLink> 
-                    </ui:repeat>
+                    <ui:repeat id="taglist" value="#{groupResults.tagsList}" var="tag" >#{tag.getTagName()} </ui:repeat>
                 </p:column>
                 <!--display name of the group leader @yawei-->
                 <p:column headerText="#{msg.leaderName}">

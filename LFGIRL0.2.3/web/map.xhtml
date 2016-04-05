@@ -5,7 +5,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
-    <p:outputPanel id="mapScripts" >
+        <p:outputPanel id="mapScripts">
         <script>
           //<![CDATA[
 
@@ -13,16 +13,16 @@
           var markers=[];
           var xml;
 
-          /*loads initial map centered on user location*/
+          /*loads initial map centered on Ottawa, a later feature could be to have it load based on user location*/
           function loadMap() {
             map = new google.maps.Map(document.getElementById('map'), {
               zoom: 10
             });
-
             if(navigator.geolocation){
                 getUserLocation(function(lati, longi){
                     map.setCenter(new google.maps.LatLng(lati,longi));
                     var locationBox=document.getElementById('#{p:component('searchlocation')}');
+                    debugger;
                     if(locationBox.value!=null && locationBox.value==""){
                         var geocoder = new google.maps.Geocoder;
                         geocoder.geocode({'location': {lat: parseFloat(lati), 
@@ -44,8 +44,7 @@
             if(#{SearchBean.markersXML!=null}){
                 updateMap();
             }
-
-        }
+          }
 
           function getUserLocation(callback){              
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -60,28 +59,20 @@
           }
           
           function updateMap(){
-              
-            xml = parseXml('#{SearchBean.markersXML}');
-            clearLocations();
-            if(#{SearchBean.searchType==0}){
-              #{SearchBean.searchType};
-              document.getElementById('map').style.display="none";
-            }  
-            else{
-                document.getElementById('map').style.display="block"
-                var markerNodes = xml.documentElement.getElementsByTagName("marker");
-                var bounds = new google.maps.LatLngBounds();
-                for(var i=0;i<markerNodes.length;i++){
-                    var name=markerNodes[i].getAttribute("name");
-                    var address=markerNodes[i].getAttribute("address");
-                    var latlng = new google.maps.LatLng(
-                            parseFloat(markerNodes[i].getAttribute("lat")),
-                            parseFloat(markerNodes[i].getAttribute("lng")));
-                    createMarker(latlng, name, address);
-                    bounds.extend(latlng);
-                }
-                map.fitBounds(bounds);
-            }
+              xml = parseXml('#{SearchBean.markersXML}');
+              clearLocations();
+              var markerNodes = xml.documentElement.getElementsByTagName("marker");
+              var bounds = new google.maps.LatLngBounds();
+              for(var i=0;i<markerNodes.length;i++){
+                  var name=markerNodes[i].getAttribute("name");
+                  var address=markerNodes[i].getAttribute("address");
+                  var latlng = new google.maps.LatLng(
+                          parseFloat(markerNodes[i].getAttribute("lat")),
+                          parseFloat(markerNodes[i].getAttribute("lng")));
+                  createMarker(latlng, name, address);
+                  bounds.extend(latlng);
+              }
+              map.fitBounds(bounds);
           }
 
           function createMarker(latlng, name, address) {
@@ -119,6 +110,6 @@
         </p:outputPanel>    
     <script src="https://maps.googleapis.com/maps/api/js?key=#{SearchBean.key}&amp;callback=loadMap"
     async="async" defer="defer" type="text/javascript"></script>  
-    <div id="map" style="height:400px; width: 850px;" ></div>
+    <div id="map" style="height:400px; width: 850px;"></div>
 </ui:composition>
 
