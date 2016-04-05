@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -66,6 +67,8 @@ public class SearchBean implements Serializable {
     private String key;
     private String markersXML=null;
     private String emptyMessage="No records found.";
+    private int searchType= 3;
+    private TreeMap<String,Integer> searchTypes;
     
     
     @PostConstruct
@@ -74,6 +77,13 @@ public class SearchBean implements Serializable {
         ServletContext sC = (ServletContext) ec.getContext();
         WebApplicationContextUtils.getRequiredWebApplicationContext(sC).getAutowireCapableBeanFactory().autowireBean(this);
         key=groupsService.getSecretKey("googlemapsapi");
+        
+        searchTypes=new TreeMap<>();
+        searchTypes.put("Users", 0);
+        searchTypes.put("Groups by Name", 1);
+        searchTypes.put("Groups by Tag", 2);
+        searchTypes.put("Groups by Description", 3);
+        
     }
     
     private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
@@ -81,6 +91,21 @@ public class SearchBean implements Serializable {
         Autowirer.wireObject(this);
     }
 
+    public int getSearchType(){
+        return searchType;
+    }
+    
+    public void setSearchType(int searchType){
+        this.searchType=searchType;
+    }
+    
+    public TreeMap<String,Integer> getSearchTypes(){
+        return searchTypes;
+    }
+    
+    public void setSearchTypes(TreeMap<String,Integer> searchTypes){
+        this.searchTypes=searchTypes;
+    }
     /**
      * @return the users
      */
@@ -168,6 +193,25 @@ public class SearchBean implements Serializable {
         //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Searching...", "Search in progress"));
     }
     
+    public void search(String searchTerm, float maxDistance, String address){
+        locations.clear();
+        emptyMessage="No records found.";
+        
+        if(searchType==0)
+            userNameSearch(searchTerm);
+        else{
+            if(address==null||address.isEmpty()){
+                searchWithoutLocation(searchTerm);
+            }
+            else
+                searchWithLocation(searchTerm, maxDistance, address);
+           
+        }
+        //clears markers if not needed
+        makeMarkers();
+    }
+    
+    
     public void searchForGroup(String searchTerm, float maxDistance, String address) {
         emptyMessage="No records found.";
         if(address==null||address.isEmpty()){
@@ -250,54 +294,48 @@ public class SearchBean implements Serializable {
     
 
     private void searchWithoutLocation(String searchTerm) {
-        locations.clear();
         
         setAddress("");
         setLatitude(100);
         setLongitude(100);
         List<Groups> results;
-        if(isTagSearch){
-            results=groupsService.findGroupsByTagName(searchTerm);
-        }
-        else{
-            results=groupsService.findGroupsByName(searchTerm);
-
-            if (results.isEmpty()) {
+        switch (searchType) {
+            case 1:
+                results=groupsService.findGroupsByName(searchTerm);
+                break;
+            case 2:
+                results=groupsService.findGroupsByTagName(searchTerm);
+                break;
+            default:
                 results=groupsService.findGroupByDescription(searchTerm);
-            }
-            }
-            for(Groups group:results){
-                locations.add(new SearchResult(group, -1.0f));
+                break;
         }
+        for(Groups group:results){
+            locations.add(new SearchResult(group, -1.0f));
+        }    
         setIsGeoSearch(false);
-        makeMarkers();
     }
     
     private void searchWithLocation(String searchTerm, float maxDistance, String address) {
-            locations.clear();
             addressToCoordinate(address);
             if (maxDistance<=0||maxDistance>12756)
                 maxDistance=10;
             List<SearchResult>results;
              
-            if(isTagSearch){
+            switch (searchType) {
+            case 1:
+                results=groupsService.findNearestGroupsbyName(latitude, longitude, maxDistance, searchTerm);
+                break;    
+            case 2:
                 results=groupsService.findNearestGroupsByTag(latitude, longitude, maxDistance, searchTerm);
-                
-            }
-            else{
-                if(searchTerm==null||searchTerm.isEmpty()){
-                    results=groupsService.findNearestGroups(latitude, longitude, maxDistance);
-                }
-                else{
-                    results=groupsService.findNearestGroupsbyName(latitude, longitude, maxDistance, searchTerm);
-                    if(results.isEmpty())
-                        results=groupsService.findNearestGroupsbyDesc(latitude, longitude, maxDistance, searchTerm);
-                }
+                break;
+            default:
+                results=groupsService.findNearestGroupsbyDesc(latitude, longitude, maxDistance, searchTerm);
+                break;
             }
             
             setLocations(new ArrayList<>(results));
             setIsGeoSearch(true);
-            makeMarkers();
             
     }
     
