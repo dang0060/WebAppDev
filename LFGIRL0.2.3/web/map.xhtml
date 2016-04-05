@@ -21,6 +21,20 @@
             if(navigator.geolocation){
                 getUserLocation(function(lati, longi){
                     map.setCenter(new google.maps.LatLng(lati,longi));
+                    var locationBox=document.getElementById('#{p:component('searchlocation')}');
+                    debugger;
+                    if(locationBox.value!=null && locationBox.value==""){
+                        var geocoder = new google.maps.Geocoder;
+                        geocoder.geocode({'location': {lat: parseFloat(lati), 
+                            lng: parseFloat(longi)}}, 
+                            function(results, status) {
+                                if (status === google.maps.GeocoderStatus.OK) {
+                                    if(results[0])
+                                        locationBox.value=results[0].formatted_address;
+                                }
+                            }
+                        ); 
+                    }
                 });
             }
             else{
