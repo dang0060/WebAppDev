@@ -16,15 +16,34 @@
           /*loads initial map centered on Ottawa, a later feature could be to have it load based on user location*/
           function loadMap() {
             map = new google.maps.Map(document.getElementById('map'), {
-              zoom: 8,
-              center: {lat: 45.4214, lng: -75.6919}
+              zoom: 10
             });
+            if(navigator.geolocation){
+                getUserLocation(function(lati, longi){
+                    map.setCenter(new google.maps.LatLng(lati,longi));
+                });
+            }
+            else{
+                map.setCenter(new google.maps.LatLng(0.0,0.0));
+            }
             infoWindow = new google.maps.InfoWindow();
             if(#{SearchBean.markersXML!=null}){
                 updateMap();
             }
           }
 
+          function getUserLocation(callback){              
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+                callback.call(null, lat, lng);
+            }, function (error) {
+                console.log("Something went wrong: ", error);
+                callback.call(null, 0.0, 0.0);
+            });
+            
+          }
+          
           function updateMap(){
               xml = parseXml('#{SearchBean.markersXML}');
               clearLocations();
@@ -77,7 +96,6 @@
         </p:outputPanel>    
     <script src="https://maps.googleapis.com/maps/api/js?key=#{SearchBean.key}&amp;callback=loadMap"
     async="async" defer="defer" type="text/javascript"></script>  
-    
     <div id="map" style="height:400px; width: 850px;"></div>
 </ui:composition>
 

@@ -135,7 +135,17 @@ public class GroupsServiceImpl implements GroupsService {
     }
 
     @Override
-    public List<Groups> findGroupByTag(String searchTerm) {
-        return groupsDAO.findGroupByTag(searchTerm);
+    public List<Groups> findGroupsByTagName(String searchTerm) {
+        return groupsDAO.findGroupsByTagName(searchTerm);
+    }
+
+    @Override
+    public List<Groups> findGroupsByTagID(int id) {
+        return groupsDAO.findGroupsByTagID(id);
+    }
+
+    @Override
+    public Tags findTagByID(int id) {
+        return groupsDAO.findTagByID(id);
     }
 }

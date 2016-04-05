@@ -55,11 +55,15 @@ public interface GroupsService {
     
     public Tags findTagByName(String name);
     
+    public Tags findTagByID(int id);
+    
     public Tags addNewTag(Tags tags);
 
     public String getSecretKey(String name);
 
     public List<SearchResult> findNearestGroupsByTag(float latitude, float longitude, float maxDistance, String searchTerm);
 
-    public List<Groups> findGroupByTag(String searchTerm);
+    public List<Groups> findGroupsByTagName(String searchTerm);
+    
+    public List<Groups> findGroupsByTagID(int id);
 }
