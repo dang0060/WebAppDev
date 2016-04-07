@@ -227,15 +227,24 @@ public class GroupBean implements Serializable{
     }
     /*adds tag to temporary list*/
     public void addTag(String newTagName){
-
+        boolean exists=false;
         Tags tag=groupsService.findTagByName(newTagName);
+        
+        //search if tag has been added
+        for(Tags t:tags){
+            if(t.getTagName().equalsIgnoreCase(newTagName)){
+                exists=true;
+            }
+        }
+        //if the tag is already in the list, return without adding tag
+        if(exists)
+            return;
         //if tag isn't in db
         if(tag==null){
             //create placeholder tag with null groups
-            tag=new Tags(newTagName.toLowerCase(), null);
+                tag=new Tags(newTagName.toLowerCase(), null);
         } 
         tags.add(tag); 
-        newTagName="";
     }
     /*remove tag from temporary list*/
     public void removeTag(Tags tag){
@@ -442,6 +451,23 @@ public class GroupBean implements Serializable{
         
     }  
     
+    public void validateTagName(FacesContext context, UIComponent component, Object value) throws ValidatorException{
+        boolean exists=false;
+        String tagName=value.toString();
+        try{
+            for(Tags t:tags){
+                if(t.getTagName().equalsIgnoreCase(tagName)){
+                    throw new Exception("Tag already in list");
+                }
+            }
+        }
+        catch(Exception e){
+            FacesMessage message=new FacesMessage(e.getMessage());
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
+    }
+    
     /*for group creation and editing pages, does not allow empty location*/
     public void validateAddress(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         String location=value.toString();
@@ -462,7 +488,7 @@ public class GroupBean implements Serializable{
                throw new Exception("Invalid Location");
         }
         catch (Exception ex) {
-            FacesMessage message=new FacesMessage("Invalid Location");
+            FacesMessage message=new FacesMessage(ex.getMessage());
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(message);
         }
