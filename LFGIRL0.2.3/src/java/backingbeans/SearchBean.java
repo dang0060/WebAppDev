@@ -68,21 +68,14 @@ public class SearchBean implements Serializable {
     private String markersXML=null;
     private String emptyMessage="No records found.";
     private int searchType= 3;
-    private TreeMap<String,Integer> searchTypes;
-    
+    //removed searchTypes tree map, as the selections item on page now have their own values to set searchType when selected @yawei
     
     @PostConstruct
     public void init() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ServletContext sC = (ServletContext) ec.getContext();
+        ServletContext sC = (ServletContext) ec.getContext();          
         WebApplicationContextUtils.getRequiredWebApplicationContext(sC).getAutowireCapableBeanFactory().autowireBean(this);
-        key=groupsService.getSecretKey("googlemapsapi");
-        
-        searchTypes=new TreeMap<>();
-        searchTypes.put("Users", 0);
-        searchTypes.put("Groups by Name", 1);
-        searchTypes.put("Groups by Tag", 2);
-        searchTypes.put("Groups by Description", 3);
+        key=groupsService.getSecretKey("googlemapsapi");         
         
     }
     
@@ -97,14 +90,6 @@ public class SearchBean implements Serializable {
     
     public void setSearchType(int searchType){
         this.searchType=searchType;
-    }
-    
-    public TreeMap<String,Integer> getSearchTypes(){
-        return searchTypes;
-    }
-    
-    public void setSearchTypes(TreeMap<String,Integer> searchTypes){
-        this.searchTypes=searchTypes;
     }
     /**
      * @return the users

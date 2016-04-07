@@ -15,9 +15,12 @@
             #{msg.GroupSearchGuide}
             <br/>
             <p:spacer height="10"/><br/>
-            <p:outputLabel for="searchtype" value="Search for: "/>
-            <p:selectOneMenu id="searchtype" value="#{SearchBean.searchType}">
-                <f:selectItems value="#{SearchBean.searchTypes}"/>
+            <p:outputLabel for="searchtype" value="#{msg.searchFor}: "/>
+            <p:selectOneMenu id="searchtype" value="#{SearchBean.searchType}">              
+                <f:selectItem itemLabel="#{msg.searchUsers}" itemValue= "0" />
+                <f:selectItem itemLabel="#{msg.searchGroupName}" itemValue="1"/>
+                <f:selectItem itemLabel="#{msg.searchGroupTag}" itemValue="2" />
+                <f:selectItem itemLabel="#{msg.searchGroupDes}" itemValue="3" />
             </p:selectOneMenu>
             <p:inputText id="groupname" value="#{input}" placeholder="#{msg.GroupNameInputPlaceHolder}"/>
             
