@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    
+    <application>
+        <el-resolver>
+            org.springframework.web.jsf.el.SpringBeanFacesELResolver
+        </el-resolver>
+        
+        <!-- for locale configuration @yawei-->
+        <resource-bundle>
+            <base-name>com.resources.localization.I18nResource</base-name> <!--Resrouce bundle, which contains the propertie files-->
+              <var>msg</var> <!--The tag to call upon the text within the property files -->
+        </resource-bundle>
+         <locale-config> <!--Beside the deafult locale, other locale's name correspondes with the property file's postfix -->
+             <default-locale>en</default-locale>
+             <supported-locale>cn_si</supported-locale>
+             <supported-locale>fr</supported-locale>
+         </locale-config>>
+    </application>
+ <!-- end of locale config-->
+</faces-config>

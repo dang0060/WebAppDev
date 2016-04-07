@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--I18N completed as of Mar 7 @yawei @mimi-->
+<ui:composition 
+      template="homepage.xhtml"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+   
+    <ui:define name="title">#{msg.GroupSearchTitle}</ui:define>
+    <ui:define name="content">
+        <h:form>
+            <h2 style="text-align: center; padding-right: 4.2% ">#{msg.searchButton}</h2>
+            #{msg.GroupSearchGuide}
+            <br/>
+            <p:spacer height="10"/><br/>
+            <p:outputLabel for="searchtype" value="Search for: "/>
+            <p:selectOneMenu id="searchtype" value="#{SearchBean.searchType}">
+                <f:selectItems value="#{SearchBean.searchTypes}"/>
+            </p:selectOneMenu>
+            <p:inputText id="groupname" value="#{input}" placeholder="#{msg.GroupNameInputPlaceHolder}"/>
+            
+            
+            <p:inputText id="maxdistance" value="#{distance}" placeholder="#{msg.GroupDisInputPlaceHolder}" style="width: 100px">
+            </p:inputText>
+         
+            <h:outputLabel for="searchlocation" value=" #{msg.GroupKmOrLess}:"/>
+            <p:inputText id="searchlocation" value="#{address}" placeholder="#{msg.GroupAdrInputPlaceHolder}" />
+            
+            <p:commandButton id="submitGroupname" value="#{msg.searchButton}" onclick="clearLocations()" action="#{SearchBean.search(input,distance,address)}" 
+                             update="searchresults mapScripts" oncomplete="updateMap()" icon="ui-icon-search"></p:commandButton>
+            <p:spacer height="10"/><br/> 
+            
+            <ui:include src="/map.xhtml"/>
+            <p:outputPanel id="searchresults">
+            <p:dataTable id="groupSearchResults" var="groupResults" value="#{SearchBean.locations}" rendered="#{SearchBean.searchType != 0}" emptyMessage="#{msg.emptyMessage}" >
+                <p:column headerText="Distance" rendered="#{SearchBean.isGeoSearch}">
+                    <h:outputText value="#{groupResults.distance}"/>
+                </p:column>
+                <p:column headerText="#{msg.GroupName}">
+                    <h:outputLink  value="groupProfile.xhtml">
+                        <h:outputText value="#{groupResults.getGroup().groupname}"/>
+                         <f:param name="gid" value="#{groupResults.getGroup().groupId}"/>
+                    </h:outputLink>
+                </p:column>
+                <p:column headerText="#{msg.GroupDescription}">
+                    <h:outputText value="#{groupResults.getGroup().description}" />
+                </p:column>
+                <p:column headerText="#{msg.tags}">
+                    <ui:repeat id="taglist" value="#{groupResults.getTagsList()}" var="tag" >
+                        <h:outputLink value="tagDisplay.xhtml">
+                            <h:outputText value="#{tag.getTagName()} "/>
+                            <f:param name="tid" value="#{tag.getTagId()}"/>
+                        </h:outputLink> 
+                    </ui:repeat>
+                </p:column>
+                <!--display name of the group leader @yawei-->
+                <p:column headerText="#{msg.leaderName}">
+                    <h:outputText value="#{SearchBean.searchGroupLeader(groupResults.getGroup().groupId)}" />
+                </p:column>
+                <!--states if is already part of the group @yawei-->
+                <p:column headerText="#{msg.joined}" rendered="#{SearchBean.displayJoinedColumn()}">
+                    <h:outputText value="#{SearchBean.JoinedGroup(groupResults.getGroup().groupId)}" />
+                </p:column>
+            </p:dataTable>   
+                
+                
+                <p:dataTable id="userSearchResults" var="userResults" rendered="#{SearchBean.searchType == 0}" value="#{SearchBean.users}" style="width:400px;">
+                <p:column headerText="#{msg.searchUserName}">
+                    <h:outputLink  value="userProfile.xhtml">
+                        <h:outputText value="#{userResults.username}"/>
+                        <f:param name="uid" value="#{userResults.userId}"/>
+                    </h:outputLink>
+                </p:column>
+            </p:dataTable>    
+            </p:outputPanel>
+        </h:form>
+   </ui:define>
+</ui:composition>
