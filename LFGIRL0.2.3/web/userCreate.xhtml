@@ -22,24 +22,24 @@
             <p:spacer height="20"/>
             <h2> #{msg.AccountCreation}</h2>   
                 <h:panelGrid id="userCreationPanel" columns="3" cellpadding="5">                
-                    <h:outputLabel for="usernameEntry" value="#{msg.enterUserName}:" />
+                    <h:outputLabel for="usernameEntry" value="#{msg.enterUserName}:" tabindex="1"/>
                   <p:inputText id="usernameEntry" value="#{userName}" label="usernameEntry"  required="true"
                       requiredMessage="#{msg.userNameEntryErrorMessage}"/>
                   <h:message for="usernameEntry" style="color: red;"/>                           
                                         
-                  <h:outputLabel for="passwordEntry" value="#{msg.enterPassword}:"/>
+                  <h:outputLabel for="passwordEntry" value="#{msg.enterPassword}:" tabindex="2"/>
                   <p:password id="passwordEntry" value="#{password}" label="passwordEntry" required="true"
                               requiredMessage="#{msg.passwordEntryErrorMessage}"  match="passwordConfirm">
                     <!--using 'match' to validate password, part of primefaces-->
                   </p:password>
                   <h:message for="passwordEntry" style="color: red;"/>
                 
-                  <h:outputLabel for="passwordConfirm" value="#{msg.confirmPassword}:" />
+                  <h:outputLabel for="passwordConfirm" value="#{msg.confirmPassword}:" tabindex="3" />
                   <p:password id="passwordConfirm" value="#{passwordConfirm}" label="passwordConfirm" required="true"
                               requiredMessage="#{msg.confirmPasswordErrorMessage}"/>
                   <h:message for="passwordConfirm" style="color: red;"/>
                 
-                  <h:outputLabel for="emailEntry" value="#{msg.enterEmail}:" />
+                  <h:outputLabel for="emailEntry" value="#{msg.enterEmail}:" tabindex="4"/>
                   <p:inputText id="emailEntry" value="#{email}" label="emailEntry" required="true"
                                requiredMessage="#{msg.emailEntryErrorMessage}" 
                                validatorMessage="#{msg.emailFormatErrorMessage}">
