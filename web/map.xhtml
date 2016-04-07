@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:outputPanel id="mapScripts" >
+        <script>
+          //<![CDATA[
+
+          var infoWindow;
+          var markers=[];
+          var xml;
+
+          /*loads initial map centered on user location*/
+          function loadMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 10
+            });
+
+            if(navigator.geolocation){
+                getUserLocation(function(lati, longi){
+                    map.setCenter(new google.maps.LatLng(lati,longi));
+                    var locationBox=document.getElementById('#{p:component('searchlocation')}');
+                    if(locationBox.value!=null && locationBox.value==""){
+                        var geocoder = new google.maps.Geocoder;
+                        geocoder.geocode({'location': {lat: parseFloat(lati), 
+                            lng: parseFloat(longi)}}, 
+                            function(results, status) {
+                                if (status === google.maps.GeocoderStatus.OK) {
+                                    if(results[0])
+                                        locationBox.value=results[0].formatted_address;
+                                }
+                            }
+                        ); 
+                    }
+                });
+            }
+            else{
+                map.setCenter(new google.maps.LatLng(0.0,0.0));
+            }
+            infoWindow = new google.maps.InfoWindow();
+            if(#{SearchBean.markersXML!=null}){
+                updateMap();
+            }
+
+        }
+
+          function getUserLocation(callback){              
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
+                callback.call(null, lat, lng);
+            }, function (error) {
+                console.log("Something went wrong: ", error);
+                callback.call(null, 0.0, 0.0);
+            });
+            
+          }
+          
+          function updateMap(){
+              
+            xml = parseXml('#{SearchBean.markersXML}');
+            clearLocations();
+            if(#{SearchBean.searchType==0}){
+              #{SearchBean.searchType};
+              document.getElementById('map').style.display="none";
+            }  
+            else{
+                document.getElementById('map').style.display="block"
+                var markerNodes = xml.documentElement.getElementsByTagName("marker");
+                var bounds = new google.maps.LatLngBounds();
+                for(var i=0;i<markerNodes.length;i++){
+                    var name=markerNodes[i].getAttribute("name");
+                    var address=markerNodes[i].getAttribute("address");
+                    var latlng = new google.maps.LatLng(
+                            parseFloat(markerNodes[i].getAttribute("lat")),
+                            parseFloat(markerNodes[i].getAttribute("lng")));
+                    createMarker(latlng, name, address);
+                    bounds.extend(latlng);
+                }
+                map.fitBounds(bounds);
+            }
+          }
+
+          function createMarker(latlng, name, address) {
+            var html = "<b>" + name + "</b> <br/>" + address;
+            var marker = new google.maps.Marker({
+              map: map,
+              position: latlng
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+              infoWindow.setContent(html);
+              infoWindow.open(map, marker);
+            });
+            if(name===""){
+                marker.setIcon("http://maps.google.com/mapfiles/ms/micons/blue.png");
+            }
+            else{
+                marker.setIcon("http://maps.google.com/mapfiles/ms/micons/red-dot.png");
+            }
+            markers.push(marker);
+          }
+
+          function clearLocations() {
+            infoWindow.close();
+            for (var i = 0; i < markers.length; i++) {
+              markers[i].setMap(null);
+            }
+            markers.length = 0;
+          }
+
+          function parseXml(str) {
+            return (new DOMParser).parseFromString(str, 'text/xml');
+            }
+          //]]>
+        </script>
+        </p:outputPanel>    
+    <script src="https://maps.googleapis.com/maps/api/js?key=#{SearchBean.key}&amp;callback=loadMap"
+    async="async" defer="defer" type="text/javascript"></script>  
+    <div id="map" style="height:400px; width: 850px;" ></div>
+</ui:composition>
+

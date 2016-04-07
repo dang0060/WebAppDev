@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!--As of Mar 6, it is fully under I18N @yawei @Mimi-->
+<ui:composition
+      template="homepage.xhtml"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:define name="title">
+        #{msg.GroupDisplayTitle}
+    </ui:define>
+    <ui:define name="content">
+        <h2 style="text-align: center; padding-right: 4.2% "> #{msg.myGroups}</h2>
+        <h:form>
+            <p:dataTable id="groupList" var="groupResults" value="#{UserBean.groups}">
+                <p:column headerText="#{msg.GroupName}">
+                    <h:outputLink  value="groupProfile.xhtml">
+                        <h:outputText value="#{groupResults.groupname}"/>
+                        <f:param name="gid" value="#{groupResults.groupId}"/>
+                    </h:outputLink>
+                </p:column>
+                
+                <!--shows if the user is the leader to a group @yawei-->
+                <p:column headerText="#{msg.leaderStatus}" sortBy="#{SearchBean.returnLeaderStatus(groupResults.groupId)}">              
+                    <h:outputText value="#{SearchBean.returnLeaderStatus(groupResults.groupId)}"/>                    
+                </p:column>              
+            </p:dataTable>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--I18N completed as of Mar 7 @yawei @mimi -->
+<!--now the form has validation for empty input @yawei-->
+<ui:composition 
+    template="homepage.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="title">#{msg.Edit} #{GroupBean.groupName}</ui:define>
+    <ui:define name="content">
+        <h:form>
+            <h:panelGrid columns="3" cellpadding="8" id="editGroupPanel" >
+                <h:outputLabel for="editname" value="#{msg.GroupName}: "/>
+                <p:inputText id="editname" value="#{GroupBean.groupName}" label="editname" required="true"
+                             requiredMessage="#{msg.groupNameErrorMessage}" maxlength="100" />
+                    <h:message for="editname" style="color: red;"/>             
+
+                <h:outputLabel for="editdesc" value="#{msg.GroupDescription}: "/>
+                <p:inputTextarea id="editdesc" value="#{GroupBean.description}" maxlength="45"
+                    rows="4" cols="23" counter="counterDisplay" required="true"
+                    requiredMessage="#{msg.groupDesErrorMessage}" counterTemplate="#{msg.charactersRemaining}:{0}."
+                    autoResize="false"/>
+                  <h:message for="editdesc" style="color: red;"/>
+                 <h:panelGroup /> 
+                   <h:outputText id="counterDisplay" />        
+                 <h:panelGroup />
+                           
+                 <h:outputLabel for="editlocation" value="#{msg.Location}"/>
+                 <p:inputText id="editlocation" value="#{GroupBean.address}" validator="#{GroupBean.validateAddress}" validatorMessage="#{msg.LocationInvalid}" />
+                 <h:message for="editlocation" style="color:red;"/>
+                 
+                  #{msg.tags}: 
+                 <h:panelGroup id="edittags">
+                     <ui:repeat id="currtags" value="#{GroupBean.tagsList}" var="t" varStatus="tagstatus">
+                        <h:outputText value="#{t.getTagName()}"/>
+                        <p:commandButton value="✕" action="#{GroupBean.removeTag(t)}" update=":#{p:component('edittags')}"/>
+                     </ui:repeat>
+                     <p:inputText id="addtag" value="#{newTagName}"/> 
+                    <p:commandButton value="＋" action="#{GroupBean.addTag(newTagName)}" update=":#{p:component('edittags')}">
+                        <p:resetInput target="addtag"/>
+                    </p:commandButton>
+                 </h:panelGroup>
+                 <br/>
+                 
+                <p:commandButton value="#{msg.SaveChanges}" actionListener="#{GroupBean.editGroup()}" update="editGroupPanel"></p:commandButton>  
+                 <h:panelGroup />
+                <!--had to remove those old codes, was going to comment them out, but it will give injection error if I did, the new code will make confirmation box work @yawei -->
+                <p:commandButton value="#{msg.groupDeleteButton}" actionListener="#{GroupBean.deleteGroup()}" update="editGroupPanel">
+                    <p:confirm header="#{msg.delelteGroupDialogHeader}" message="#{msg.deleteGroupDialogMessage}" icon="ui-icon-alert" />
+                </p:commandButton>
+ 
+              <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                  <p:commandButton value="#{msg.yesButton}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                  <p:commandButton value="#{msg.noButton}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+             </p:confirmDialog>
+                
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
