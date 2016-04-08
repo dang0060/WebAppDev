@@ -53,6 +53,7 @@ public class ChatCore {
                         String test = (String)s.getUserProperties().get("room");
                         if (s.isOpen()) {
                             s.getBasicRemote().sendObject(chatMessage);
+                            return;
                         }
                     }
 			for (Session s : session.getOpenSessions()) {

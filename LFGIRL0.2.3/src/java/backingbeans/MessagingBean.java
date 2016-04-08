@@ -36,7 +36,7 @@ import services.interfaces.UsersService;
  * @author Protostar
  */
 @ManagedBean(name = "MessagingBean")
-@RequestScoped
+@ViewScoped
 public class MessagingBean implements Serializable {
     
     @Autowired

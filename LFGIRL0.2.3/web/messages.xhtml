@@ -61,7 +61,7 @@ and open the template in the editor.
                                       requiredMessage="#{msg.groupDesErrorMessage}" counterTemplate="#{msg.charactersRemaining}:{0}"
                                       autoResize="false"/>                           
                     <h:outputText id="counterDisplay" />                                   
-                    <p:commandButton update="form:convoMessages"  icon="ui-icon-search" title="View" value="Send Message" process="@this"
+                    <p:commandButton update="form:convoMessages"  icon="ui-icon-search" title="View" value="Send Message" process="@form"
                                      actionListener="#{MessagingBean.sendMessage(messageContent)}" oncomplete="PF('pChat').hide()">
                     </p:commandButton>              
                 </h:panelGrid> 

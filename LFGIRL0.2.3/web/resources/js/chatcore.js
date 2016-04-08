@@ -1,5 +1,5 @@
         var wsocket;
-	var serviceLocation = "ws://localhost:36165/LFGIRL0.3.1/chat/";
+	var serviceLocation = "ws://" + document.location.host.toString() + "/LFGIRL0.3.1/chat/";
 	var $nickName;
 	var $message;
 	var $chatWindow;

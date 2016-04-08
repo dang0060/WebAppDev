@@ -63,7 +63,7 @@ public class LoginBean implements Serializable {
     public UsersService getUsersService() {
         return usersService;
     }
-
+    
     /**
      * @return the userId
      */
@@ -139,7 +139,7 @@ public class LoginBean implements Serializable {
       /*get property file keys for I18n*/
       FacesContext context = FacesContext.getCurrentInstance();
       ResourceBundle msg = context.getApplication().evaluateExpressionGet(context,"#{msg}", ResourceBundle.class);
-      /*use msg.getString("keyname in property file") to add I18n string later, no need to use double quotes*/
+      /*use msg.getString("keyname in property file") to add I18n string later*/
       if(userName == null){
         return "<html><h1>" + msg.getString("welcomeMessage") + "</h1></br>"  
                 + "<h3>" + msg.getString("ifMemberLine") + "</h3></br>"

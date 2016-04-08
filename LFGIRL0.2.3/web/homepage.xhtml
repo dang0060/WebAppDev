@@ -77,7 +77,7 @@
                 <ui:debug />
 		<h:form>
                     <p:growl id="growl" sticky="false" showDetail="true" life="5000"/>
-                    <h:outputLink rendered="#{LoginBean.userName==null}" value="#" onclick="PF('loginDialog').show();" title="Login / Sign-up" class="loginLink" tabindex="4">
+                    <h:outputLink rendered="#{LoginBean.userName==null}" value="#" onclick="PF('loginDialog').show();" title="Login / Sign-up" class="loginLink" tabindex="4" accesskey="i">
                        #{msg['login_signUp']} <!--use the msg var defined in face-config to call upon the corresponding text in property file-->
                      </h:outputLink>
                       
@@ -92,11 +92,12 @@
                             <p:password id="loginPassword" value="#{loginPassword}" required="true" label="loginPassword" />
                             <f:facet name="footer">
                                 <p:commandButton id="logButton" value="#{msg['loginButton']}" update="growl" actionListener="#{LoginBean.userLogin(loginUsername, loginPassword)}"
-                                                 oncomplete="handleLoginRequest(xhr, status, args)" accesskey="return" tabindex="0"/> 
+                                                 oncomplete="handleLoginRequest(xhr, status, args)" tabindex="0" /> 
                                 <p:defaultCommand target="logButton"/>
                                
                                 <p:commandButton id="regButton" value="#{msg.Register}" actionListener="#" onclick="register()" tabindex="0"/>                                             
-                                <p:defaultCommand target="regButton" /> <!--triggers the Enter/Spacebar button by referring to the target id. @mireille -->
+                               <!--triggers the Enter/Spacebar button by referring to the target id. @mireille -->
+                               <!--default command removed, as it would cause register window to show when pressing enter in login form-->
                             </f:facet>  
        			</h:panelGrid>
                     </p:dialog>
@@ -127,8 +128,8 @@
                             
                             <f:facet name="footer">
                                 <p:commandButton id="regCompButton" value="#{msg.completeReg}" update="growl" actionListener="#{RegisterBean.registerUser(registerUsername, registerPassword, registerEmail)}"
-                                                 oncomplete="handleLoginRequest(xhr, status, args)" tabindex="0"/>
-                                <p:defaultCommand target="regCompButton"/>
+                                                 oncomplete="handleLoginRequest(xhr, status, args)" tabindex="0"/>   
+                                 <p:defaultCommand target="regCompButton"/>
                             </f:facet>  
        			</h:panelGrid>
                     </p:dialog>  
@@ -152,7 +153,7 @@
                    <h:outputLink rendered="#{LoginBean.userName!=null}" value="userProfile.xhtml" styleClass="menutext">
                        <h:outputText value="#{LoginBean.userName}" style="font-weight: bold"/></h:outputLink> 
                    <br/>
-                   <p:commandLink rendered= "#{LoginBean.userName!=null}" value="#{msg.signOut}" action="#{LoginBean.signOut()}" styleClass="menutext"/>
+                   <p:commandLink rendered= "#{LoginBean.userName!=null}" value="#{msg.signOut}" action="#{LoginBean.signOut()}" styleClass="menutext" accesskey="o"/>
                 </h:form>
                 <!--end of language change buttons -->
 	</nav>
@@ -197,8 +198,8 @@
             </ui:fragment>
             <ui:fragment rendered="#{LoginBean.userName!=null}">
                 <li class="has-subnav">
-                    <a id="mygroups" href="groupDisplay.xhtml">
-                       <img src="images/grpimg.png" height="40px" width="40px" style="margin:10px"/>
+                    <a id="mygroups" href="groupDisplay.xhtml" accesskey="m">
+                        <img src="images/grpimg.png" height="40px" width="40px" style="margin:10px"/>
                         <span class="nav-text">
                             #{msg['myGroups']}
                         </span>
@@ -220,7 +221,7 @@
              <!--only display the creation page link when user is not logged in-->  
                 <ui:fragment rendered="#{LoginBean.userName==null}">
                 <li class="has-subnav">
-                    <a id="accountCreation" href="userCreate1.xhtml">
+                    <a id="accountCreation" href="userCreate.xhtml">
                         <img src="images/playeradd.png" height="40px" width="40px" style="margin:10px"/> 
                             <span class="nav-text">
                                 #{msg.AccountCreation} 
