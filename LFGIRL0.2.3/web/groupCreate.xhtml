@@ -37,9 +37,9 @@
                  
                  #{msg.tags}: 
                  <h:panelGroup id="edittags">
-                     <ui:repeat id="currtags" value="#{GroupBean.tagsList}" var="t" varStatus="tagstatus">#{t.getTagName()} <p:commandButton value="✕" action="#{GroupBean.removeTag(t)}" update=":#{p:component('edittags')}"/></ui:repeat>
-                     <p:inputText id="addtag" value="#{newTagName}" validator="#{GroupBean.validateTagName}" validatorMessage="Tag already in list"/> 
-                 <p:commandButton value="＋" action="#{GroupBean.addTag(newTagName)}" update=":#{p:component('edittags')}"/>
+                     <ui:repeat id="currtags" value="#{GroupBean.tagsList}" var="t" varStatus="tagstatus">#{t.getTagName()} <p:commandButton value="✕" action="#{GroupBean.removeTag(t)}" update=":#{p:component('edittags')}"/><h:outputText value=" "/></ui:repeat>
+                     <p:inputText id="addtag" value="#{GroupBean.newTagName}"/> 
+                 <p:commandButton value="＋" action="#{GroupBean.addTag()}" update=":#{p:component('edittags')}"/>
                  <h:message for="addtag" style="color:red;"/>
                  </h:panelGroup>
                  <br/>

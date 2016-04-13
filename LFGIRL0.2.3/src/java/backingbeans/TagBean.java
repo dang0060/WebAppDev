@@ -56,6 +56,8 @@ public class TagBean implements Serializable{
         List<Groups>tempList=new ArrayList<>(groupsService.findGroupsByTagID(tid));
         groupsList=new ArrayList();
         for(Groups g:tempList){
+            /*get group with full taglist*/
+            g=groupsService.findGroupById(g.getGroupId());
             groupsList.add(new SearchResult(g, -1.0f));
         }
     }

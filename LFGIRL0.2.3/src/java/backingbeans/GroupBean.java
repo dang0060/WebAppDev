@@ -65,6 +65,7 @@ public class GroupBean implements Serializable{
     private Boolean isMember = false; //try to implement join group funtion @yawei
     private Boolean isUser = false; //try to implement join group funtion @yawei
     private Set<Tags> tags=null;//temporary list of tags @alayna
+    private String newTagName="";
     
    @PostConstruct
     private void init() {
@@ -225,8 +226,16 @@ public class GroupBean implements Serializable{
         ArrayList list=new ArrayList<>(tags);
         return list;
     }
+    
+    public String getNewTagName(){
+        return newTagName;
+    }
+    
+    public void setNewTagName(String newTagName){
+        this.newTagName=newTagName;
+    }
     /*adds tag to temporary list*/
-    public void addTag(String newTagName){
+    public void addTag(){
         boolean exists=false;
         Tags tag=groupsService.findTagByName(newTagName);
         
@@ -237,14 +246,18 @@ public class GroupBean implements Serializable{
             }
         }
         //if the tag is already in the list, return without adding tag
-        if(exists)
+        if(exists){
+            newTagName="";
             return;
+        }
+            
         //if tag isn't in db
         if(tag==null){
             //create placeholder tag with null groups
                 tag=new Tags(newTagName.toLowerCase(), null);
         } 
         tags.add(tag); 
+        newTagName="";
     }
     /*remove tag from temporary list*/
     public void removeTag(Tags tag){
@@ -328,15 +341,20 @@ public class GroupBean implements Serializable{
     public void editGroup() throws IOException{
         if(!group.getTagses().equals(tags)){
             updateFlag=true;
-            for(Tags tag:tags){
-                /*add new tags to db, replace the tags with db version with id*/
-                if(tag.getGroupses()==null){
-                    Tags tempTag=groupsService.addNewTag(tag);
-                    tags.remove(tag);
-                    tags.add(tempTag);
+            /*add new tags to db and create set of tags to add to group*/
+          Set<Tags> tags2=new HashSet();
+            for(Tags t:tags){
+                /*add new tags to db*/
+
+                if(t.getGroupses()==null){
+                    Tags tempTag=groupsService.addNewTag(t);
+                    tags2.add(tempTag);
+                }
+                else{
+                    tags2.add(t);
                 }
             }
-            group.setTagses(tags);            
+            group.setTagses(tags2);            
         }
         if(updateFlag==true)
             groupsService.updateGroupInfo(group);
@@ -353,19 +371,19 @@ public class GroupBean implements Serializable{
          context.execute("PF('groupFailDlg').show()");
       } else {
         /*add new tags to db*/
-          Iterator<Tags> ite=tags.iterator();
-            while(ite.hasNext()){
-                /*add new tags and replace taglist entries*/
-                Tags tag=ite.next();
+          Set<Tags> tags2=new HashSet();
+            for(Tags t:tags){
+                /*add new tags to db*/
 
-                if(tag.getGroupses()==null){
-                    Tags tempTag=groupsService.addNewTag(tag);
-                    ite.remove();
-                    tags.add(tempTag);
+                if(t.getGroupses()==null){
+                    Tags tempTag=groupsService.addNewTag(t);
+                    tags2.add(tempTag);
+                }
+                else{
+                    tags2.add(t);
                 }
             }
-            
-            group.setTagses(tags);            
+            group.setTagses(tags2);                 
         
           
         groupsService.addGroup(group);
@@ -451,22 +469,7 @@ public class GroupBean implements Serializable{
         
     }  
     
-    public void validateTagName(FacesContext context, UIComponent component, Object value) throws ValidatorException{
-        boolean exists=false;
-        String tagName=value.toString();
-        try{
-            for(Tags t:tags){
-                if(t.getTagName().equalsIgnoreCase(tagName)){
-                    throw new Exception("Tag already in list");
-                }
-            }
-        }
-        catch(Exception e){
-            FacesMessage message=new FacesMessage(e.getMessage());
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            throw new ValidatorException(message);
-        }
-    }
+   
     
     /*for group creation and editing pages, does not allow empty location*/
     public void validateAddress(FacesContext context, UIComponent component, Object value) throws ValidatorException {
