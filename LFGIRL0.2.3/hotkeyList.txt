@@ -1,0 +1,16 @@
+hot key list
+
+Login (only works when logged out)- alt + i
+Logout - alt + o
+Home page - alt + h
+Search - alt + a
+about Me - alt + u
+account creation (only available when logged out) - alt + t
+Chat (only when logged in) - alt + t
+group creation - alt + p
+site messaging (only works when logged in)- alt + i
+
+change language to English - alt + g
+change language to Chinese - alt + c
+change language to French - alt + n
+

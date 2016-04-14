@@ -139,13 +139,13 @@
                 <h:form class="langform"> 
                     <!--default locale, from I18nResource.properties -->
                    <h:commandButton actionListener="#{language.changeLanguage('')}" 
-                       value="#{msg['englishButton']}" tabindex="1"/>
+                                    value="#{msg['englishButton']}" tabindex="1" accesskey="g"/>
                    <!--Chinese simplified locale, from I18nResource_cn_si.properties -->
                    <h:commandButton actionListener="#{language.changeLanguage('cn_si')}" 
-                      value="#{msg['chineseButton']}" tabindex="2"/>
+                                    value="#{msg['chineseButton']}" tabindex="2" accesskey="c"/>
                    <!--French locale, from I18nResource_fr.properties -->
                    <h:commandButton actionListener="#{language.changeLanguage('fr')}" 
-                      value="#{msg['frenchButton']}" tabindex="3"/>
+                                    value="#{msg['frenchButton']}" tabindex="3" accesskey="n"/>
                    <br/>
                    
                    <!--changed the position and size of the user name @yawei-->
@@ -178,7 +178,7 @@
                 </li>
                 <li class="has-subnav">
                     <a id="groupsearch" href="groupSearch.xhtml" tabindex="2">
-                        <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px" />
+                        <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px" accesskey="a" />
                         <span class="nav-text">
                             #{msg['searchButton']}
                         </span>
@@ -210,7 +210,7 @@
             <ui:fragment rendered="#{LoginBean.userName!=null}">
                 <li class="has-subnav">
                     <a id="aboutme" href="userProfile.xhtml" tabindex="">
-                       <img src="images/playerimg.jpg" height="40px" width="40px" style="margin:10px"/>
+                        <img src="images/playerimg.jpg" height="40px" width="40px" style="margin:10px" accesskey="u"/>
                         <span class="nav-text">
                             #{msg['AboutMe']}
                         </span>
@@ -222,7 +222,7 @@
                 <ui:fragment rendered="#{LoginBean.userName==null}">
                 <li class="has-subnav">
                     <a id="accountCreation" href="userCreate.xhtml">
-                        <img src="images/playeradd.png" height="40px" width="40px" style="margin:10px"/> 
+                        <img src="images/playeradd.png" height="40px" width="40px" style="margin:10px" accesskey="t"/> 
                             <span class="nav-text">
                                 #{msg.AccountCreation} 
                             </span>
@@ -236,7 +236,7 @@
             <ui:fragment rendered="#{LoginBean.userName!=null}">
                 <li class="has-subnav">
                     <a id="groupCreation" href="groupCreate.xhtml">
-                       <img src="images/grpadd.jpg" height="40px" width="40px" style="margin:10px"/> 
+                        <img src="images/grpadd.jpg" height="40px" width="40px" style="margin:10px" accesskey="p"/> 
                         <span class="nav-text">
                             #{msg.GroupCreation}
                         </span>
@@ -247,7 +247,7 @@
                 <ui:fragment rendered="#{LoginBean.userName!=null}">
                 <li class="has-subnav">
                     <a id="chat" href="chat.xhtml">
-                       <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
+                        <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px" accesskey="t"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
                         <span class="nav-text">
                             #{msg.chatTitle}
                         </span>
@@ -258,7 +258,7 @@
                 <ui:fragment rendered="#{LoginBean.userName!=null}">
                 <li class="has-subnav">
                     <a id="chat" href="messages.xhtml">
-                       <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
+                        <img src="images/grpsearch.png" height="40px" width="40px" style="margin:10px" accesskey="i"/> <!--right now just reusing old pictures, depends on implementation might need new picture, or not -->
                         <span class="nav-text">
                             #{msg.chatSiteMessage}
                         </span>
