@@ -1,4 +1,5 @@
         var wsocket;
+        var prvsocket;
 	var serviceLocation = "ws://" + document.location.host.toString() + "/LFGIRL0.3.1/chat/";
 	var $nickName;
 	var $message;
@@ -33,7 +34,7 @@
         function sendPrivateMessage() {
                 var msg = '{"message":"' + $privateMessage.val() + '", "sender":"'
 				+ userName + '", "receiver":"' + $targetUser.val() + '", "received":""}';
-		wsocket.send(msg);
+		prvsocket.send(msg);
 		$privateMessage.val('').focus();
         }
  
@@ -46,8 +47,10 @@
         function openAndConfig(value) {
 		room = value;
                 userName = value;
-		wsocket = new WebSocket(serviceLocation + room);
-		wsocket.onmessage = onPrivateMessageReceived;
+		//wsocket = new WebSocket(serviceLocation + room);
+		//wsocket.onmessage = onPrivateMessageReceived;
+                prvsocket = new WebSocket(serviceLocation + room);
+                prvsocket.onmessage = onPrivateMessageReceived;
 	}
  
 	function leaveRoom() {
