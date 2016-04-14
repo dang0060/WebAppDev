@@ -25,7 +25,7 @@
         
 	function sendMessage() {
 		var msg = '{"message":"' + $message.val() + '", "sender":"'
-				+ $nickName.val() + '", "received":""}';
+				+ $nickName.val() + '", "receiver":"", "received":""}';
 		wsocket.send(msg);
 		$message.val('').focus();
 	}
