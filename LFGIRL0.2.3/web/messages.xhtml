@@ -26,25 +26,29 @@ and open the template in the editor.
                     <p:outputPanel id="public" layout="block" styleClass="ui-corner-all ui-widget-content chatlogs">
                         <p:dataTable id="conversations" var="conversation" value="#{MessagingBean.displayConversations}" rows="10" paginator="true">
                             <f:facet name="header">
-                                Your Conversations
+                                #{msg.yourConver}
                             </f:facet>
 
+                           <!-- <p:column>
+                                <h:outputText value="Conversation between you and {MessagingBean.nameCheck(conversation)}" />
+                            </p:column>
+                            -->
                             <p:column>
-                                <h:outputText value="Conversation between you and #{MessagingBean.nameCheck(conversation)}" />
+                                  <h:outputText value="Conversation between you and #{MessagingBean.obtainTargetUser(conversation)}" />
                             </p:column>
 
                             <p:column>
-                                <p:commandButton id="openConvo" value="Open Conversation" process="@this" actionListener="#{MessagingBean.castMessages(conversation)}" oncomplete="PF('convoView').show()" update="form:convoMessages"/>
+                                <p:commandButton id="openConvo" value="#{msg.opCover}" process="@this" actionListener="#{MessagingBean.castMessages(conversation)}" oncomplete="PF('convoView').show()" update="form:convoMessages"/>
                             </p:column>
                         </p:dataTable>
                     </p:outputPanel>
 
                     <p:dataList id="users" var="user" value="#{MessagingBean.userNames}" styleClass="usersList" paginator="true" rows="8">
                         <f:facet name="header">
-                            Users
+                            #{msg.searchUsers}
                         </f:facet>
 
-                        <p:commandButton title="Chat" icon="ui-icon-comment" oncomplete="PF('pChat').show()" update="form:messagePanel" process="@this" actionListener="#{MessagingBean.setTargetUser(user)}">
+                        <p:commandButton title="#{msg.chatTitle}" icon="ui-icon-comment" oncomplete="PF('pChat').show()" update="form:messagePanel" process="@this" actionListener="#{MessagingBean.setTargetUser(user)}">
                             <f:setPropertyActionListener value="#{user}" target="#{MessagingBean.targetUser}" />
                         </p:commandButton>
                         #{user}
@@ -52,36 +56,36 @@ and open the template in the editor.
                 </h:panelGrid>
             </h:panelGroup>
 
-            <p:dialog id="sendMessageDlg" widgetVar="pChat" header="Send Message" showEffect="fade" hideEffect="fade">
+            <p:dialog id="sendMessageDlg" widgetVar="pChat" header="#{msg.chatSendMessage}" showEffect="fade" hideEffect="fade">
                 <h:panelGrid  columns="1" cellpadding="3" id="messagePanel">
-                    Send To: #{MessagingBean.targetUser}
+                    #{msg.sendTo}: #{MessagingBean.targetUser}
                     <br/>
-                    <p:inputTextarea  id="messgeContent" value="#{messageContent}" maxlength="5000"  placeholder="Enter message here"
+                    <p:inputTextarea  id="messgeContent" value="#{messageContent}" maxlength="5000"  placeholder="#{msg.messageBodyPlaceHolder}"
                                       rows="10" cols="50" counter="counterDisplay" required="true"
                                       requiredMessage="#{msg.groupDesErrorMessage}" counterTemplate="#{msg.charactersRemaining}:{0}"
                                       autoResize="false"/>                           
                     <h:outputText id="counterDisplay" />                                   
-                    <p:commandButton update="form:convoMessages"  icon="ui-icon-search" title="View" value="Send Message" process="@form"
+                    <p:commandButton update="form:convoMessages"  icon="ui-icon-search" title="View" value="#{msg.sendMessage}" process="@form"
                                      actionListener="#{MessagingBean.sendMessage(messageContent)}" oncomplete="PF('pChat').hide()">
                     </p:commandButton>              
                 </h:panelGrid> 
             </p:dialog>
 
-            <p:dialog id="convoMessages" widgetVar="convoView" header="Conversation" showEffect="fade" hideEffect="fade" resizable="false" style="width:60%">
+            <p:dialog id="convoMessages" widgetVar="convoView" header="#{msg.yourConver}" showEffect="fade" hideEffect="fade" resizable="false" style="width:60%">
                 <p:dataTable id="messages" var="message" value="#{MessagingBean.myMessages}" rows="10" paginator="true" sortBy="#{message.timeStamp}">
                     <f:facet name="header">
-                        Your Messages
+                        #{msg.yourMes}
                     </f:facet>
 
-                    <p:column headerText="Sender">
+                    <p:column headerText="#{msg.mesSender}">
                         <h:outputText value="#{message.users.username}" />
                     </p:column>
 
-                    <p:column headerText="Message">
+                    <p:column headerText="#{msg.messageButton}">
                         <h:outputText value="#{message.message}" />
                     </p:column>
 
-                    <p:column headerText="Sent">
+                    <p:column headerText="#{msg.mesDate}">
                         <h:outputText value="#{message.timeStamp}" />
                     </p:column>
 

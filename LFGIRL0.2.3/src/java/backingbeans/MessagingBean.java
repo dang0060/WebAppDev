@@ -103,6 +103,34 @@ public class MessagingBean implements Serializable {
     public void castMessages(Conversation c) {
         setMyMessages(new ArrayList<>(c.getConversationMessages()));
     }
+    
+    //retrieve the sender of the first message in a conversation, could be a work around for name check
+    public String obtainTargetUser(Conversation c){     
+         String targetUser = "Yourself";
+         int arrayIndex = 0;
+         
+         castMessages(c); //get all the messages for this particular conversation
+         int arraySize = myMessages.size();
+         
+         //there are more than 1 conversation messages
+         if(arraySize > 1){
+            while(arrayIndex <= (arraySize - 1) ){ //going through the array to find a name other than the current user
+              if(myMessages.get(arrayIndex).getUsers().getUsername().equals(userName)){
+                 arrayIndex++; //if all the names are the same as current user, when loop ends the target user remains as "Yourself"
+              }else{
+                targetUser = myMessages.get(arrayIndex).getUsers().getUsername();
+                break;
+              }
+            }//end while                                              
+         }//end if
+         else{ //only 1 message in the array
+           targetUser = myMessages.get(0).getUsers().getUsername();
+           if(targetUser.equals(userName)){
+              targetUser = "YourSelf";
+           }
+         }
+         return targetUser;
+    }
 
     /**
      * @return the allUsers

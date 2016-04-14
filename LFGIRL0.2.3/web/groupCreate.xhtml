@@ -32,7 +32,8 @@
                  <h:panelGroup />
                  
                  <h:outputLabel for="locationEntry" value="#{msg.Location}"/>
-                 <p:inputText id="locationEntry" value="#{GroupBean.address}" validator="#{GroupBean.validateAddress}" validatorMessage="#{msg.LocationInvalid}" required="true" />
+                 <p:inputText id="locationEntry" value="#{GroupBean.address}" validator="#{GroupBean.validateAddress}" validatorMessage="#{msg.LocationInvalid}" required="true" 
+                              requiredMessage="#{msg.locationRequired}"/>
                  <h:message for="locationEntry" style="color:red;"/>
                  
                  #{msg.tags}: 

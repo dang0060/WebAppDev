@@ -36,10 +36,11 @@
                 <h:outputText value=" "/>
             </ui:repeat>
             <br/>
-            <h:outputLink  rendered="#{GroupBean.isLeader}" value="groupEdit.xhtml">
-                <h:outputText value="#{msg.Edit}"/>
-                <f:param name="gid" value="#{GroupBean.gid}"/>
-            </h:outputLink>                     
+           
+            <p:button value="#{msg.Edit}" outcome="groupEdit" rendered="#{GroupBean.isLeader}" >
+                 <f:param name="gid" value="#{GroupBean.gid}"/>
+            </p:button>
+            
              <!--join a group @yawei-->
             <p:commandButton id="joinCommandButton"              
                 value="#{msg.joinGroupButton}" process="@this" rendered= "#{GroupBean.canJoinGroup()}" actionListener="#{GroupBean.joinGroup()}" update="groupProfileForm">             
